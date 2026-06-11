@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prueba de Admisión · Lenguaje 5° · Pioneros</title>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap');
+  :root {
+    --navy:#1B2A4A; --navy-mid:#2C3E6B; --gold:#F0A500; --gold-light:#FDF3DC;
+    --green:#2D8A5E; --gray-50:#F8F9FB; --gray-100:#EEF0F5; --gray-300:#C8CCDA;
+    --gray-500:#7A809A; --gray-700:#3D4260; --white:#FFFFFF; --red:#C0392B;
+    --radius:12px; --radius-sm:8px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'DM Sans',sans-serif;background:var(--gray-50);color:var(--navy);min-height:100vh;}
+  .header{background:var(--navy);color:var(--white);padding:0 24px;display:flex;align-items:center;
+    justify-content:space-between;height:60px;position:sticky;top:0;z-index:100;
+    box-shadow:0 2px 12px rgba(27,42,74,.25);}
+  .header-brand{display:flex;align-items:center;gap:12px;line-height:1.2;}
+  .header-brand .brand-text{display:flex;flex-direction:column;}
+  .header-brand .brand-sup{font-size:10px;font-weight:500;color:rgba(255,255,255,.55);letter-spacing:2px;text-transform:uppercase;}
+  .header-brand .brand-main{font-size:16px;font-weight:700;color:#fff;}
+  .timer-wrap{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.1);
+    border:1px solid rgba(255,255,255,.18);border-radius:8px;padding:6px 14px;}
+  #timer{font-family:'DM Mono',monospace;font-size:18px;font-weight:500;letter-spacing:2px;color:var(--white);min-width:56px;text-align:right;}
+  #timer.warn{color:#FF9800;}
+  #timer.danger{color:#FF5252;animation:pulse 1s infinite;}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+  .progress-bar-wrap{height:4px;background:rgba(255,255,255,.15);position:sticky;top:60px;z-index:99;}
+  #progress-bar{height:100%;background:var(--gold);width:0%;transition:width .4s ease;}
+  .screen{display:none;}.screen.active{display:block;}
+
+  /* ACCESS */
+  #access-screen{max-width:480px;margin:80px auto;padding:24px;}
+  .access-card{background:var(--white);border-radius:16px;padding:40px;box-shadow:0 4px 24px rgba(27,42,74,.08);text-align:center;}
+  .access-card .lock-icon{font-size:48px;margin-bottom:16px;}
+  .access-card h2{font-size:22px;font-weight:700;color:var(--navy);margin-bottom:8px;}
+  .access-card p{color:var(--gray-500);font-size:14px;margin-bottom:24px;line-height:1.6;}
+  .access-field{margin-bottom:14px;text-align:left;}
+  .access-field label{font-size:13px;font-weight:600;color:var(--gray-700);display:block;margin-bottom:6px;}
+  .access-field input{width:100%;border:1.5px solid var(--gray-300);border-radius:var(--radius-sm);
+    padding:10px 14px;font-family:'DM Sans',sans-serif;font-size:15px;color:var(--navy);outline:none;letter-spacing:1px;}
+  .btn-access{width:100%;background:var(--navy);color:var(--white);border:none;border-radius:var(--radius-sm);
+    padding:14px;font-family:'DM Sans',sans-serif;font-size:16px;font-weight:700;cursor:pointer;}
+  .btn-access:hover{background:var(--navy-mid);}
+  .access-error{color:var(--red);font-size:13px;margin-top:10px;display:none;font-weight:600;}
+
+  /* START */
+  #start-screen{max-width:560px;margin:60px auto;padding:24px;}
+  .start-card{background:var(--white);border-radius:16px;padding:40px;box-shadow:0 4px 24px rgba(27,42,74,.08);text-align:center;}
+  .start-card .badge{display:inline-block;background:var(--gold-light);color:#8A5E00;font-size:12px;font-weight:600;
+    letter-spacing:1px;text-transform:uppercase;padding:4px 12px;border-radius:20px;margin-bottom:16px;}
+  .start-card h1{font-size:28px;font-weight:700;color:var(--navy);margin-bottom:8px;}
+  .start-card p{color:var(--gray-500);font-size:15px;line-height:1.6;margin-bottom:28px;}
+  .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:32px;}
+  .info-item{background:var(--gray-50);border-radius:var(--radius-sm);padding:14px;text-align:center;}
+  .info-item .val{font-size:22px;font-weight:700;color:var(--navy);}
+  .info-item .lbl{font-size:12px;color:var(--gray-500);margin-top:2px;}
+  .name-field{margin-bottom:20px;text-align:left;}
+  .name-field label{font-size:13px;font-weight:600;color:var(--gray-700);display:block;margin-bottom:6px;}
+  .name-field input{width:100%;border:1.5px solid var(--gray-300);border-radius:var(--radius-sm);
+    padding:10px 14px;font-family:'DM Sans',sans-serif;font-size:15px;color:var(--navy);outline:none;}
+  .btn-start{width:100%;background:var(--navy);color:var(--white);border:none;border-radius:var(--radius-sm);
+    padding:14px;font-family:'DM Sans',sans-serif;font-size:16px;font-weight:700;cursor:pointer;}
+  .btn-start:hover{background:var(--navy-mid);}
+
+  /* QUIZ */
+  #quiz-screen{max-width:800px;margin:0 auto;padding:28px 20px 60px;}
+  .q-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+  .q-counter{font-size:13px;font-weight:600;color:var(--gray-500);}
+  .q-counter span{color:var(--navy);font-size:17px;}
+
+  /* Reading passage */
+  .passage-box{background:var(--white);border-radius:12px;padding:28px;border:2px solid var(--gray-100);
+    margin-bottom:20px;box-shadow:0 2px 12px rgba(27,42,74,.05);}
+  .passage-header{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+    color:var(--gray-500);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--gray-100);}
+  .passage-title{font-size:18px;font-weight:800;color:var(--navy);margin-bottom:4px;}
+  .passage-subtitle{font-size:13px;color:var(--gray-500);margin-bottom:16px;font-style:italic;}
+  .passage-body{font-size:15px;line-height:1.8;color:var(--gray-700);}
+  .passage-body p{margin-bottom:12px;}
+  .passage-body .vocab-box{background:var(--gray-50);border-radius:8px;padding:12px 16px;
+    margin-top:16px;font-size:13px;border-left:3px solid var(--navy-mid);}
+  .passage-body .vocab-box strong{color:var(--navy);}
+  .passage-note{font-size:11px;color:var(--gray-500);margin-top:12px;font-style:italic;}
+  .passage-instruction{background:#EDF4FF;border:1.5px solid #BCD0F5;border-radius:8px;
+    padding:10px 16px;margin-bottom:16px;font-size:14px;font-weight:600;color:var(--navy-mid);}
+
+  /* Letter formatting */
+  .letter-box{font-family:'DM Mono',monospace;font-size:13px;line-height:1.9;background:#FAFAFA;
+    border-radius:8px;padding:20px;border:1px solid var(--gray-100);}
+
+  .q-card{background:var(--white);border-radius:16px;padding:28px 32px;
+    box-shadow:0 4px 20px rgba(27,42,74,.07);margin-bottom:16px;}
+  .q-number{display:inline-flex;align-items:center;justify-content:center;
+    width:32px;height:32px;background:var(--navy);color:var(--white);
+    font-size:14px;font-weight:700;border-radius:8px;margin-bottom:12px;}
+  .q-text{font-size:16px;font-weight:500;color:var(--navy);line-height:1.6;margin-bottom:6px;}
+  .q-quote{background:var(--gray-50);border-left:3px solid var(--navy-mid);padding:12px 16px;
+    border-radius:0 8px 8px 0;margin:12px 0;font-size:14px;font-style:italic;color:var(--gray-700);line-height:1.7;}
+
+  .options{display:flex;flex-direction:column;gap:10px;margin-top:16px;}
+  .opt-btn{display:flex;align-items:center;gap:14px;padding:13px 18px;
+    border:2px solid var(--gray-100);border-radius:var(--radius-sm);background:var(--gray-50);
+    cursor:pointer;font-family:'DM Sans',sans-serif;font-size:15px;color:var(--navy);
+    text-align:left;transition:border-color .15s,background .15s;}
+  .opt-btn:hover{border-color:var(--navy-mid);background:var(--white);}
+  .opt-btn.selected{border-color:var(--navy);background:#EDF0F8;}
+  .opt-label{width:26px;height:26px;border-radius:6px;background:var(--gray-100);
+    display:flex;align-items:center;justify-content:center;font-weight:700;
+    font-size:13px;color:var(--gray-700);flex-shrink:0;}
+  .opt-btn.selected .opt-label{background:var(--navy);color:var(--white);}
+
+  .q-actions{display:flex;justify-content:space-between;gap:12px;}
+  .btn-prev,.btn-next{flex:1;padding:13px;border-radius:var(--radius-sm);
+    font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;cursor:pointer;border:none;}
+  .btn-prev{background:var(--gray-100);color:var(--gray-700);}
+  .btn-prev:disabled{opacity:.35;cursor:default;}
+  .btn-next{background:var(--navy);color:var(--white);}
+  .btn-next:hover{background:var(--navy-mid);}
+  .btn-next.finish{background:var(--green);}
+
+  .dot-map{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px;}
+  .dot{width:20px;height:20px;border-radius:4px;background:#dde0ea;cursor:pointer;
+    font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;color:var(--gray-500);}
+  .dot.answered{background:var(--navy);color:var(--white);}
+  .dot.current{background:var(--gold);color:var(--navy);}
+
+  /* SUBMITTED */
+  #submitted-screen{max-width:520px;margin:80px auto;padding:24px;}
+  .submitted-card{background:var(--white);border-radius:16px;padding:48px 40px;
+    box-shadow:0 4px 24px rgba(27,42,74,.08);text-align:center;}
+  .submitted-card .icon{font-size:56px;margin-bottom:20px;}
+  .submitted-card h2{font-size:26px;font-weight:700;color:var(--navy);margin-bottom:12px;}
+  .submitted-card p{color:var(--gray-500);font-size:15px;line-height:1.7;}
+  .submitted-card .highlight{color:var(--navy);font-weight:600;}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-brand">
+    <svg width="38" height="44" viewBox="0 0 38 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="38" height="44" rx="6" fill="#1B2A4A"/>
+      <text x="4" y="36" font-family="Georgia,serif" font-size="36" font-weight="900" fill="white">P</text>
+    </svg>
+    <div class="brand-text">
+      <span class="brand-sup">Admisión 2026/27</span>
+      <span class="brand-main">Pioneros · Prueba de Lenguaje 5°</span>
+    </div>
+  </div>
+  <div class="timer-wrap" id="timer-wrap" style="display:none">
+    <span style="font-size:16px">⏱</span>
+    <span id="timer">90:00</span>
+  </div>
+</header>
+<div class="progress-bar-wrap"><div id="progress-bar"></div></div>
+
+<!-- ACCESS -->
+<div id="access-screen" class="screen active">
+  <div class="access-card">
+    <div class="lock-icon">🔐</div>
+    <h2>Acceso Restringido</h2>
+    <p>Esta prueba es solo para candidatos autorizados.<br>Ingresa tu nombre completo y el código de acceso que te envió Pioneros.</p>
+    <div class="access-field">
+      <label>Nombre completo</label>
+      <input id="access-name" type="text" placeholder="Escribe tu nombre completo">
+    </div>
+    <div class="access-field">
+      <label>Código de acceso</label>
+      <input id="access-code" type="text" placeholder="Ej: PIO-2026-XXXX" style="text-transform:uppercase">
+    </div>
+    <button class="btn-access" onclick="checkAccess()">Ingresar a la prueba →</button>
+    <div class="access-error" id="access-error">⚠ Código incorrecto. Por favor verifica e intenta nuevamente.</div>
+  </div>
+</div>
+
+<!-- START -->
+<div id="start-screen" class="screen">
+  <div class="start-card">
+    <span class="badge">Admisión 2026/27</span>
+    <h1>Prueba de Lenguaje</h1>
+    <p>Lee cada texto con atención antes de responder. Puedes navegar entre las preguntas antes de enviar.</p>
+    <div class="info-grid">
+      <div class="info-item"><div class="val">25</div><div class="lbl">Preguntas</div></div>
+      <div class="info-item"><div class="val">90'</div><div class="lbl">Tiempo límite</div></div>
+      <div class="info-item"><div class="val">4</div><div class="lbl">Alternativas</div></div>
+      <div class="info-item"><div class="val">A–D</div><div class="lbl">Selección única</div></div>
+    </div>
+    <div class="name-field">
+      <label>Tu nombre completo</label>
+      <input id="student-name" type="text" placeholder="Escribe tu nombre aquí">
+    </div>
+    <button class="btn-start" onclick="startQuiz()">Comenzar prueba →</button>
+  </div>
+</div>
+
+<!-- QUIZ -->
+<div id="quiz-screen" class="screen">
+  <div class="dot-map" id="dot-map"></div>
+  <div class="q-nav">
+    <div class="q-counter">Pregunta <span id="q-num">1</span> de 25</div>
+  </div>
+  <div id="passage-area"></div>
+  <div class="q-card" id="q-card"></div>
+  <div class="q-actions">
+    <button class="btn-prev" id="btn-prev" onclick="navigate(-1)" disabled>← Anterior</button>
+    <button class="btn-next" id="btn-next" onclick="navigate(1)">Siguiente →</button>
+  </div>
+</div>
+
+<!-- SUBMITTED -->
+<div id="submitted-screen" class="screen">
+  <div class="submitted-card">
+    <div class="icon">📬</div>
+    <h2>¡Prueba enviada!</h2>
+    <p>Gracias, <span class="highlight" id="sub-name"></span>.<br><br>
+    Tus respuestas han sido recibidas. El equipo de admisiones de Pioneros revisará tus resultados y se pondrá en contacto contigo pronto.<br><br>
+    ¡Mucho éxito! 🌟</p>
+  </div>
+</div>
+
+<script>
+(function(){emailjs.init({publicKey:"x6LTzX-hx-Gd5mTR0"});})();
+const TOTAL_TIME = 90*60;
+const LABELS = ['A','B','C','D'];
+const ADMIN_EMAIL = 'dplatz@cpioneros.cl';
+const VALID_CODES = ['PIO-2026-OPNK','PIO-2026-7UG1','PIO-2026-X1SW'];
+let studentCode = '';
+
+function checkAccess(){
+  const name = document.getElementById('access-name').value.trim();
+  const code = document.getElementById('access-code').value.trim().toUpperCase();
+  const err = document.getElementById('access-error');
+  if(!name){err.textContent='⚠ Por favor ingresa tu nombre completo.';err.style.display='block';return;}
+  if(!VALID_CODES.includes(code)){err.textContent='⚠ Código incorrecto. Por favor verifica e intenta nuevamente.';err.style.display='block';return;}
+  err.style.display='none'; studentCode=code;
+  document.getElementById('access-screen').classList.remove('active');
+  document.getElementById('start-screen').classList.add('active');
+  document.getElementById('student-name').value=name;
+  document.getElementById('student-name').readOnly=true;
+}
+
+// ── PASSAGES ─────────────────────────────────────────────────────────────────
+const PASSAGES = {
+  0: `<div class="passage-box">
+    <div class="passage-instruction">📖 Lee el siguiente texto y responde las preguntas 1 a 3.</div>
+    <div class="passage-title">Kirikú y la bruja Karabá</div>
+    <div class="passage-subtitle">Adaptación del cuento africano</div>
+    <div class="passage-body">
+      <p>En una aldea africana vivía un niño muy pequeño pero muy valiente llamado Kirikú. Su aldea sufría bajo el poder de la terrible bruja Karabá, quien había robado el agua del pueblo y convertido a los guerreros en muñecos de madera.</p>
+      <p>Lo que más preocupaba a Kirikú no era el miedo ni el hambre, sino una pregunta que no lo dejaba en paz: <em>¿Por qué es malvada Karabá?</em> Nadie en la aldea sabía responderle.</p>
+      <p>Decidido a descubrir la verdad, Kirikú emprendió un largo y peligroso viaje a través de la selva para encontrar a su abuelo, el sabio del monte. Tras superar muchos obstáculos, llegó hasta él.</p>
+      <p>El abuelo le contó el secreto: Karabá era malvada porque llevaba clavada en la espalda una espina mágica que le causaba un dolor constante. Ese dolor la hacía actuar con crueldad. Nadie más lo sabía.</p>
+      <p>Con ese conocimiento, Kirikú logró acercarse a la bruja, extraer la espina y liberar a Karabá de su sufrimiento. Al instante, ella se transformó y dejó de ser malvada. Los guerreros recuperaron su forma y el agua volvió a la aldea.</p>
+      <div class="vocab-box"><strong>Inferir:</strong> sacar una conclusión a partir de indicios o información implícita en el texto.</div>
+    </div>
+  </div>`,
+
+  3: `<div class="passage-box">
+    <div class="passage-instruction">📖 Lee el siguiente texto y responde las preguntas 4 a 9.</div>
+    <div class="passage-title">Cría de hipopótamo pigmeo nacida en Chile será donada a Japón</div>
+    <div class="passage-subtitle">Viernes 02 de agosto de 2013</div>
+    <div class="passage-body">
+      <p>Solo 15 kilos pesa el nuevo ejemplar de hipopótamo pigmeo nacido el pasado 7 de julio en el Buin Zoo. Con tres semanas de vida, este macho corresponde al segundo en su especie que nace en el país, sumándose así a su padre, Hipólito; su madre, Coca, e Inocencio, su hermano. Sin embargo, su futuro ya está dictado fuera del país: dentro de ocho meses partirá rumbo a Japón. Todo, con el objetivo de contribuir a multiplicar una raza que, según explicó el doctor Ignacio Idalsoaga, Director del Buin Zoo, se encuentra en peligro de extinción, con tan solo 300 ejemplares en cautiverio en todo el mundo y 3.000 en estado natural.</p>
+      <p>"En Sudamérica, solo cuatro zoológicos tienen esta especie y hacía más de 20 años que no había reporte de nacimientos. Esto hace que, mundialmente, se transforme en un <strong>hito</strong>", señaló el Director del Buin Zoo.</p>
+      <p>El nacimiento fue registrado en un video que servirá para aportar información al mundo científico. Al igual que su hermano Inocencio, destinado a Estados Unidos, contribuirá a conservar la especie.</p>
+      <p>Desde ayer, el nuevo ejemplar puede ser visto por el público y se encuentra solo en compañía de su madre, aislado de los otros machos. El pequeño bebé hipopótamo recién nacido está exclusivamente con su madre, fortaleciendo el vínculo afectivo entre ellos.</p>
+      <div class="vocab-box"><strong>Hito:</strong> persona, cosa o hecho clave y fundamental dentro de un ámbito o contexto.</div>
+      <div style="margin-top:16px;background:#F8F9FB;border-radius:8px;padding:14px;border:1px solid var(--gray-100)">
+        <strong style="font-size:13px">Proporciones del hipopótamo pigmeo:</strong>
+        <p style="font-size:13px;margin-top:6px;line-height:1.7">Un adulto puede llegar a medir alrededor de <strong>80 cm</strong> de alto (menos de la mitad de lo que crece un hipopótamo común). Su longitud es de aproximadamente <strong>1,10 m</strong>. Una persona adulta promedio mide <strong>1,70 m</strong>.</p>
+      </div>
+      <p class="passage-note">Recuperado el 14 de agosto de 2014 de http://diario.latercera.com (Adaptación).</p>
+    </div>
+  </div>`,
+
+  9: `<div class="passage-box">
+    <div class="passage-instruction">📖 Lee el siguiente texto y responde las preguntas 10 a 14.</div>
+    <div class="passage-title">Charlie y la fábrica de chocolate</div>
+    <div class="passage-subtitle">Roald Dahl</div>
+    <div class="passage-body">
+      <p>El señor Wonka abrió la puerta. Cinco niños y nueve adultos se apresuraron a entrar, y ¡qué espectáculo más asombroso se presentó ante sus ojos! Lo que veían desde allí era un magnífico valle. Había verdes colinas a ambos lados de él y en el fondo del mismo fluía un ancho río de color marrón. Es más, ahí había una enorme cascada, en el río, un <strong>escarpado</strong> acantilado sobre el que el agua rodaba y ondulaba en una sólida capa, y luego se estrellaba en un hirviente, espumoso remolino de salpicaduras.</p>
+      <p>Debajo de la cascada (y este era el espectáculo más maravilloso de todos), una masa de enormes tubos de vidrio colgaba sobre el río desde algún sitio del techo, a gran altura. Eran realmente enormes estos tubos. Debía haber al menos una docena, y lo que hacían era succionar el agua oscura y barrosa del río para llevársela a Dios sabe dónde. Y como estaban hechos de vidrio, podía verse fluir el líquido <strong>a borbotones</strong> en su interior.</p>
+      <p>—¡Miren! —exclamó el señor Wonka, bailando excitadamente y señalando el río de color café con su bastón dorado—. ¡Es todo de chocolate! Hasta la última gota de ese río es chocolate derretido caliente de la mejor calidad. De una calidad insuperable. ¡Hay ahí chocolate suficiente para llenar todas las bañeras del país entero! ¡Y todas las piscinas también! ¿No es fantástico? ¡Miren esos tubos! Succionan el chocolate y lo llevan a todas las demás dependencias de la fábrica, donde haga falta. ¡Miles de litros por hora, mis queridos niños! ¡Miles y miles de litros!</p>
+      <div class="vocab-box">
+        <strong>Escarpado:</strong> inclinado, empinado.<br>
+        <strong>A borbotones:</strong> expresión que indica que un líquido brota o hierve con fuerza, haciendo burbujas.
+      </div>
+      <p class="passage-note">Fuente: Dahl, R. (1987). Charlie y la fábrica de chocolate. Bogotá: Alfaguara. (Adaptación).</p>
+    </div>
+  </div>`,
+
+  14: `<div class="passage-box">
+    <div class="passage-instruction">📖 Lee el siguiente texto y responde las preguntas 15 a 20.</div>
+    <div class="passage-title">La leyenda del pez Koi</div>
+    <div class="passage-body">
+      <p>Hace muchos años, en un tiempo antes de la historia, un cardumen enorme de peces Koi nadaba con la corriente por el río Amarillo. Los colores de sus cuerpos brillaban a la luz del sol haciéndolos parecer un millón de joyas vivientes.</p>
+      <p>Todo iba como de costumbre, cuando los Koi llegaron a la catarata, conocida como "Dragones Gate" y cayeron por ella. Aterrorizados, comenzaron a saltar para volver a su hogar, para lo que debían alcanzar la <strong>cúspide</strong> de la catarata. Una y otra vez arrojaron sus cuerpos al aire para caer de nuevo al agua. Este ruido llamó la atención de los demonios locales que se reían de los inútiles esfuerzos de los Koi. Agregando más a su miseria, los crueles demonios decidieron aumentar la altura de la catarata.</p>
+      <p>Aun así los Koi continuaron haciendo el esfuerzo de alcanzar el punto más alto de ese salto de agua. Así lo hicieron, durante cien años.</p>
+      <p>Cuando ya se pensaba que todo estaba perdido, un Koi logró su propósito. Los dioses sonrieron en señal de aprobación y transformaron al agotado pez en un dragón de oro brillante. Desde entonces, pasa sus días con alegría persiguiendo perlas de sabiduría a través de los cielos.</p>
+      <p>Cada vez que otro Koi encuentra la fuerza y el coraje para saltar a la cúspide, también se convierte en un dragón celestial. Debido a su resistencia y perseverancia, los Koi son el símbolo de la superación de la <strong>adversidad</strong> y el cumplimiento del propio destino.</p>
+      <div class="vocab-box">
+        <strong>Cúspide:</strong> punto más alto.<br>
+        <strong>Adversidad:</strong> situación desgraciada o difícil en que se encuentra alguien.
+      </div>
+    </div>
+  </div>`,
+
+  20: `<div class="passage-box">
+    <div class="passage-instruction">📖 Lee el siguiente texto y responde las preguntas 21 a 25.</div>
+    <div class="passage-title">Carta de agradecimiento — COANIQUEM</div>
+    <div class="passage-body">
+      <div class="letter-box">
+        Santiago, 2 de agosto de 2015.
+
+Señor
+Gustavo Olivares
+Director del Colegio
+
+Estimado Director:
+
+En nombre de la Corporación de Ayuda al Niño Quemado COANIQUEM,
+queremos agradecerle muy sinceramente la valiosa ayuda prestada por
+sus estudiantes y la persona asignada para realizar nuestra "Campaña
+del sobre 2015".
+
+Como Ud. sabe, los fondos recaudados a través de esta campaña
+nos permiten otorgar tratamientos de rehabilitación completamente
+gratuitos a cualquier niño que haya sufrido quemaduras, las que
+dejan <strong>secuelas</strong> tanto en su desarrollo físico como psicológico.
+
+Por su intermedio, quisiéramos hacer extensivo nuestro agradecimiento
+a cada una de las personas que generosamente nos ayudaron para lograr
+el financiamiento que requiere esta obra de bien social y a los nuevos
+socios inscritos.
+
+Esperamos seguir contando con ustedes en las actividades de este año.
+
+Lo saluda muy atentamente,
+
+                              Jorge Rojas Zegers
+                              Director Fundación Coaniquem
+      </div>
+      <div class="vocab-box" style="margin-top:12px"><strong>Secuelas:</strong> consecuencias, marcas, efectos.</div>
+    </div>
+  </div>`
+};
+
+// ── QUESTIONS ─────────────────────────────────────────────────────────────────
+const questions = [
+  { q:"¿Qué hace el abuelo para ayudar a Kirikú?", opts:["Le cuenta un secreto.","Le regala un ejército de muñecos.","Le entrega una extraña capacidad.","Le enseña a subir una gran montaña."], ans:0 },
+  { q:"¿Qué preocupa en todo momento a Kirikú?", opts:["La imposible vida de los habitantes de su aldea.","La forma en que Karabá logró hacer su ejército.","La dificultad que tiene para llegar donde su abuelo.","La razón por la que la bruja es malvada con los demás."], ans:3 },
+  { q:"¿Qué logra inferir Kirikú sobre Karabá?", opts:["Su ejército no le sirve para nada.","Su secreto es conocido por todos.","Su poder no es suficiente contra la aldea.","Su maldad es fruto de haber sufrido mucho."], ans:3 },
+  { q:"Según el texto, ¿cuántos ejemplares de hipopótamo pigmeo en estado natural hay en el mundo?", opts:["2","3","300","3.000"], ans:3 },
+  { q:"Según la información del recuadro \"Proporciones\", ¿cuánto puede llegar a medir de alto un hipopótamo pigmeo adulto?", opts:["80 cm","1,10 m","1,60 m","1,70 m"], ans:0 },
+  { q:"A partir de lo leído, ¿qué le permite a la cría fortalecer su vínculo afectivo?", opts:["La compañía de su hermano.","El cuidado que le da Buin Zoo.","El contacto exclusivo con su madre.","La protección que le otorga Hipólito."], ans:2 },
+  { q:"¿Para qué se utilizan las imágenes en el recuadro de proporciones?", opts:["Para representar las proporciones del hipopótamo pigmeo.","Para describir el proceso de crecimiento de un hipopótamo pigmeo.","Para mostrar la diferencia entre un hipopótamo adulto y uno común.","Para graficar el vínculo entre el hipopótamo pigmeo y los cuidadores del Buin Zoo."], ans:0 },
+  { q:"Considerando el resto del texto, ¿qué se puede agregar a la frase: \"el nuevo ejemplar puede ser visto por el público y se encuentra solo en compañía de su madre\"?", opts:["Que el público podrá verlo por un tiempo limitado.","Que la madre debe proteger al bebé de los visitantes.","Que el recién nacido viajará junto a su madre a Japón.","Que la familia hipopótamo pronto estará reunida nuevamente."], ans:0 },
+  { q:"A partir del texto, ¿qué logro importante se alcanza con el cuidado y reproducción de los hipopótamos pigmeos en estos zoológicos?", opts:["Ayudar a multiplicar un animal en extinción.","Hacer más atractivos los zoológicos nacionales.","Conectar científicos de distintas partes del mundo.","Terminar con la amenaza de todos los animales en peligro."], ans:0 },
+  { q:"Según el texto, ¿qué corría por el río?", opts:["Agua barrosa.","Agua hirviendo.","Chocolate sólido.","Chocolate derretido."], ans:3 },
+  { q:"Según el texto, ¿qué impresionó a los niños y adultos al llegar a la fábrica?", opts:["La aparición de un hermoso valle.","El ruido poderoso que producía la cascada.","La gran cantidad de chocolate en los tubos.","El hirviente espumoso remolino de salpicaduras."], ans:0 },
+  { q:"A partir de lo que dice el señor Wonka, ¿cómo era la fábrica?", opts:["Extraña.","Enorme.","Antigua.","Famosa."], ans:1 },
+  { q:"¿Qué actitud asumía el señor Wonka mientras describía a los niños lo que veían en la fábrica?", opts:["De orgullo.","De sorpresa.","De curiosidad.","De desconfianza."], ans:0 },
+  { q:"¿De qué se trata el párrafo donde el señor Wonka exclama \"¡Miren!\"?", opts:["De los recuerdos de los niños al visitar la fábrica.","Del inicio del recorrido de los niños por la fábrica.","De lo que quería mostrarles el señor Wonka a los niños.","Del secreto que guardaba el señor Wonka en su fábrica."], ans:2 },
+  { q:"¿Qué hicieron los demonios con los Koi al verlos tratar de regresar a su hogar?", opts:["Los engañaron.","Los persiguieron.","Hicieron sonar un fuerte ruido.","Aumentaron la altura de la catarata."], ans:3 },
+  { q:"De acuerdo al texto, ¿cómo eran los peces Koi?", opts:["Alegres.","Amistosos.","Esforzados.","Arriesgados."], ans:2 },
+  { q:"¿Cómo eran las cataratas \"Dragones Gate\"?", opts:["Anchas.","Elevadas.","Ruidosas.","Peligrosas."], ans:1 },
+  { q:"¿Qué consecuencia tuvo para los peces Koi lograr alcanzar el punto más alto de la catarata?", opts:["Vencer a los demonios.","Volver a caer de nuevo al agua.","Recibir un premio de los dioses.","Encontrar las perlas de la sabiduría."], ans:2 },
+  { q:"¿Cuál es una de las características de los peces Koi que los convirtió en un símbolo de superación de la adversidad?", opts:["Su belleza.","Su sabiduría.","Su humildad.","Su perseverancia."], ans:3 },
+  { q:"¿Cuál es el conflicto planteado en la leyenda?", opts:["La difícil situación de los peces Koi los impulsó a mejorar cada vez más.","Los dioses premiaron a los peces Koi transformándolos en dragones de oro.","La necesidad de sobrevivir obligaba a los peces Koi a enfrentarse a los dioses.","Los demonios les pusieron una prueba a los peces Koi que parecía imposible de superar."], ans:3 },
+  { q:"¿A quién o quiénes se les agradece su ayuda en la carta?", opts:["Al grupo de nuevos socios.","A los estudiantes del colegio.","Al Director de la Fundación Coaniquem.","A la Corporación de Ayuda al Niño Quemado."], ans:1 },
+  { q:"Según el texto, ¿para qué se efectúa la \"Campaña del sobre\"?", opts:["Para motivar a nuevos socios a inscribirse.","Para invitar a los alumnos del colegio a participar.","Para construir una nueva obra social comunitaria.","Para recaudar fondos destinados a la rehabilitación."], ans:3 },
+  { q:"¿Con qué propósito se menciona en el texto que las quemaduras dejan graves secuelas en los niños?", opts:["Informar que hay muchos niños quemados que necesitan ayuda.","Acercar al Director del Colegio a la campaña de ayuda al niño quemado.","Ejemplificar los desafíos que tiene la institución al ayudar a niños quemados.","Convencer de la importancia de ayudar a los niños quemados en su tratamiento."], ans:3 },
+  { q:"¿Qué quiere decir la expresión \"hacer extensivo nuestro agradecimiento\" en la carta?", opts:["Agradecer muchas veces.","Agradecer a más personas.","Destacar su agradecimiento.","Retardar su agradecimiento."], ans:1 },
+  { q:"¿Con qué motivo se envió la carta?", opts:["Para invitar a participar en Coaniquem.","Para agradecer el apoyo dado a la campaña.","Para explicar el trabajo que realiza Coaniquem.","Para informar de la \"Campaña del sobre 2015\"."], ans:1 },
+];
+
+let current=0, answers=new Array(questions.length).fill(null);
+let timerInterval=null, timeLeft=TOTAL_TIME, startTime=null, studentName='';
+
+function startQuiz(){
+  studentName=document.getElementById('student-name').value.trim()||'Estudiante';
+  document.getElementById('start-screen').classList.remove('active');
+  document.getElementById('quiz-screen').classList.add('active');
+  document.getElementById('timer-wrap').style.display='flex';
+  buildDotMap(); renderQuestion(); startTimer();
+}
+function startTimer(){
+  startTime=Date.now(); updateTimerDisplay();
+  timerInterval=setInterval(()=>{timeLeft--;updateTimerDisplay();if(timeLeft<=0){clearInterval(timerInterval);submitQuiz();}},1000);
+}
+function updateTimerDisplay(){
+  const m=Math.floor(timeLeft/60).toString().padStart(2,'0');
+  const s=(timeLeft%60).toString().padStart(2,'0');
+  const el=document.getElementById('timer');
+  el.textContent=`${m}:${s}`;
+  el.className=timeLeft<=60?'danger':timeLeft<=300?'warn':'';
+}
+function buildDotMap(){
+  const map=document.getElementById('dot-map'); map.innerHTML='';
+  questions.forEach((_,i)=>{
+    const d=document.createElement('div');
+    d.className='dot'+(i===current?' current':'')+(answers[i]!==null?' answered':'');
+    d.textContent=i+1; d.onclick=()=>goTo(i); map.appendChild(d);
+  });
+}
+function goTo(idx){current=idx;renderQuestion();}
+function renderQuestion(){
+  const q=questions[current];
+  // Show passage if needed
+  const pa=document.getElementById('passage-area');
+  const passageKeys=Object.keys(PASSAGES).map(Number).sort((a,b)=>a-b);
+  let shownPassage=null;
+  for(let k of passageKeys){ if(current>=k) shownPassage=k; }
+  pa.innerHTML = shownPassage!==null ? PASSAGES[shownPassage] : '';
+
+  const card=document.getElementById('q-card');
+  let html=`<div class="q-number">${current+1}</div>`;
+  html+=`<div class="q-text">${q.q}</div>`;
+  if(q.quote) html+=`<div class="q-quote">${q.quote}</div>`;
+  html+=`<div class="options">`;
+  q.opts.forEach((opt,i)=>{
+    const sel=answers[current]===i?' selected':'';
+    html+=`<button class="opt-btn${sel}" onclick="selectAnswer(${i})"><span class="opt-label">${LABELS[i]}</span><span>${opt}</span></button>`;
+  });
+  html+=`</div>`;
+  card.innerHTML=html;
+  document.getElementById('q-num').textContent=current+1;
+  document.getElementById('btn-prev').disabled=current===0;
+  const isLast=current===questions.length-1;
+  const btn=document.getElementById('btn-next');
+  btn.textContent=isLast?'Enviar prueba ✓':'Siguiente →';
+  btn.className='btn-next'+(isLast?' finish':'');
+  btn.onclick=isLast?submitQuiz:()=>navigate(1);
+  updateProgress(); buildDotMap();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function selectAnswer(idx){
+  answers[current]=idx;
+  // Re-render options only without scrolling
+  const q=questions[current];
+  const opts=document.querySelectorAll('.opt-btn');
+  opts.forEach((btn,i)=>{
+    btn.className='opt-btn'+(answers[current]===i?' selected':'');
+    btn.querySelector('.opt-label').className='opt-label';
+  });
+  updateProgress(); buildDotMap();
+}
+function navigate(dir){const next=current+dir;if(next>=0&&next<questions.length){current=next;renderQuestion();}}
+function updateProgress(){
+  document.getElementById('progress-bar').style.width=(answers.filter(a=>a!==null).length/questions.length*100)+'%';
+}
+function submitQuiz(){
+  clearInterval(timerInterval);
+  const elapsed=Math.round((Date.now()-startTime)/1000);
+  const mins=Math.floor(elapsed/60), secs=elapsed%60;
+  let correct=0,wrong=0,blank=0;
+  questions.forEach((q,i)=>{if(answers[i]===null)blank++;else if(answers[i]===q.ans)correct++;else wrong++;});
+  const pct=Math.round(correct/questions.length*100);
+  const details=questions.map((q,i)=>{
+    const u=answers[i]!==null?LABELS[answers[i]]:'—';
+    const c=LABELS[q.ans];
+    const s=answers[i]===null?'Sin respuesta':answers[i]===q.ans?'✓ Correcta':'✗ Incorrecta';
+    return `P${i+1}: ${s} | Estudiante: ${u} | Correcta: ${c}`;
+  }).join('\n');
+  emailjs.send('service_kk0m83i','evurior',{
+    to_email:ADMIN_EMAIL, student_name:studentName,
+    grade:'5° Básico — Lenguaje',
+    access_code:studentCode,
+    score:`${correct}/25 (${pct}%)`,
+    correct, wrong, blank,
+    time_used:`${mins}m ${secs}s`,
+    details,
+    submitted_at:new Date().toLocaleString('es-CL',{timeZone:'America/Santiago'})
+  }).catch(()=>{});
+  document.getElementById('quiz-screen').classList.remove('active');
+  document.getElementById('submitted-screen').classList.add('active');
+  document.getElementById('timer-wrap').style.display='none';
+  document.getElementById('progress-bar').style.width='100%';
+  document.getElementById('sub-name').textContent=studentName;
+  console.log('RESULTS LJE 5',{studentName,correct,wrong,blank,pct,details});
+}
+</script>
+</body>
+</html>

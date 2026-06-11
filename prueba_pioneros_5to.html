@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Math Entrance Exam · Pioneros 5th Grade</title>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap');
+  :root {
+    --navy:#1B2A4A; --navy-mid:#2C3E6B; --gold:#F0A500; --gold-light:#FDF3DC;
+    --green:#2D8A5E; --green-light:#E6F5EE; --red:#C0392B; --red-light:#FDECEA;
+    --gray-50:#F8F9FB; --gray-100:#EEF0F5; --gray-300:#C8CCDA;
+    --gray-500:#7A809A; --gray-700:#3D4260; --white:#FFFFFF;
+    --radius:12px; --radius-sm:8px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'DM Sans',sans-serif;background:var(--gray-50);color:var(--navy);min-height:100vh;}
+  .header{background:var(--navy);color:var(--white);padding:0 24px;display:flex;align-items:center;
+    justify-content:space-between;height:60px;position:sticky;top:0;z-index:100;
+    box-shadow:0 2px 12px rgba(27,42,74,.25);}
+  .header-brand{display:flex;align-items:center;gap:12px;line-height:1.2;}
+  .header-brand .brand-text{display:flex;flex-direction:column;}
+  .header-brand .brand-sup{font-size:10px;font-weight:500;color:rgba(255,255,255,.55);letter-spacing:2px;text-transform:uppercase;}
+  .header-brand .brand-main{font-size:16px;font-weight:700;color:#fff;letter-spacing:.2px;}
+  .timer-wrap{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.1);
+    border:1px solid rgba(255,255,255,.18);border-radius:8px;padding:6px 14px;}
+  .timer-icon{font-size:16px;}
+  #timer{font-family:'DM Mono',monospace;font-size:18px;font-weight:500;letter-spacing:2px;
+    color:var(--white);min-width:56px;text-align:right;}
+  #timer.warn{color:#FF9800;}
+  #timer.danger{color:#FF5252;animation:pulse 1s infinite;}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+  .progress-bar-wrap{height:4px;background:rgba(255,255,255,.15);position:sticky;top:60px;z-index:99;}
+  #progress-bar{height:100%;background:var(--gold);width:0%;transition:width .4s ease;}
+  .screen{display:none;}.screen.active{display:block;}
+  #start-screen{max-width:560px;margin:60px auto;padding:24px;}
+  .start-card{background:var(--white);border-radius:16px;padding:40px;
+    box-shadow:0 4px 24px rgba(27,42,74,.08);text-align:center;}
+  .start-card .badge{display:inline-block;background:var(--gold-light);color:#8A5E00;
+    font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;
+    padding:4px 12px;border-radius:20px;margin-bottom:16px;}
+  .start-card h1{font-size:28px;font-weight:700;color:var(--navy);margin-bottom:8px;}
+  .start-card p{color:var(--gray-500);font-size:15px;line-height:1.6;margin-bottom:28px;}
+  .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:32px;}
+  .info-item{background:var(--gray-50);border-radius:var(--radius-sm);padding:14px;text-align:center;}
+  .info-item .val{font-size:22px;font-weight:700;color:var(--navy);}
+  .info-item .lbl{font-size:12px;color:var(--gray-500);margin-top:2px;}
+  .name-field{margin-bottom:20px;text-align:left;}
+  .name-field label{font-size:13px;font-weight:600;color:var(--gray-700);display:block;margin-bottom:6px;}
+  .name-field input{width:100%;border:1.5px solid var(--gray-300);border-radius:var(--radius-sm);
+    padding:10px 14px;font-family:'DM Sans',sans-serif;font-size:15px;color:var(--navy);
+    outline:none;transition:border-color .2s;}
+  .name-field input:focus{border-color:var(--navy-mid);}
+  .btn-start{width:100%;background:var(--navy);color:var(--white);border:none;
+    border-radius:var(--radius-sm);padding:14px;font-family:'DM Sans',sans-serif;
+    font-size:16px;font-weight:700;cursor:pointer;transition:background .2s,transform .1s;}
+  .btn-start:hover{background:var(--navy-mid);}
+  .btn-start:active{transform:scale(.98);}
+  #quiz-screen{max-width:720px;margin:0 auto;padding:28px 20px 60px;}
+  .q-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+  .q-counter{font-size:13px;font-weight:600;color:var(--gray-500);letter-spacing:.5px;}
+  .q-counter span{color:var(--navy);font-size:17px;}
+  .q-card{background:var(--white);border-radius:16px;padding:32px;
+    box-shadow:0 4px 20px rgba(27,42,74,.07);margin-bottom:16px;}
+  .q-number{display:inline-flex;align-items:center;justify-content:center;
+    width:32px;height:32px;background:var(--navy);color:var(--white);
+    font-size:14px;font-weight:700;border-radius:8px;margin-bottom:14px;}
+  .q-text{font-size:17px;font-weight:500;color:var(--navy);line-height:1.55;margin-bottom:6px;}
+  .q-sub{font-size:20px;font-weight:700;color:var(--navy-mid);margin:10px 0 20px;
+    text-align:center;letter-spacing:.5px;}
+  .q-img{margin:16px 0;display:flex;justify-content:center;overflow-x:auto;}
+  .q-img svg{max-width:100%;}
+  .options{display:flex;flex-direction:column;gap:10px;}
+  .opt-btn{display:flex;align-items:center;gap:14px;padding:14px 18px;
+    border:2px solid var(--gray-100);border-radius:var(--radius-sm);
+    background:var(--gray-50);cursor:pointer;font-family:'DM Sans',sans-serif;
+    font-size:15px;color:var(--navy);text-align:left;transition:border-color .15s,background .15s;}
+  .opt-btn:hover{border-color:var(--navy-mid);background:var(--white);}
+  .opt-btn.selected{border-color:var(--navy);background:#EDF0F8;}
+  .opt-label{width:26px;height:26px;border-radius:6px;background:var(--gray-100);
+    display:flex;align-items:center;justify-content:center;font-weight:700;
+    font-size:13px;color:var(--gray-700);flex-shrink:0;transition:background .15s,color .15s;}
+  .opt-btn.selected .opt-label{background:var(--navy);color:var(--white);}
+  .q-actions{display:flex;justify-content:space-between;gap:12px;}
+  .btn-prev,.btn-next{flex:1;padding:13px;border-radius:var(--radius-sm);
+    font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;cursor:pointer;
+    border:none;transition:background .2s,opacity .2s;}
+  .btn-prev{background:var(--gray-100);color:var(--gray-700);}
+  .btn-prev:hover{background:var(--gray-300);}
+  .btn-prev:disabled{opacity:.35;cursor:default;}
+  .btn-next{background:var(--navy);color:var(--white);}
+  .btn-next:hover{background:var(--navy-mid);}
+  .btn-next.finish{background:var(--green);}
+  .btn-next.finish:hover{background:#236b49;}
+  .dot-map{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px;}
+  .dot{width:20px;height:20px;border-radius:4px;background:#dde0ea;cursor:pointer;
+    font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;
+    color:var(--gray-500);transition:background .15s;}
+  .dot.answered{background:var(--navy);color:var(--white);}
+  .dot.current{background:var(--gold);color:var(--navy);}
+  #submitted-screen{max-width:520px;margin:80px auto;padding:24px;}
+  .submitted-card{background:var(--white);border-radius:16px;padding:48px 40px;
+    box-shadow:0 4px 24px rgba(27,42,74,.08);text-align:center;}
+  .submitted-card .icon{font-size:56px;margin-bottom:20px;}
+  .submitted-card h2{font-size:26px;font-weight:700;color:var(--navy);margin-bottom:12px;}
+  .submitted-card p{color:var(--gray-500);font-size:15px;line-height:1.7;}
+  .submitted-card .highlight{color:var(--navy);font-weight:600;}
+
+  /* ACCESS SCREEN */
+  #access-screen{max-width:480px;margin:80px auto;padding:24px;}
+  .access-card{background:var(--white);border-radius:16px;padding:40px;
+    box-shadow:0 4px 24px rgba(27,42,74,.08);text-align:center;}
+  .access-card .lock-icon{font-size:48px;margin-bottom:16px;}
+  .access-card h2{font-size:22px;font-weight:700;color:var(--navy);margin-bottom:8px;}
+  .access-card p{color:var(--gray-500);font-size:14px;margin-bottom:24px;line-height:1.6;}
+  .access-field{margin-bottom:14px;text-align:left;}
+  .access-field label{font-size:13px;font-weight:600;color:var(--gray-700);display:block;margin-bottom:6px;}
+  .access-field input{width:100%;border:1.5px solid var(--gray-300);border-radius:var(--radius-sm);
+    padding:10px 14px;font-family:'DM Sans',sans-serif;font-size:15px;color:var(--navy);
+    outline:none;transition:border-color .2s;letter-spacing:1px;}
+  .access-field input:focus{border-color:var(--navy-mid);}
+  .btn-access{width:100%;background:var(--navy);color:var(--white);border:none;
+    border-radius:var(--radius-sm);padding:14px;font-family:'DM Sans',sans-serif;
+    font-size:16px;font-weight:700;cursor:pointer;transition:background .2s;}
+  .btn-access:hover{background:var(--navy-mid);}
+  .access-error{color:var(--red);font-size:13px;margin-top:10px;display:none;font-weight:600;}
+
+  @media(max-width:480px){.q-card{padding:22px 18px;}.start-card{padding:28px 20px;}}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-brand">
+    <svg width="38" height="44" viewBox="0 0 38 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="38" height="44" rx="6" fill="#1B2A4A"/>
+      <text x="4" y="36" font-family="Georgia,serif" font-size="36" font-weight="900" fill="white">P</text>
+    </svg>
+    <div class="brand-text">
+      <span class="brand-sup">Admission 2026/27</span>
+      <span class="brand-main">Pioneros · Math Entrance Exam</span>
+    </div>
+  </div>
+  <div class="timer-wrap" id="timer-wrap" style="display:none">
+    <span class="timer-icon">⏱</span>
+    <span id="timer">90:00</span>
+  </div>
+</header>
+<div class="progress-bar-wrap"><div id="progress-bar"></div></div>
+
+
+<!-- ACCESS GATE -->
+<div id="access-screen" class="screen active">
+  <div class="access-card">
+    <div class="lock-icon">🔐</div>
+    <h2>Restricted Access</h2>
+    <p>This exam is for authorized candidates only.<br>Please enter your name and the access code sent to you by Pioneros.</p>
+    <div class="access-field">
+      <label>Your full name</label>
+      <input id="access-name" type="text" placeholder="Write your full name">
+    </div>
+    <div class="access-field">
+      <label>Access code</label>
+      <input id="access-code" type="text" placeholder="e.g. PIO-2026-XXXX" style="text-transform:uppercase">
+    </div>
+    <button class="btn-access" onclick="checkAccess()">Enter exam →</button>
+    <div class="access-error" id="access-error">⚠ Invalid access code. Please check and try again.</div>
+  </div>
+</div>
+
+<!-- START -->
+<div id="start-screen" class="screen">
+  <div class="start-card">
+    <span class="badge">Admission 2026/27</span>
+    <h1>Math Entrance Exam</h1>
+    <p>Answer all questions carefully. You can navigate between them before submitting.</p>
+    <div class="info-grid">
+      <div class="info-item"><div class="val">39</div><div class="lbl">Questions</div></div>
+      <div class="info-item"><div class="val">90'</div><div class="lbl">Time limit</div></div>
+      <div class="info-item"><div class="val">4</div><div class="lbl">Choices</div></div>
+      <div class="info-item"><div class="val">A–D</div><div class="lbl">Single answer</div></div>
+    </div>
+    <div class="name-field">
+      <label>Your full name</label>
+      <input id="student-name" type="text" placeholder="Write your name here">
+    </div>
+    <button class="btn-start" onclick="startQuiz()">Start exam →</button>
+  </div>
+</div>
+
+<!-- QUIZ -->
+<div id="quiz-screen" class="screen">
+  <div class="dot-map" id="dot-map"></div>
+  <div class="q-nav">
+    <div class="q-counter">Question <span id="q-num">1</span> of 39</div>
+  </div>
+  <div class="q-card" id="q-card"></div>
+  <div class="q-actions">
+    <button class="btn-prev" id="btn-prev" onclick="navigate(-1)" disabled>← Previous</button>
+    <button class="btn-next" id="btn-next" onclick="navigate(1)">Next →</button>
+  </div>
+</div>
+
+<!-- SUBMITTED -->
+<div id="submitted-screen" class="screen">
+  <div class="submitted-card">
+    <div class="icon">📬</div>
+    <h2>Exam submitted!</h2>
+    <p>Thank you, <span class="highlight" id="sub-name"></span>.<br><br>
+    Your answers have been received. The Pioneros admissions team will review your results and be in touch soon.<br><br>
+    Good luck! 🌟</p>
+  </div>
+</div>
+
+<script>
+
+const VALID_CODES = ['PIO-2026-OPNK', 'PIO-2026-7UG1', 'PIO-2026-X1SW'];
+let studentCode = '';
+
+function checkAccess() {
+  const name = document.getElementById('access-name').value.trim();
+  const code = document.getElementById('access-code').value.trim().toUpperCase();
+  const err = document.getElementById('access-error');
+  if (!name) { err.textContent = '⚠ Please enter your full name.'; err.style.display='block'; return; }
+  if (!VALID_CODES.includes(code)) { err.textContent = '⚠ Invalid access code. Please check and try again.'; err.style.display='block'; return; }
+  err.style.display='none';
+  studentCode = code;
+  // Mark code as used (session only)
+  document.getElementById('access-screen').classList.remove('active');
+  document.getElementById('start-screen').classList.add('active');
+  document.getElementById('student-name').value = name;
+  document.getElementById('student-name').readOnly = true;
+}
+
+(function(){emailjs.init({publicKey:"x6LTzX-hx-Gd5mTR0"});})();
+const TOTAL_TIME = 90*60;
+const LABELS = ['A','B','C','D'];
+const ADMIN_EMAIL = 'dplatz@cpioneros.cl';
+
+// ── SVG IMAGES (0-based index) ───────────────────────────────────────────────
+const Q_IMAGES = {
+
+  // Q6 (index 5): 4 number cards — which is greatest?
+  5: `<svg width="420" height="120" viewBox="0 0 420 120" xmlns="http://www.w3.org/2000/svg">
+    <!-- A: 4028 -->
+    <g transform="translate(10,15)">
+      <rect x="0" y="0" width="90" height="50" rx="8" fill="white" stroke="#1B2A4A" stroke-width="2"/>
+      <path d="M0,8 Q0,0 8,0" fill="none" stroke="#1B2A4A" stroke-width="2"/>
+      <path d="M82,0 Q90,0 90,8" fill="none" stroke="#1B2A4A" stroke-width="2"/>
+      <path d="M90,42 Q90,50 82,50" fill="none" stroke="#1B2A4A" stroke-width="2"/>
+      <path d="M8,50 Q0,50 0,42" fill="none" stroke="#1B2A4A" stroke-width="2"/>
+      <text x="45" y="32" text-anchor="middle" font-family="sans-serif" font-size="18" font-weight="900" fill="#1B2A4A">4 028</text>
+      <text x="45" y="70" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#1B2A4A">A</text>
+    </g>
+    <!-- B: 4208 -->
+    <g transform="translate(115,15)">
+      <rect x="0" y="0" width="90" height="50" rx="8" fill="white" stroke="#1B2A4A" stroke-width="2"/>
+      <text x="45" y="32" text-anchor="middle" font-family="sans-serif" font-size="18" font-weight="900" fill="#1B2A4A">4 208</text>
+      <text x="45" y="70" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#1B2A4A">B</text>
+    </g>
+    <!-- C: 4802 -->
+    <g transform="translate(220,15)">
+      <rect x="0" y="0" width="90" height="50" rx="8" fill="white" stroke="#1B2A4A" stroke-width="2"/>
+      <text x="45" y="32" text-anchor="middle" font-family="sans-serif" font-size="18" font-weight="900" fill="#1B2A4A">4 802</text>
+      <text x="45" y="70" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#1B2A4A">C</text>
+    </g>
+    <!-- D: 4082 -->
+    <g transform="translate(325,15)">
+      <rect x="0" y="0" width="90" height="50" rx="8" fill="white" stroke="#1B2A4A" stroke-width="2"/>
+      <text x="45" y="32" text-anchor="middle" font-family="sans-serif" font-size="18" font-weight="900" fill="#1B2A4A">4 082</text>
+      <text x="45" y="70" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#1B2A4A">D</text>
+    </g>
+  </svg>`,
+
+  // Q8 (index 7): Dot decomposition table UM=2, C=5, D=2, U=6
+  7: `<svg width="380" height="100" viewBox="0 0 380 100" xmlns="http://www.w3.org/2000/svg">
+    <!-- Table border -->
+    <rect x="10" y="10" width="360" height="80" rx="4" fill="white" stroke="#1B2A4A" stroke-width="2"/>
+    <!-- Header row -->
+    <rect x="10" y="10" width="90" height="28" fill="#1B2A4A" rx="4"/>
+    <rect x="100" y="10" width="90" height="28" fill="#1B2A4A"/>
+    <rect x="190" y="10" width="90" height="28" fill="#1B2A4A"/>
+    <rect x="280" y="10" width="90" height="28" fill="#1B2A4A" rx="4"/>
+    <text x="55" y="29" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="700" fill="white">UM</text>
+    <text x="145" y="29" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="700" fill="white">C</text>
+    <text x="235" y="29" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="700" fill="white">D</text>
+    <text x="325" y="29" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="700" fill="white">U</text>
+    <!-- Vertical dividers -->
+    <line x1="100" y1="38" x2="100" y2="90" stroke="#1B2A4A" stroke-width="1.5"/>
+    <line x1="190" y1="38" x2="190" y2="90" stroke="#1B2A4A" stroke-width="1.5"/>
+    <line x1="280" y1="38" x2="280" y2="90" stroke="#1B2A4A" stroke-width="1.5"/>
+    <!-- UM: 2 dots -->
+    <circle cx="40" cy="58" r="7" fill="#4B5563"/>
+    <circle cx="58" cy="58" r="7" fill="#4B5563"/>
+    <!-- C: 5 dots (3+2) -->
+    <circle cx="120" cy="50" r="7" fill="#4B5563"/>
+    <circle cx="138" cy="50" r="7" fill="#4B5563"/>
+    <circle cx="156" cy="50" r="7" fill="#4B5563"/>
+    <circle cx="129" cy="68" r="7" fill="#4B5563"/>
+    <circle cx="147" cy="68" r="7" fill="#4B5563"/>
+    <!-- D: 2 dots -->
+    <circle cx="215" cy="58" r="7" fill="#4B5563"/>
+    <circle cx="233" cy="58" r="7" fill="#4B5563"/>
+    <!-- U: 6 dots (3+3) -->
+    <circle cx="297" cy="50" r="7" fill="#4B5563"/>
+    <circle cx="315" cy="50" r="7" fill="#4B5563"/>
+    <circle cx="333" cy="50" r="7" fill="#4B5563"/>
+    <circle cx="297" cy="68" r="7" fill="#4B5563"/>
+    <circle cx="315" cy="68" r="7" fill="#4B5563"/>
+    <circle cx="333" cy="68" r="7" fill="#4B5563"/>
+  </svg>`,
+
+  // Q28 (index 27): Number line with shapes — triangle, diamond, star, circle
+  27: `<svg width="420" height="90" viewBox="0 0 420 90" xmlns="http://www.w3.org/2000/svg">
+    <!-- Number line -->
+    <line x1="30" y1="45" x2="390" y2="45" stroke="#1B2A4A" stroke-width="2"/>
+    <!-- Arrow left -->
+    <polygon points="30,45 42,39 42,51" fill="#1B2A4A"/>
+    <!-- Arrow right -->
+    <polygon points="390,45 378,39 378,51" fill="#1B2A4A"/>
+    <!-- Tick 0 -->
+    <line x1="90" y1="38" x2="90" y2="52" stroke="#1B2A4A" stroke-width="2"/>
+    <text x="90" y="66" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="700" fill="#1B2A4A">0</text>
+    <!-- Tick 1 -->
+    <line x1="320" y1="38" x2="320" y2="52" stroke="#1B2A4A" stroke-width="2"/>
+    <text x="320" y="66" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="700" fill="#1B2A4A">1</text>
+    <!-- 4 equal subdivisions between 0 and 1: at 90,167,205,244,320 -->
+    <!-- Triangle at ~1/4 = x=167 -->
+    <polygon points="147,45 167,20 187,45" fill="none" stroke="#4B5563" stroke-width="2"/>
+    <line x1="167" y1="38" x2="167" y2="52" stroke="#4B5563" stroke-width="1" stroke-dasharray="3,2"/>
+    <!-- Diamond at ~2/4 = x=205 -->
+    <polygon points="205,24 220,45 205,58 190,45" fill="none" stroke="#4B5563" stroke-width="2"/>
+    <line x1="205" y1="38" x2="205" y2="52" stroke="#4B5563" stroke-width="1" stroke-dasharray="3,2"/>
+    <!-- Star at ~3/4... actually at 1/2 based on PDF: triangle≈1/4, diamond≈1/3, star≈1/2 -->
+    <!-- Per PDF: shapes are at 1/4, 1/3, 1/2, past 1 -->
+    <!-- Let's place them proportionally across 0–1 span (90 to 320 = 230px) -->
+    <!-- Triangle at 1/4 → 90+57=147; Diamond at 1/3 → 90+77=167; Star at 1/2 → 90+115=205; Circle past 1 → 350 -->
+    <!-- Star at 1/2 = 205 -->
+    <g transform="translate(244,45)">
+      <polygon points="0,-22 5,-8 20,-8 9,2 13,16 0,8 -13,16 -9,2 -20,-8 -5,-8" fill="none" stroke="#4B5563" stroke-width="2"/>
+    </g>
+    <line x1="244" y1="38" x2="244" y2="52" stroke="#4B5563" stroke-width="1" stroke-dasharray="3,2"/>
+    <!-- Circle past 1 -->
+    <circle cx="350" cy="45" r="14" fill="none" stroke="#4B5563" stroke-width="2"/>
+    <line x1="350" y1="38" x2="350" y2="52" stroke="#4B5563" stroke-width="1" stroke-dasharray="3,2"/>
+    <!-- Labels under shapes -->
+    <text x="147" y="80" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#4B5563">△</text>
+    <text x="167" y="80" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#4B5563">◇</text>
+    <text x="244" y="80" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#4B5563">☆</text>
+    <text x="350" y="80" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#4B5563">○</text>
+  </svg>`,
+
+  // Q30 (index 29): Triangle divided into 4 parts, 1 shaded → fraction 1/4; options: bars with different fractions
+  29: `<svg width="460" height="180" viewBox="0 0 460 180" xmlns="http://www.w3.org/2000/svg">
+    <!-- Main triangle (divided into 4 equal triangles, bottom-right shaded) -->
+    <g transform="translate(165,10)">
+      <!-- outer triangle -->
+      <polygon points="65,0 130,112 0,112" fill="white" stroke="#1B2A4A" stroke-width="2"/>
+      <!-- inner lines dividing into 4 -->
+      <line x1="32" y1="56" x2="97" y2="56" stroke="#1B2A4A" stroke-width="1.5"/>
+      <line x1="32" y1="56" x2="65" y2="112" stroke="#1B2A4A" stroke-width="1.5"/>
+      <line x1="97" y1="56" x2="65" y2="112" stroke="#1B2A4A" stroke-width="1.5"/>
+      <!-- bottom-right sub-triangle shaded -->
+      <polygon points="97,56 130,112 65,112" fill="#9CA3AF" stroke="#1B2A4A" stroke-width="1"/>
+    </g>
+    <!-- 4 answer bar options -->
+    <!-- A: 2 of 4 shaded -->
+    <g transform="translate(10,140)">
+      <text x="50" y="-6" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="700" fill="#1B2A4A">A</text>
+      <rect x="0" y="0" width="25" height="30" fill="#9CA3AF" stroke="#1B2A4A" stroke-width="1.5"/>
+      <rect x="25" y="0" width="25" height="30" fill="#9CA3AF" stroke="#1B2A4A" stroke-width="1.5"/>
+      <rect x="50" y="0" width="25" height="30" fill="white" stroke="#1B2A4A" stroke-width="1.5"/>
+      <rect x="75" y="0" width="25" height="30" fill="white" stroke="#1B2A4A" stroke-width="1.5"/>
+    </g>
+    <!-- B: 1 of 3 shaded -->
+    <g transform="translate(125,140)">
+      <text x="37" y="-6" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="700" fill="#1B2A4A">B</text>
+      <rect x="0" y="0" width="25" height="30" fill="#9CA3AF" stroke="#1B2A4A" stroke-width="1.5"/>
+      <rect x="25" y="0" width="25" height="30" fill="white" stroke="#1B2A4A" stroke-width="1.5"/>
+      <rect x="50" y="0" width="25" height="30" fill="white" stroke="#1B2A4A" stroke-width="1.5"/>
+    </g>
+    <!-- C: 1 of 5 shaded -->
+    <g transform="translate(235,140)">
+      <text x="50" y="-6" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="700" fill="#1B2A4A">C</text>
+      <rect x="0" y="0" width="20" height="30" fill="#9CA3AF" stroke="#1B2A4A" stroke-width="1.5"/>
+      <rect x="20" y="0" width="20" height="30" fill="white" stroke="#1B2A4A" stroke-width="1.5"/>
+      <rect x="40" y="0" width="20" height="30" fill="white" stroke="#1B2A4A" stroke-width="1.5"/>
+      <rect x="60" y="0" width="20" height="30" fill="white" stroke="#1B2A4A" stroke-width="1.5"/>
+      <rect x="80" y="0" width="20" height="30" fill="white" stroke="#1B2A4A" stroke-width="1.5"/>
+    </g>
+    <!-- D: 1 of 4 shaded (correct) -->
+    <g transform="translate(350,140)">
+      <text x="50" y="-6" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="700" fill="#1B2A4A">D</text>
+      <rect x="0" y="0" width="25" height="30" fill="#9CA3AF" stroke="#1B2A4A" stroke-width="1.5"/>
+      <rect x="25" y="0" width="25" height="30" fill="white" stroke="#1B2A4A" stroke-width="1.5"/>
+      <rect x="50" y="0" width="25" height="30" fill="white" stroke="#1B2A4A" stroke-width="1.5"/>
+      <rect x="75" y="0" width="25" height="30" fill="white" stroke="#1B2A4A" stroke-width="1.5"/>
+    </g>
+  </svg>`,
+
+  // Q31 (index 30): Number sequence table
+  30: `<svg width="380" height="60" viewBox="0 0 380 60" xmlns="http://www.w3.org/2000/svg">
+    <rect x="5" y="5" width="370" height="50" rx="4" fill="white" stroke="#1B2A4A" stroke-width="2"/>
+    <line x1="67" y1="5" x2="67" y2="55" stroke="#1B2A4A" stroke-width="1.5"/>
+    <line x1="129" y1="5" x2="129" y2="55" stroke="#1B2A4A" stroke-width="1.5"/>
+    <line x1="191" y1="5" x2="191" y2="55" stroke="#1B2A4A" stroke-width="1.5"/>
+    <line x1="253" y1="5" x2="253" y2="55" stroke="#1B2A4A" stroke-width="1.5"/>
+    <line x1="315" y1="5" x2="315" y2="55" stroke="#1B2A4A" stroke-width="1.5"/>
+    <text x="36" y="36" text-anchor="middle" font-family="DM Mono,monospace" font-size="16" font-weight="700" fill="#1B2A4A">3</text>
+    <text x="98" y="36" text-anchor="middle" font-family="DM Mono,monospace" font-size="16" font-weight="700" fill="#1B2A4A">6</text>
+    <text x="160" y="36" text-anchor="middle" font-family="DM Mono,monospace" font-size="16" font-weight="700" fill="#1B2A4A">10</text>
+    <text x="222" y="36" text-anchor="middle" font-family="DM Mono,monospace" font-size="16" font-weight="700" fill="#1B2A4A">15</text>
+    <text x="284" y="36" text-anchor="middle" font-family="DM Mono,monospace" font-size="16" font-weight="700" fill="#1B2A4A">21</text>
+    <text x="345" y="36" text-anchor="middle" font-family="DM Mono,monospace" font-size="20" font-weight="900" fill="#F0A500">?</text>
+  </svg>`,
+
+  // Q32 (index 31): Town map grid
+  31: `<svg width="400" height="310" viewBox="0 0 400 310" xmlns="http://www.w3.org/2000/svg">
+    <!-- Grid background -->
+    <rect x="40" y="10" width="350" height="280" fill="#F8F9FB" stroke="#1B2A4A" stroke-width="1.5"/>
+    <!-- Column headers A-H -->
+    <text x="83" y="8" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="700" fill="#1B2A4A">A</text>
+    <text x="127" y="8" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="700" fill="#1B2A4A">B</text>
+    <text x="171" y="8" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="700" fill="#1B2A4A">C</text>
+    <text x="215" y="8" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="700" fill="#1B2A4A">D</text>
+    <text x="259" y="8" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="700" fill="#1B2A4A">E</text>
+    <text x="303" y="8" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="700" fill="#1B2A4A">F</text>
+    <text x="347" y="8" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="700" fill="#1B2A4A">G</text>
+    <text x="383" y="8" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="700" fill="#1B2A4A">H</text>
+    <!-- Row headers 1-6 -->
+    <text x="30" y="58" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="700" fill="#1B2A4A">1</text>
+    <text x="30" y="104" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="700" fill="#1B2A4A">2</text>
+    <text x="30" y="150" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="700" fill="#1B2A4A">3</text>
+    <text x="30" y="196" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="700" fill="#1B2A4A">4</text>
+    <text x="30" y="242" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="700" fill="#1B2A4A">5</text>
+    <text x="30" y="288" text-anchor="middle" font-family="sans-serif" font-size="11" font-weight="700" fill="#1B2A4A">6</text>
+    <!-- Grid lines vertical -->
+    <line x1="105" y1="10" x2="105" y2="290" stroke="#C8CCDA" stroke-width="1"/>
+    <line x1="149" y1="10" x2="149" y2="290" stroke="#C8CCDA" stroke-width="1"/>
+    <line x1="193" y1="10" x2="193" y2="290" stroke="#C8CCDA" stroke-width="1"/>
+    <line x1="237" y1="10" x2="237" y2="290" stroke="#C8CCDA" stroke-width="1"/>
+    <line x1="281" y1="10" x2="281" y2="290" stroke="#C8CCDA" stroke-width="1"/>
+    <line x1="325" y1="10" x2="325" y2="290" stroke="#C8CCDA" stroke-width="1"/>
+    <line x1="369" y1="10" x2="369" y2="290" stroke="#C8CCDA" stroke-width="1"/>
+    <!-- Grid lines horizontal -->
+    <line x1="40" y1="56" x2="390" y2="56" stroke="#C8CCDA" stroke-width="1"/>
+    <line x1="40" y1="102" x2="390" y2="102" stroke="#C8CCDA" stroke-width="1"/>
+    <line x1="40" y1="148" x2="390" y2="148" stroke="#C8CCDA" stroke-width="1"/>
+    <line x1="40" y1="194" x2="390" y2="194" stroke="#C8CCDA" stroke-width="1"/>
+    <line x1="40" y1="240" x2="390" y2="240" stroke="#C8CCDA" stroke-width="1"/>
+    <!-- Streets (gray blocks) — Tucapel vertical at C (193-149=C col), Lautaro horizontal at row2 -->
+    <!-- Tucapel: col C, rows 2-5 -->
+    <rect x="149" y="102" width="44" height="46" fill="#9CA3AF" opacity="0.5"/>
+    <rect x="149" y="148" width="44" height="46" fill="#9CA3AF" opacity="0.5"/>
+    <rect x="149" y="194" width="44" height="46" fill="#9CA3AF" opacity="0.5"/>
+    <!-- Lautaro: row2, cols E-G -->
+    <rect x="237" y="102" width="44" height="46" fill="#9CA3AF" opacity="0.5"/>
+    <rect x="281" y="102" width="44" height="46" fill="#9CA3AF" opacity="0.5"/>
+    <!-- Libertadores: col E rows 3-4 -->
+    <rect x="237" y="148" width="44" height="46" fill="#9CA3AF" opacity="0.4"/>
+    <!-- Rosas: col B rows 2-4 -->
+    <rect x="105" y="102" width="44" height="138" fill="#9CA3AF" opacity="0.4"/>
+    <!-- Portales: row 3 E-F -->
+    <rect x="281" y="148" width="44" height="46" fill="#9CA3AF" opacity="0.4"/>
+    <!-- Carmina: col G rows 3-4 -->
+    <rect x="325" y="148" width="44" height="92" fill="#9CA3AF" opacity="0.4"/>
+    <!-- Principal: row5 E-F -->
+    <rect x="237" y="240" width="88" height="46" fill="#9CA3AF" opacity="0.4"/>
+    <!-- Row 1 filled E-H -->
+    <rect x="237" y="10" width="153" height="46" fill="#9CA3AF" opacity="0.4"/>
+    <!-- Row 6 blocks -->
+    <rect x="105" y="240" width="44" height="46" fill="#9CA3AF" opacity="0.4"/>
+    <rect x="193" y="240" width="44" height="46" fill="#9CA3AF" opacity="0.4"/>
+    <rect x="281" y="240" width="44" height="46" fill="#9CA3AF" opacity="0.4"/>
+    <rect x="369" y="240" width="21" height="46" fill="#9CA3AF" opacity="0.4"/>
+    <!-- Street name labels -->
+    <text x="171" y="185" text-anchor="middle" font-family="sans-serif" font-size="9" font-weight="700" fill="#1B2A4A" transform="rotate(-90,171,185)">Tucapel</text>
+    <text x="127" y="185" text-anchor="middle" font-family="sans-serif" font-size="9" font-weight="700" fill="#1B2A4A" transform="rotate(-90,127,185)">Rosas</text>
+    <text x="259" y="160" text-anchor="middle" font-family="sans-serif" font-size="9" font-weight="700" fill="#1B2A4A" transform="rotate(-90,259,170)">Libertadores</text>
+    <text x="303" y="125" text-anchor="middle" font-family="sans-serif" font-size="9" font-weight="700" fill="#1B2A4A">Lautaro</text>
+    <text x="303" y="163" text-anchor="middle" font-family="sans-serif" font-size="9" font-weight="700" fill="#1B2A4A">Portales</text>
+    <text x="347" y="190" text-anchor="middle" font-family="sans-serif" font-size="9" font-weight="700" fill="#1B2A4A" transform="rotate(-90,347,190)">Carmina</text>
+    <text x="280" y="265" text-anchor="middle" font-family="sans-serif" font-size="9" font-weight="700" fill="#1B2A4A">Principal</text>
+    <!-- Highlight the intersection C,2 -->
+    <rect x="149" y="56" width="44" height="46" fill="none" stroke="#F0A500" stroke-width="2.5" stroke-dasharray="4,2"/>
+  </svg>`,
+
+  // Q33 (index 32): 3D figure — large box with small box on top-right, top view options
+  32: `<svg width="440" height="260" viewBox="0 0 440 260" xmlns="http://www.w3.org/2000/svg">
+    <!-- 3D figure: large prism + small prism on top-right -->
+    <g transform="translate(140,10)">
+      <!-- large prism front -->
+      <polygon points="0,60 100,60 100,130 0,130" fill="#9CA3AF" stroke="#1B2A4A" stroke-width="2"/>
+      <!-- large prism top -->
+      <polygon points="0,60 100,60 120,40 20,40" fill="#C8CCDA" stroke="#1B2A4A" stroke-width="2"/>
+      <!-- large prism right -->
+      <polygon points="100,60 120,40 120,110 100,130" fill="#6B7280" stroke="#1B2A4A" stroke-width="2"/>
+      <!-- small prism front (on top-right) -->
+      <polygon points="70,40 100,40 100,60 70,60" fill="#9CA3AF" stroke="#1B2A4A" stroke-width="2"/>
+      <!-- small prism top -->
+      <polygon points="70,40 100,40 115,27 85,27" fill="#C8CCDA" stroke="#1B2A4A" stroke-width="2"/>
+      <!-- small prism right -->
+      <polygon points="100,40 115,27 115,47 100,60" fill="#6B7280" stroke="#1B2A4A" stroke-width="2"/>
+    </g>
+    <!-- Top view options -->
+    <!-- A: L-shape wrong orientation -->
+    <g transform="translate(15,155)">
+      <text x="45" y="-6" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="700" fill="#1B2A4A">A</text>
+      <rect x="0" y="0" width="50" height="20" fill="#4B5563"/>
+      <rect x="0" y="20" width="20" height="40" fill="#4B5563"/>
+    </g>
+    <!-- B: correct top view — wide rect + small rect top-right -->
+    <g transform="translate(130,155)">
+      <text x="45" y="-6" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="700" fill="#1B2A4A">B</text>
+      <rect x="0" y="20" width="70" height="40" fill="#4B5563"/>
+      <rect x="50" y="0" width="20" height="20" fill="#4B5563"/>
+    </g>
+    <!-- C: staircase wrong -->
+    <g transform="translate(255,155)">
+      <text x="40" y="-6" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="700" fill="#1B2A4A">C</text>
+      <rect x="20" y="0" width="50" height="20" fill="#4B5563"/>
+      <rect x="0" y="20" width="70" height="20" fill="#4B5563"/>
+    </g>
+    <!-- D: small on top-left wrong -->
+    <g transform="translate(360,155)">
+      <text x="35" y="-6" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="700" fill="#1B2A4A">D</text>
+      <rect x="0" y="0" width="20" height="20" fill="#4B5563"/>
+      <rect x="0" y="20" width="60" height="40" fill="#4B5563"/>
+    </g>
+  </svg>`,
+
+  // Q34 (index 33): Symmetry lines — 4 triangle options
+  33: `<svg width="440" height="200" viewBox="0 0 440 200" xmlns="http://www.w3.org/2000/svg">
+    <!-- A: isosceles triangle, vertical dashed line NOT on axis of symmetry (off-center) -->
+    <g transform="translate(10,20)">
+      <text x="55" y="-5" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="700" fill="#1B2A4A">A</text>
+      <polygon points="40,0 90,80 0,80" fill="none" stroke="#1B2A4A" stroke-width="2"/>
+      <line x1="55" y1="-8" x2="55" y2="88" stroke="#1B2A4A" stroke-width="1.5" stroke-dasharray="5,4"/>
+    </g>
+    <!-- B: isosceles triangle, vertical dashed line ON axis (correct) -->
+    <g transform="translate(120,20)">
+      <text x="50" y="-5" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="700" fill="#1B2A4A">B</text>
+      <polygon points="50,0 100,80 0,80" fill="none" stroke="#1B2A4A" stroke-width="2"/>
+      <line x1="50" y1="-8" x2="50" y2="88" stroke="#1B2A4A" stroke-width="1.5" stroke-dasharray="5,4"/>
+    </g>
+    <!-- C: scalene triangle, diagonal dashed line (not symmetry) -->
+    <g transform="translate(240,20)">
+      <text x="45" y="-5" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="700" fill="#1B2A4A">C</text>
+      <polygon points="20,0 90,70 0,70" fill="none" stroke="#1B2A4A" stroke-width="2"/>
+      <line x1="-5" y1="80" x2="80" y2="-5" stroke="#1B2A4A" stroke-width="1.5" stroke-dasharray="5,4"/>
+    </g>
+    <!-- D: isosceles triangle, horizontal dashed line (not axis of symmetry) -->
+    <g transform="translate(340,20)">
+      <text x="50" y="-5" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="700" fill="#1B2A4A">D</text>
+      <polygon points="50,0 100,70 0,70" fill="none" stroke="#1B2A4A" stroke-width="2"/>
+      <line x1="-10" y1="35" x2="110" y2="35" stroke="#1B2A4A" stroke-width="1.5" stroke-dasharray="5,4"/>
+    </g>
+  </svg>`,
+
+  // Q35 (index 34): Grid translation — L-shape moved 4 right, 1 down
+  34: `<svg width="440" height="320" viewBox="0 0 440 320" xmlns="http://www.w3.org/2000/svg">
+    <!-- Original shape in small grid (top center) -->
+    <g transform="translate(150,5)">
+      <text x="70" y="-2" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#7A809A" font-weight="600">Original figure</text>
+      <!-- 7x5 grid -->
+      <rect x="0" y="5" width="140" height="100" fill="white" stroke="#C8CCDA" stroke-width="1"/>
+      <!-- grid lines vertical -->
+      <line x1="20" y1="5" x2="20" y2="105" stroke="#EEF0F5" stroke-width="1"/>
+      <line x1="40" y1="5" x2="40" y2="105" stroke="#EEF0F5" stroke-width="1"/>
+      <line x1="60" y1="5" x2="60" y2="105" stroke="#EEF0F5" stroke-width="1"/>
+      <line x1="80" y1="5" x2="80" y2="105" stroke="#EEF0F5" stroke-width="1"/>
+      <line x1="100" y1="5" x2="100" y2="105" stroke="#EEF0F5" stroke-width="1"/>
+      <line x1="120" y1="5" x2="120" y2="105" stroke="#EEF0F5" stroke-width="1"/>
+      <!-- grid lines horizontal -->
+      <line x1="0" y1="25" x2="140" y2="25" stroke="#EEF0F5" stroke-width="1"/>
+      <line x1="0" y1="45" x2="140" y2="45" stroke="#EEF0F5" stroke-width="1"/>
+      <line x1="0" y1="65" x2="140" y2="65" stroke="#EEF0F5" stroke-width="1"/>
+      <line x1="0" y1="85" x2="140" y2="85" stroke="#EEF0F5" stroke-width="1"/>
+      <!-- L-shape: col3 rows1-2, col4 row1 -->
+      <rect x="40" y="5" width="20" height="20" fill="#9CA3AF"/>
+      <rect x="40" y="25" width="20" height="20" fill="#9CA3AF"/>
+      <rect x="60" y="5" width="20" height="20" fill="#9CA3AF"/>
+    </g>
+
+    <!-- 4 answer options -->
+    <!-- A: translated correctly (4R, 1D) with arrow -->
+    <g transform="translate(10,130)">
+      <text x="70" y="-5" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="700" fill="#1B2A4A">A</text>
+      <rect x="0" y="0" width="140" height="100" fill="white" stroke="#C8CCDA" stroke-width="1.5" rx="2"/>
+      <line x1="20" y1="0" x2="20" y2="100" stroke="#EEF0F5" stroke-width="1"/><line x1="40" y1="0" x2="40" y2="100" stroke="#EEF0F5" stroke-width="1"/>
+      <line x1="60" y1="0" x2="60" y2="100" stroke="#EEF0F5" stroke-width="1"/><line x1="80" y1="0" x2="80" y2="100" stroke="#EEF0F5" stroke-width="1"/>
+      <line x1="100" y1="0" x2="100" y2="100" stroke="#EEF0F5" stroke-width="1"/><line x1="120" y1="0" x2="120" y2="100" stroke="#EEF0F5" stroke-width="1"/>
+      <line x1="0" y1="20" x2="140" y2="20" stroke="#EEF0F5" stroke-width="1"/><line x1="0" y1="40" x2="140" y2="40" stroke="#EEF0F5" stroke-width="1"/>
+      <line x1="0" y1="60" x2="140" y2="60" stroke="#EEF0F5" stroke-width="1"/><line x1="0" y1="80" x2="140" y2="80" stroke="#EEF0F5" stroke-width="1"/>
+      <!-- original faded -->
+      <rect x="40" y="0" width="20" height="20" fill="#C8CCDA" opacity="0.5"/>
+      <rect x="40" y="20" width="20" height="20" fill="#C8CCDA" opacity="0.5"/>
+      <rect x="60" y="0" width="20" height="20" fill="#C8CCDA" opacity="0.5"/>
+      <!-- translated: wrong (2R 1D instead of 4R 1D) -->
+      <rect x="80" y="20" width="20" height="20" fill="#9CA3AF"/>
+      <rect x="80" y="40" width="20" height="20" fill="#9CA3AF"/>
+      <rect x="100" y="20" width="20" height="20" fill="#9CA3AF"/>
+      <!-- arrow -->
+      <line x1="55" y1="10" x2="85" y2="28" stroke="#1B2A4A" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#arr)"/>
+    </g>
+
+    <!-- B: correct translation (4R, 1D) -->
+    <g transform="translate(165,130)">
+      <text x="70" y="-5" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="700" fill="#1B2A4A">B</text>
+      <rect x="0" y="0" width="140" height="100" fill="white" stroke="#C8CCDA" stroke-width="1.5" rx="2"/>
+      <line x1="20" y1="0" x2="20" y2="100" stroke="#EEF0F5" stroke-width="1"/><line x1="40" y1="0" x2="40" y2="100" stroke="#EEF0F5" stroke-width="1"/>
+      <line x1="60" y1="0" x2="60" y2="100" stroke="#EEF0F5" stroke-width="1"/><line x1="80" y1="0" x2="80" y2="100" stroke="#EEF0F5" stroke-width="1"/>
+      <line x1="100" y1="0" x2="100" y2="100" stroke="#EEF0F5" stroke-width="1"/><line x1="120" y1="0" x2="120" y2="100" stroke="#EEF0F5" stroke-width="1"/>
+      <line x1="0" y1="20" x2="140" y2="20" stroke="#EEF0F5" stroke-width="1"/><line x1="0" y1="40" x2="140" y2="40" stroke="#EEF0F5" stroke-width="1"/>
+      <line x1="0" y1="60" x2="140" y2="60" stroke="#EEF0F5" stroke-width="1"/><line x1="0" y1="80" x2="140" y2="80" stroke="#EEF0F5" stroke-width="1"/>
+      <!-- original faded -->
+      <rect x="0" y="0" width="20" height="20" fill="#C8CCDA" opacity="0.5"/>
+      <rect x="0" y="20" width="20" height="20" fill="#C8CCDA" opacity="0.5"/>
+      <rect x="20" y="0" width="20" height="20" fill="#C8CCDA" opacity="0.5"/>
+      <!-- translated 4R 1D -->
+      <rect x="80" y="20" width="20" height="20" fill="#9CA3AF"/>
+      <rect x="80" y="40" width="20" height="20" fill="#9CA3AF"/>
+      <rect x="100" y="20" width="20" height="20" fill="#9CA3AF"/>
+      <!-- arrow -->
+      <line x1="10" y1="10" x2="87" y2="28" stroke="#1B2A4A" stroke-width="1.5" stroke-dasharray="4,2"/>
+      <polygon points="87,28 78,22 84,35" fill="#1B2A4A"/>
+    </g>
+
+    <!-- C: wrong (diagonal/different) -->
+    <g transform="translate(10,250)">
+      <text x="70" y="-5" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="700" fill="#1B2A4A">C</text>
+      <rect x="0" y="0" width="140" height="100" fill="white" stroke="#C8CCDA" stroke-width="1.5" rx="2"/>
+      <line x1="20" y1="0" x2="20" y2="100" stroke="#EEF0F5" stroke-width="1"/><line x1="40" y1="0" x2="40" y2="100" stroke="#EEF0F5" stroke-width="1"/>
+      <line x1="60" y1="0" x2="60" y2="100" stroke="#EEF0F5" stroke-width="1"/><line x1="80" y1="0" x2="80" y2="100" stroke="#EEF0F5" stroke-width="1"/>
+      <line x1="100" y1="0" x2="100" y2="100" stroke="#EEF0F5" stroke-width="1"/><line x1="120" y1="0" x2="120" y2="100" stroke="#EEF0F5" stroke-width="1"/>
+      <line x1="0" y1="20" x2="140" y2="20" stroke="#EEF0F5" stroke-width="1"/><line x1="0" y1="40" x2="140" y2="40" stroke="#EEF0F5" stroke-width="1"/>
+      <line x1="0" y1="60" x2="140" y2="60" stroke="#EEF0F5" stroke-width="1"/><line x1="0" y1="80" x2="140" y2="80" stroke="#EEF0F5" stroke-width="1"/>
+      <rect x="20" y="0" width="20" height="20" fill="#C8CCDA" opacity="0.5"/>
+      <rect x="20" y="20" width="20" height="20" fill="#C8CCDA" opacity="0.5"/>
+      <rect x="40" y="0" width="20" height="20" fill="#C8CCDA" opacity="0.5"/>
+      <rect x="60" y="40" width="20" height="20" fill="#9CA3AF"/>
+      <rect x="60" y="60" width="20" height="20" fill="#9CA3AF"/>
+      <rect x="80" y="40" width="20" height="20" fill="#9CA3AF"/>
+      <line x1="30" y1="10" x2="65" y2="48" stroke="#1B2A4A" stroke-width="1.5" stroke-dasharray="4,2"/>
+      <polygon points="65,48 56,42 69,43" fill="#1B2A4A"/>
+    </g>
+
+    <!-- D: wrong orientation -->
+    <g transform="translate(165,250)">
+      <text x="70" y="-5" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="700" fill="#1B2A4A">D</text>
+      <rect x="0" y="0" width="140" height="100" fill="white" stroke="#C8CCDA" stroke-width="1.5" rx="2"/>
+      <line x1="20" y1="0" x2="20" y2="100" stroke="#EEF0F5" stroke-width="1"/><line x1="40" y1="0" x2="40" y2="100" stroke="#EEF0F5" stroke-width="1"/>
+      <line x1="60" y1="0" x2="60" y2="100" stroke="#EEF0F5" stroke-width="1"/><line x1="80" y1="0" x2="80" y2="100" stroke="#EEF0F5" stroke-width="1"/>
+      <line x1="100" y1="0" x2="100" y2="100" stroke="#EEF0F5" stroke-width="1"/><line x1="120" y1="0" x2="120" y2="100" stroke="#EEF0F5" stroke-width="1"/>
+      <line x1="0" y1="20" x2="140" y2="20" stroke="#EEF0F5" stroke-width="1"/><line x1="0" y1="40" x2="140" y2="40" stroke="#EEF0F5" stroke-width="1"/>
+      <line x1="0" y1="60" x2="140" y2="60" stroke="#EEF0F5" stroke-width="1"/><line x1="0" y1="80" x2="140" y2="80" stroke="#EEF0F5" stroke-width="1"/>
+      <rect x="20" y="0" width="20" height="20" fill="#C8CCDA" opacity="0.5"/>
+      <rect x="20" y="20" width="20" height="20" fill="#C8CCDA" opacity="0.5"/>
+      <rect x="40" y="0" width="20" height="20" fill="#C8CCDA" opacity="0.5"/>
+      <rect x="80" y="0" width="20" height="20" fill="#9CA3AF"/>
+      <rect x="80" y="20" width="20" height="20" fill="#9CA3AF"/>
+      <rect x="100" y="0" width="20" height="20" fill="#9CA3AF"/>
+      <line x1="30" y1="10" x2="85" y2="10" stroke="#1B2A4A" stroke-width="1.5" stroke-dasharray="4,2"/>
+      <polygon points="85,10 75,5 75,15" fill="#1B2A4A"/>
+    </g>
+  </svg>`,
+
+  // Q38 (index 37): Square 6cm
+  37: `<svg width="200" height="160" viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg">
+    <rect x="40" y="20" width="110" height="110" fill="#EEF0F5" stroke="#1B2A4A" stroke-width="2.5"/>
+    <line x1="150" y1="20" x2="160" y2="20" stroke="#1B2A4A" stroke-width="1.5"/>
+    <line x1="150" y1="130" x2="160" y2="130" stroke="#1B2A4A" stroke-width="1.5"/>
+    <line x1="155" y1="20" x2="155" y2="130" stroke="#1B2A4A" stroke-width="1.5"/>
+    <text x="170" y="80" text-anchor="start" font-family="sans-serif" font-size="14" font-weight="700" fill="#1B2A4A">6 cm</text>
+  </svg>`,
+
+  // Q39 (index 38): Bar chart — commercial locations
+  38: `<svg width="380" height="220" viewBox="0 0 380 220" xmlns="http://www.w3.org/2000/svg">
+    <text x="190" y="16" text-anchor="middle" font-family="sans-serif" font-size="12" font-weight="700" fill="#1B2A4A">Total commercial locations by region</text>
+    <!-- axes -->
+    <line x1="55" y1="25" x2="55" y2="175" stroke="#C8CCDA" stroke-width="1.5"/>
+    <line x1="55" y1="175" x2="370" y2="175" stroke="#C8CCDA" stroke-width="1.5"/>
+    <!-- y-axis labels & gridlines (0,50,100,150,200,250,300) -->
+    <text x="48" y="178" text-anchor="end" font-family="DM Mono,monospace" font-size="10" fill="#7A809A">0</text>
+    <text x="48" y="153" text-anchor="end" font-family="DM Mono,monospace" font-size="10" fill="#7A809A">50</text>
+    <text x="48" y="128" text-anchor="end" font-family="DM Mono,monospace" font-size="10" fill="#7A809A">100</text>
+    <text x="48" y="103" text-anchor="end" font-family="DM Mono,monospace" font-size="10" fill="#7A809A">150</text>
+    <text x="48" y="78" text-anchor="end" font-family="DM Mono,monospace" font-size="10" fill="#7A809A">200</text>
+    <text x="48" y="53" text-anchor="end" font-family="DM Mono,monospace" font-size="10" fill="#7A809A">250</text>
+    <text x="48" y="28" text-anchor="end" font-family="DM Mono,monospace" font-size="10" fill="#7A809A">300</text>
+    <line x1="55" y1="150" x2="370" y2="150" stroke="#EEF0F5" stroke-width="1"/>
+    <line x1="55" y1="125" x2="370" y2="125" stroke="#EEF0F5" stroke-width="1"/>
+    <line x1="55" y1="100" x2="370" y2="100" stroke="#EEF0F5" stroke-width="1"/>
+    <line x1="55" y1="75" x2="370" y2="75" stroke="#EEF0F5" stroke-width="1"/>
+    <line x1="55" y1="50" x2="370" y2="50" stroke="#EEF0F5" stroke-width="1"/>
+    <line x1="55" y1="25" x2="370" y2="25" stroke="#EEF0F5" stroke-width="1"/>
+    <!-- Bars: Argentina≈100, Mexico≈265, EEUU≈200, Europa≈265 -->
+    <!-- scale: 300 maps to height 150px, so 1unit=0.5px -->
+    <rect x="75" y="125" width="50" height="50" fill="#4B5563"/>
+    <text x="100" y="192" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#3D4260">Argentina</text>
+    <rect x="165" y="42" width="50" height="133" fill="#4B5563"/>
+    <text x="190" y="192" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#3D4260">México</text>
+    <rect x="255" y="75" width="50" height="100" fill="#4B5563"/>
+    <text x="280" y="192" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#3D4260">Estados</text>
+    <text x="280" y="203" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#3D4260">Unidos</text>
+    <rect x="318" y="42" width="50" height="133" fill="#4B5563"/>
+    <text x="343" y="192" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#3D4260">Europa</text>
+    <!-- 150 reference line -->
+    <line x1="55" y1="100" x2="370" y2="100" stroke="#C0392B" stroke-width="1" stroke-dasharray="6,3"/>
+    <text x="57" y="97" font-family="sans-serif" font-size="9" fill="#C0392B">150</text>
+  </svg>`
+};
+
+// ── QUESTIONS ────────────────────────────────────────────────────────────────
+const questions = [
+  { q:"Which option shows the numbers ordered from least to greatest?", opts:["345, 385, 369","345, 369, 385","385, 369, 345","369, 345, 385"], ans:1 },
+  { q:"How many hundreds does the number 628 have?", opts:["2","6","8","100"], ans:1 },
+  { q:"Which option shows the number four thousand two hundred fifteen?", opts:["4,025","4,125","4,215","5,124"], ans:2 },
+  { q:"How is the number three thousand twenty-eight written?", opts:["3,028","3,208","3,280","8,203"], ans:0 },
+  { q:"How is the number 3,062 read?", opts:["Three zero six two","Thirty sixty-two","Three thousand sixty-two","Three hundred sixty-two"], ans:2 },
+  { q:"Which option shows the greatest number?", opts:["A) 4,028","B) 4,208","C) 4,802","D) 4,082"], ans:2 },
+  { q:"Which is a decomposition of the number 6,504?", opts:["6 TH + 5 H + 4 U","6 TH + 5 H + 4 T","4 TH + 5 T + 6 U","6 TH + 5 T + 4 U"], ans:3 },
+  { q:"Look at the decomposition of a number using dots. What is the number?", opts:["1,111","2,526","2,256","6,252"], ans:1 },
+  { q:"A number was decomposed as follows: 4 + 500 + 3,000. What was the number?", opts:["354","3,504","3,540","4,530"], ans:1 },
+  { q:"Look at the underlined digit in 5̲602. The underlined digit corresponds to the:", opts:["unit","ten","hundred","thousand"], ans:3 },
+  { q:"How much is 426 + 508?", opts:["25","924","934","9,214"], ans:2 },
+  { q:"Solve:", sub:"435 − 209 =", opts:["226","234","236","644"], ans:0 },
+  { q:"What is the result of 657 + 289?", opts:["37","836","946","1,711"], ans:2 },
+  { q:"A bag contains 256 grams of fresh cheese and 380 grams of goat cheese. How much does the total cheese in the bag weigh?", opts:["24 grams","536 grams","636 grams","5,136 grams"], ans:2 },
+  { q:"Solve:", sub:"523 − 208 =", opts:["215","315","325","731"], ans:1 },
+  { q:"Marcela has 525 photos on her computer. She decides to delete 128 because they look bad. How many photos will she have left?", opts:["397","403","407","413"], ans:0 },
+  { q:"How much is 3 · 7?", opts:["10","18","21","37"], ans:2 },
+  { q:"Solve:", sub:"4 · 5 =", opts:["9","15","20","45"], ans:2 },
+  { q:"How much is 205 · 4?", opts:["209","802","820","8,020"], ans:2 },
+  { q:"Solve:", sub:"128 · 5 =", opts:["133","514","500","640"], ans:3 },
+  { q:"At a store, each egg costs $160. How much do 6 eggs cost?", opts:["$660","$800","$960","$966"], ans:2 },
+  { q:"How much is 8 ÷ 2?", opts:["2","4","6","16"], ans:1 },
+  { q:"Solve:", sub:"78 ÷ 3 =", opts:["12","22","26","75"], ans:2 },
+  { q:"How much is 64 ÷ 4?", opts:["11","16","23","60"], ans:1 },
+  { q:"Karla has 42 marbles and will share them equally among her 3 friends. How many marbles will each friend receive?", opts:["10","11","14","39"], ans:2 },
+  { q:"An eraser costs $150 and a pencil costs $230. If you buy one eraser and one pencil and pay with $500, what should the change be?", opts:["$120","$280","$350","$880"], ans:0 },
+  { q:"In a store, a t-shirt costs $1,990 and pants cost $4,500. To find the change when paying with $10,000, which operation should be solved?", opts:["10,000 − (1,990 + 4,500)","10,000 − (1,990 − 4,500)","10,000 + (1,990 + 4,500)","10,000 + (1,990 − 4,500)"], ans:0 },
+  { q:"Look at the shapes on the number line. Which shape is at the position ½?", opts:["△ (triangle)","◇ (diamond)","☆ (star)","○ (circle)"], ans:2 },
+  { q:"Which option shows the greater fraction?", opts:["1/2","1/3","1/5","1/10"], ans:0 },
+  { q:"Look at the fraction represented by the triangle figure (1 of 4 parts shaded). Which option shows the same fraction in a different way?", opts:["A (2 of 4)","B (1 of 3)","C (1 of 5)","D (1 of 4)"], ans:3 },
+  { q:"Look at the number sequence. If the pattern continues, which operation gives the missing number?", opts:["21 + 1","21 + 3","21 + 6","21 + 7"], ans:3 },
+  { q:"Look at the town map. What are the coordinates of the corner of Lautaro and Tucapel?", opts:["(A, 2)","(C, 1)","(C, 2)","(E, 2)"], ans:2 },
+  { q:"Look at the 3D figure. How does the figure look from above?", opts:["A","B","C","D"], ans:1 },
+  { q:"In which option is the dashed line a line of symmetry?", opts:["A","B","C","D"], ans:1 },
+  { q:"The figure will be translated 4 spaces to the right and 1 space down. Which option shows this translation?", opts:["A","B","C","D"], ans:1 },
+  { q:"How many minutes are in one hour?", opts:["1 minute","10 minutes","60 minutes","100 minutes"], ans:2 },
+  { q:"How many centimeters are in one meter?", opts:["1 cm","10 cm","100 cm","1,000 cm"], ans:2 },
+  { q:"Calculate the area of the square shown.", opts:["6 cm²","12 cm²","24 cm²","36 cm²"], ans:3 },
+  { q:"A large company has stores in different parts of the world. Based on the bar chart, in which place do they have fewer than 150 stores?", opts:["Argentina","Mexico","United States","Europe"], ans:0 },
+];
+
+let current=0, answers=new Array(questions.length).fill(null);
+let timerInterval=null, timeLeft=TOTAL_TIME, startTime=null, studentName='';
+
+function startQuiz(){
+  studentName=document.getElementById('student-name').value.trim()||'Student';
+  document.getElementById('start-screen').classList.remove('active');
+  document.getElementById('quiz-screen').classList.add('active');
+  document.getElementById('timer-wrap').style.display='flex';
+  buildDotMap(); renderQuestion(); startTimer();
+}
+function startTimer(){
+  startTime=Date.now(); updateTimerDisplay();
+  timerInterval=setInterval(()=>{timeLeft--;updateTimerDisplay();if(timeLeft<=0){clearInterval(timerInterval);submitQuiz();}},1000);
+}
+function updateTimerDisplay(){
+  const m=Math.floor(timeLeft/60).toString().padStart(2,'0');
+  const s=(timeLeft%60).toString().padStart(2,'0');
+  const el=document.getElementById('timer');
+  el.textContent=`${m}:${s}`;
+  el.className=timeLeft<=60?'danger':timeLeft<=300?'warn':'';
+}
+function buildDotMap(){
+  const map=document.getElementById('dot-map'); map.innerHTML='';
+  questions.forEach((_,i)=>{
+    const d=document.createElement('div');
+    d.className='dot'+(i===current?' current':'')+(answers[i]!==null?' answered':'');
+    d.textContent=i+1; d.onclick=()=>goTo(i); map.appendChild(d);
+  });
+}
+function goTo(idx){current=idx;renderQuestion();}
+function renderQuestion(){
+  const q=questions[current];
+  const card=document.getElementById('q-card');
+  let html=`<div class="q-number">${current+1}</div>`;
+  html+=`<div class="q-text">${q.q}</div>`;
+  if(q.sub) html+=`<div class="q-sub">${q.sub}</div>`;
+  if(Q_IMAGES[current]) html+=`<div class="q-img">${Q_IMAGES[current]}</div>`;
+  html+=`<div class="options">`;
+  q.opts.forEach((opt,i)=>{
+    const sel=answers[current]===i?' selected':'';
+    html+=`<button class="opt-btn${sel}" onclick="selectAnswer(${i})"><span class="opt-label">${LABELS[i]}</span><span>${opt}</span></button>`;
+  });
+  html+=`</div>`;
+  card.innerHTML=html;
+  document.getElementById('q-num').textContent=current+1;
+  document.getElementById('btn-prev').disabled=current===0;
+  const isLast=current===questions.length-1;
+  const btn=document.getElementById('btn-next');
+  btn.textContent=isLast?'Submit exam ✓':'Next →';
+  btn.className='btn-next'+(isLast?' finish':'');
+  btn.onclick=isLast?submitQuiz:()=>navigate(1);
+  updateProgress(); buildDotMap();
+}
+function selectAnswer(idx){
+  answers[current]=idx;
+  const q=questions[current];
+  document.querySelectorAll('.opt-btn').forEach((btn,i)=>{
+    btn.className='opt-btn'+(answers[current]===i?' selected':'');
+  });
+  updateProgress(); buildDotMap();
+}
+function navigate(dir){const next=current+dir;if(next>=0&&next<questions.length){current=next;renderQuestion();}}
+function updateProgress(){
+  document.getElementById('progress-bar').style.width=(answers.filter(a=>a!==null).length/questions.length*100)+'%';
+}
+function submitQuiz(){
+  clearInterval(timerInterval);
+  const elapsed=Math.round((Date.now()-startTime)/1000);
+  const mins=Math.floor(elapsed/60), secs=elapsed%60;
+  let correct=0,wrong=0,blank=0;
+  questions.forEach((q,i)=>{if(answers[i]===null)blank++;else if(answers[i]===q.ans)correct++;else wrong++;});
+  const pct=Math.round(correct/questions.length*100);
+  const details=questions.map((q,i)=>{
+    const u=answers[i]!==null?LABELS[answers[i]]:'—';
+    const c=LABELS[q.ans];
+    const s=answers[i]===null?'Blank':answers[i]===q.ans?'✓ Correct':'✗ Wrong';
+    return `Q${i+1}: ${s} | Student: ${u} | Correct: ${c}`;
+  }).join('\n');
+  emailjs.send('service_kk0m83i','evurior',{
+    to_email:ADMIN_EMAIL, student_name:studentName,
+    access_code:studentCode,
+    grade:'5th Grade',
+    score:`${correct}/39 (${pct}%)`,
+    correct, wrong, blank,
+    time_used:`${mins}m ${secs}s`,
+    details,
+    submitted_at:new Date().toLocaleString('es-CL',{timeZone:'America/Santiago'})
+  }).catch(()=>{});
+  document.getElementById('quiz-screen').classList.remove('active');
+  document.getElementById('submitted-screen').classList.add('active');
+  document.getElementById('timer-wrap').style.display='none';
+  document.getElementById('progress-bar').style.width='100%';
+  document.getElementById('sub-name').textContent=studentName;
+  console.log('RESULTS 5th',{studentName,correct,wrong,blank,pct,details});
+}
+</script>
+</body>
+</html>

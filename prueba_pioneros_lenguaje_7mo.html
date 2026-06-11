@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prueba de Admisión · Lenguaje 7° · Pioneros</title>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap');
+  :root {
+    --navy:#1B2A4A; --navy-mid:#2C3E6B; --gold:#F0A500; --gold-light:#FDF3DC;
+    --green:#2D8A5E; --gray-50:#F8F9FB; --gray-100:#EEF0F5; --gray-300:#C8CCDA;
+    --gray-500:#7A809A; --gray-700:#3D4260; --white:#FFFFFF; --red:#C0392B;
+    --radius:12px; --radius-sm:8px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'DM Sans',sans-serif;background:var(--gray-50);color:var(--navy);min-height:100vh;}
+  .header{background:var(--navy);color:var(--white);padding:0 24px;display:flex;align-items:center;
+    justify-content:space-between;height:60px;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(27,42,74,.25);}
+  .header-brand{display:flex;align-items:center;gap:12px;line-height:1.2;}
+  .header-brand .brand-text{display:flex;flex-direction:column;}
+  .header-brand .brand-sup{font-size:10px;font-weight:500;color:rgba(255,255,255,.55);letter-spacing:2px;text-transform:uppercase;}
+  .header-brand .brand-main{font-size:16px;font-weight:700;color:#fff;}
+  .timer-wrap{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:8px;padding:6px 14px;}
+  #timer{font-family:'DM Mono',monospace;font-size:18px;font-weight:500;letter-spacing:2px;color:var(--white);min-width:56px;text-align:right;}
+  #timer.warn{color:#FF9800;}
+  #timer.danger{color:#FF5252;animation:pulse 1s infinite;}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+  .progress-bar-wrap{height:4px;background:rgba(255,255,255,.15);position:sticky;top:60px;z-index:99;}
+  #progress-bar{height:100%;background:var(--gold);width:0%;transition:width .4s ease;}
+  .screen{display:none;}.screen.active{display:block;}
+  #access-screen{max-width:480px;margin:80px auto;padding:24px;}
+  .access-card{background:var(--white);border-radius:16px;padding:40px;box-shadow:0 4px 24px rgba(27,42,74,.08);text-align:center;}
+  .access-card .lock-icon{font-size:48px;margin-bottom:16px;}
+  .access-card h2{font-size:22px;font-weight:700;color:var(--navy);margin-bottom:8px;}
+  .access-card p{color:var(--gray-500);font-size:14px;margin-bottom:24px;line-height:1.6;}
+  .access-field{margin-bottom:14px;text-align:left;}
+  .access-field label{font-size:13px;font-weight:600;color:var(--gray-700);display:block;margin-bottom:6px;}
+  .access-field input{width:100%;border:1.5px solid var(--gray-300);border-radius:var(--radius-sm);padding:10px 14px;font-family:'DM Sans',sans-serif;font-size:15px;color:var(--navy);outline:none;letter-spacing:1px;}
+  .btn-access{width:100%;background:var(--navy);color:var(--white);border:none;border-radius:var(--radius-sm);padding:14px;font-family:'DM Sans',sans-serif;font-size:16px;font-weight:700;cursor:pointer;}
+  .btn-access:hover{background:var(--navy-mid);}
+  .access-error{color:var(--red);font-size:13px;margin-top:10px;display:none;font-weight:600;}
+  #start-screen{max-width:560px;margin:60px auto;padding:24px;}
+  .start-card{background:var(--white);border-radius:16px;padding:40px;box-shadow:0 4px 24px rgba(27,42,74,.08);text-align:center;}
+  .start-card .badge{display:inline-block;background:var(--gold-light);color:#8A5E00;font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:4px 12px;border-radius:20px;margin-bottom:16px;}
+  .start-card h1{font-size:28px;font-weight:700;color:var(--navy);margin-bottom:8px;}
+  .start-card p{color:var(--gray-500);font-size:15px;line-height:1.6;margin-bottom:28px;}
+  .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:32px;}
+  .info-item{background:var(--gray-50);border-radius:var(--radius-sm);padding:14px;text-align:center;}
+  .info-item .val{font-size:22px;font-weight:700;color:var(--navy);}
+  .info-item .lbl{font-size:12px;color:var(--gray-500);margin-top:2px;}
+  .name-field{margin-bottom:20px;text-align:left;}
+  .name-field label{font-size:13px;font-weight:600;color:var(--gray-700);display:block;margin-bottom:6px;}
+  .name-field input{width:100%;border:1.5px solid var(--gray-300);border-radius:var(--radius-sm);padding:10px 14px;font-family:'DM Sans',sans-serif;font-size:15px;color:var(--navy);outline:none;}
+  .btn-start{width:100%;background:var(--navy);color:var(--white);border:none;border-radius:var(--radius-sm);padding:14px;font-family:'DM Sans',sans-serif;font-size:16px;font-weight:700;cursor:pointer;}
+  .btn-start:hover{background:var(--navy-mid);}
+  #quiz-screen{max-width:800px;margin:0 auto;padding:28px 20px 60px;}
+  .q-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+  .q-counter{font-size:13px;font-weight:600;color:var(--gray-500);}
+  .q-counter span{color:var(--navy);font-size:17px;}
+  .passage-box{background:var(--white);border-radius:12px;padding:28px;border:2px solid var(--gray-100);margin-bottom:20px;box-shadow:0 2px 12px rgba(27,42,74,.05);}
+  .passage-instruction{background:#EDF4FF;border:1.5px solid #BCD0F5;border-radius:8px;padding:10px 16px;margin-bottom:16px;font-size:14px;font-weight:600;color:var(--navy-mid);}
+  .passage-title{font-size:18px;font-weight:800;color:var(--navy);margin-bottom:4px;text-align:center;}
+  .passage-subtitle{font-size:13px;color:var(--gray-500);margin-bottom:16px;font-style:italic;text-align:center;}
+  .passage-body{font-size:15px;line-height:1.85;color:var(--gray-700);}
+  .passage-body p{margin-bottom:12px;}
+  .passage-body .vocab-box{background:var(--gray-50);border-radius:8px;padding:12px 16px;margin-top:16px;font-size:13px;border-left:3px solid var(--navy-mid);}
+  .passage-body .vocab-box strong{color:var(--navy);}
+  .passage-note{font-size:11px;color:var(--gray-500);margin-top:12px;font-style:italic;text-align:center;}
+  .numbered-para{display:flex;gap:12px;margin-bottom:12px;}
+  .numbered-para .num{background:var(--navy);color:white;border-radius:4px;width:22px;height:22px;
+    display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;margin-top:2px;}
+  .q-card{background:var(--white);border-radius:16px;padding:28px 32px;box-shadow:0 4px 20px rgba(27,42,74,.07);margin-bottom:16px;}
+  .q-number{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;background:var(--navy);color:var(--white);font-size:14px;font-weight:700;border-radius:8px;margin-bottom:12px;}
+  .q-text{font-size:16px;font-weight:500;color:var(--navy);line-height:1.6;margin-bottom:6px;}
+  .q-quote{background:var(--gray-50);border-left:3px solid var(--navy-mid);padding:12px 16px;border-radius:0 8px 8px 0;margin:12px 0;font-size:14px;font-style:italic;color:var(--gray-700);line-height:1.7;}
+  .options{display:flex;flex-direction:column;gap:10px;margin-top:16px;}
+  .opt-btn{display:flex;align-items:center;gap:14px;padding:13px 18px;border:2px solid var(--gray-100);border-radius:var(--radius-sm);background:var(--gray-50);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:15px;color:var(--navy);text-align:left;transition:border-color .15s,background .15s;}
+  .opt-btn:hover{border-color:var(--navy-mid);background:var(--white);}
+  .opt-btn.selected{border-color:var(--navy);background:#EDF0F8;}
+  .opt-label{width:26px;height:26px;border-radius:6px;background:var(--gray-100);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;color:var(--gray-700);flex-shrink:0;}
+  .opt-btn.selected .opt-label{background:var(--navy);color:var(--white);}
+  .q-actions{display:flex;justify-content:space-between;gap:12px;}
+  .btn-prev,.btn-next{flex:1;padding:13px;border-radius:var(--radius-sm);font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;cursor:pointer;border:none;}
+  .btn-prev{background:var(--gray-100);color:var(--gray-700);}
+  .btn-prev:disabled{opacity:.35;cursor:default;}
+  .btn-next{background:var(--navy);color:var(--white);}
+  .btn-next:hover{background:var(--navy-mid);}
+  .btn-next.finish{background:var(--green);}
+  .dot-map{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px;}
+  .dot{width:20px;height:20px;border-radius:4px;background:#dde0ea;cursor:pointer;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;color:var(--gray-500);}
+  .dot.answered{background:var(--navy);color:var(--white);}
+  .dot.current{background:var(--gold);color:var(--navy);}
+  #submitted-screen{max-width:520px;margin:80px auto;padding:24px;}
+  .submitted-card{background:var(--white);border-radius:16px;padding:48px 40px;box-shadow:0 4px 24px rgba(27,42,74,.08);text-align:center;}
+  .submitted-card .icon{font-size:56px;margin-bottom:20px;}
+  .submitted-card h2{font-size:26px;font-weight:700;color:var(--navy);margin-bottom:12px;}
+  .submitted-card p{color:var(--gray-500);font-size:15px;line-height:1.7;}
+  .submitted-card .highlight{color:var(--navy);font-weight:600;}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-brand">
+    <svg width="38" height="44" viewBox="0 0 38 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="38" height="44" rx="6" fill="#1B2A4A"/>
+      <text x="4" y="36" font-family="Georgia,serif" font-size="36" font-weight="900" fill="white">P</text>
+    </svg>
+    <div class="brand-text">
+      <span class="brand-sup">Admisión 2026/27</span>
+      <span class="brand-main">Pioneros · Prueba de Lenguaje 7°</span>
+    </div>
+  </div>
+  <div class="timer-wrap" id="timer-wrap" style="display:none">
+    <span style="font-size:16px">⏱</span>
+    <span id="timer">90:00</span>
+  </div>
+</header>
+<div class="progress-bar-wrap"><div id="progress-bar"></div></div>
+
+<!-- ACCESS -->
+<div id="access-screen" class="screen active">
+  <div class="access-card">
+    <div class="lock-icon">🔐</div>
+    <h2>Acceso Restringido</h2>
+    <p>Esta prueba es solo para candidatos autorizados.<br>Ingresa tu nombre completo y el código de acceso que te envió Pioneros.</p>
+    <div class="access-field">
+      <label>Nombre completo</label>
+      <input id="access-name" type="text" placeholder="Escribe tu nombre completo">
+    </div>
+    <div class="access-field">
+      <label>Código de acceso</label>
+      <input id="access-code" type="text" placeholder="Ej: PIO-2026-XXXX" style="text-transform:uppercase">
+    </div>
+    <button class="btn-access" onclick="checkAccess()">Ingresar a la prueba →</button>
+    <div class="access-error" id="access-error">⚠ Código incorrecto. Por favor verifica e intenta nuevamente.</div>
+  </div>
+</div>
+
+<!-- START -->
+<div id="start-screen" class="screen">
+  <div class="start-card">
+    <span class="badge">Admisión 2026/27</span>
+    <h1>Prueba de Lenguaje</h1>
+    <p>Lee cada texto con atención antes de responder. Puedes navegar entre las preguntas antes de enviar.</p>
+    <div class="info-grid">
+      <div class="info-item"><div class="val">25</div><div class="lbl">Preguntas</div></div>
+      <div class="info-item"><div class="val">90'</div><div class="lbl">Tiempo límite</div></div>
+      <div class="info-item"><div class="val">4</div><div class="lbl">Alternativas</div></div>
+      <div class="info-item"><div class="val">A–D</div><div class="lbl">Selección única</div></div>
+    </div>
+    <div class="name-field">
+      <label>Tu nombre completo</label>
+      <input id="student-name" type="text" placeholder="Escribe tu nombre aquí">
+    </div>
+    <button class="btn-start" onclick="startQuiz()">Comenzar prueba →</button>
+  </div>
+</div>
+
+<!-- QUIZ -->
+<div id="quiz-screen" class="screen">
+  <div class="dot-map" id="dot-map"></div>
+  <div class="q-nav"><div class="q-counter">Pregunta <span id="q-num">1</span> de 25</div></div>
+  <div id="passage-area"></div>
+  <div class="q-card" id="q-card"></div>
+  <div class="q-actions">
+    <button class="btn-prev" id="btn-prev" onclick="navigate(-1)" disabled>← Anterior</button>
+    <button class="btn-next" id="btn-next" onclick="navigate(1)">Siguiente →</button>
+  </div>
+</div>
+
+<!-- SUBMITTED -->
+<div id="submitted-screen" class="screen">
+  <div class="submitted-card">
+    <div class="icon">📬</div>
+    <h2>¡Prueba enviada!</h2>
+    <p>Gracias, <span class="highlight" id="sub-name"></span>.<br><br>
+    Tus respuestas han sido recibidas. El equipo de admisiones de Pioneros revisará tus resultados y se pondrá en contacto contigo pronto.<br><br>
+    ¡Mucho éxito! 🌟</p>
+  </div>
+</div>
+
+<script>
+(function(){emailjs.init({publicKey:"x6LTzX-hx-Gd5mTR0"});})();
+const TOTAL_TIME=90*60, LABELS=['A','B','C','D'];
+const ADMIN_EMAIL='dplatz@cpioneros.cl';
+const VALID_CODES=['PIO-2026-OPNK','PIO-2026-7UG1','PIO-2026-X1SW'];
+let studentCode='';
+
+function checkAccess(){
+  const name=document.getElementById('access-name').value.trim();
+  const code=document.getElementById('access-code').value.trim().toUpperCase();
+  const err=document.getElementById('access-error');
+  if(!name){err.textContent='⚠ Por favor ingresa tu nombre completo.';err.style.display='block';return;}
+  if(!VALID_CODES.includes(code)){err.textContent='⚠ Código incorrecto. Por favor verifica e intenta nuevamente.';err.style.display='block';return;}
+  err.style.display='none'; studentCode=code;
+  document.getElementById('access-screen').classList.remove('active');
+  document.getElementById('start-screen').classList.add('active');
+  document.getElementById('student-name').value=name;
+  document.getElementById('student-name').readOnly=true;
+}
+
+const PASSAGES = {
+  0: `<div class="passage-box">
+    <div class="passage-instruction">📖 Lee el siguiente texto y responde las preguntas 1 a 5.</div>
+    <div class="passage-title">DISCURSO DE MALALA YOUSAFZAI EN LA RECEPCIÓN DEL PREMIO NOBEL DE LA PAZ 2014</div>
+    <div class="passage-body">
+      <p>Majestades, miembros distinguidos del Comité Noruego para el Nobel, queridos hermanos y hermanas, hoy es un día de gran alegría para mí. Con humildad recibo este hermoso premio que el Comité para el Nobel me ha otorgado. Gracias a todos por vuestro continuo apoyo y amor.</p>
+      <p>Gracias por las cartas y postales que sigo recibiendo de todos los rincones del mundo. Vuestro cariño y vuestros ánimos me fortalecen y me inspiran. Quiero agradecer a mis padres su amor incondicional. Gracias, padre, por no sujetar mis alas, por dejarme volar. Gracias, madre, por enseñarme a ser paciente y a decir siempre la verdad, lo que creemos firmemente que es el mensaje del Islam.</p>
+      <p>Estoy muy orgullosa de ser la primera Pastún, la primera pakistaní y la primera joven que recibe este premio. Quiero la paz para todo el mundo, y mis hermanos y yo seguimos trabajando en ello.</p>
+      <p>Este premio no es solo para mí. Es para esos niños olvidados que quieren educación. Es para esos niños asustados que quieren paz. Es para esos niños sin voz que quieren cambio. Estoy aquí para defender sus derechos, para hacer oír su voz… no es tiempo de compadecerles. Es tiempo de actuar para que esta sea la última vez que veamos a un niño privado de educación.</p>
+      <p>La gente habla de mí de diferentes maneras. Algunos me conocen como la niña a la que dispararon los Talibán. Otros, la joven que lucha por sus derechos. Pero lo único que sé es que soy solo una persona comprometida y testaruda que quiere ver cómo todos los niños reciben educación de calidad, que quiere igualdad de derechos para las mujeres y que quiere paz en todos los rincones del mundo.</p>
+      <p style="text-align:right;font-style:italic;font-weight:600">Malala</p>
+      <p class="passage-note">Recuperado desde: https://www.commonlit.org/es/texts/discurso-del-premio-nobel-de-la-paz-malala-yousafzai</p>
+    </div>
+  </div>`,
+
+  5: `<div class="passage-box">
+    <div class="passage-instruction">📖 Lee el siguiente texto y responde las preguntas 6 a 12.</div>
+    <div class="passage-title">Maíz: regalo de los dioses</div>
+    <div class="passage-body">
+      <p>El maíz pertenece a la familia de las gramíneas. La planta alcanza de medio metro a tres metros de alto. Las hojas forman una larga vaina íntimamente enrollada al tallo y un limbo más ancho, alargado y flexible. El número de hojas varía entre 8 y 25. Del tallo nacen una, dos o tres mazorcas. En cada mazorca se ven las filas de semillas, cuyo número puede variar de ocho a treinta. A cada grano le corresponde un largo hilo sedoso que sobresale por el extremo de la mazorca, conocido comúnmente como pelo o cabello de choclo (elote). La planta está rematada en el extremo superior por una gran espiga o panoja de pequeñas flores masculinas.</p>
+      <div class="numbered-para"><div class="num">1</div><div>El maíz, choclo o elote (Zea mays) es una planta originaria de América introducida en Europa. Es un cultivo muy antiguo, de unos 7.000 años, de origen indígena, que se sembraba por las zonas de México y América central. Su origen exacto no está muy claro, pero se considera que pertenece a la zona de México, pues sus hallazgos más antiguos se encontraron allí. Teniendo en cuenta que ahí estuvo el centro de la civilización Azteca, se puede concluir que el maíz constituyó para esos habitantes una fuente importante de alimentación. Esto puede confirmarse al observar en las pirámides, que aun se conservan, pinturas, grabados y esculturas que representan al maíz.</div></div>
+      <div class="numbered-para"><div class="num">2</div><div>Fue una de las primeras especies importadas por Europa desde América, lo que en un comienzo planteó una duda en torno a su auténtico origen, por la cercanía que tuvo con los viajes de descubrimiento a distintas partes del mundo.</div></div>
+      <div class="numbered-para"><div class="num">3</div><div>Su temprana adopción como alimento fue, probablemente, debido a su semejanza con los cereales europeos. Esto no ocurrió con otras plantas, como la papa, que les parecían más extrañas y hasta sospechosas. Sin embargo, el maíz no fue importante dentro de la dieta de los europeos hasta bien entrado el siglo XIX. Se convirtió en un alimento básico destinado a alimentar a los más pobres, y en buena parte «discriminado» por su origen no europeo.</div></div>
+      <div class="numbered-para"><div class="num">4</div><div>Desde el punto de vista de su terminología, esta planta es conocida con el nombre común de maíz, derivado de la palabra <strong>taína</strong> mahís con que los indígenas del Caribe la denominaban. Dependiendo del país, región y cultura, Zea mays recibe también en español otros nombres, como danza, millo, mijo, oroña, o panizo en español europeo, y en español americano choclo, elote, jojoto, sara o zara.</div></div>
+      <div class="numbered-para"><div class="num">5</div><div>Es de notar que, al igual que muchas otras plantas, los frutos en ocasiones reciben un nombre distinto a la planta que la produce. En México y Centroamérica, se usa "maíz" para designar a la planta, pero las mazorcas y los granos reciben el nombre de elote, que viene del nombre <strong>náhuatl</strong> elotl. En algunos países de Sudamérica, por ejemplo Chile, tanto la mazorca como los granos reciben el nombre de "choclo" (del quechua chuqllu). En Perú y Bolivia, lo llaman "sara", también de origen quechua. En Venezuela recibe el nombre de "maíz" el conjunto de planta y fruto, además de "jojoto" que es la mazorca tierna.</div></div>
+      <div class="vocab-box">
+        <strong>Taína:</strong> perteneciente a un grupo indígena de América central.<br>
+        <strong>Náhuatl:</strong> lengua hablada por diversos grupos indígenas en América central, especialmente por los aztecas o mexicas.
+      </div>
+      <p class="passage-note">Recuperado de https://n9.cl/kflzs</p>
+    </div>
+  </div>`,
+
+  12: `<div class="passage-box">
+    <div class="passage-instruction">📖 Lee el siguiente texto y responde las preguntas 13 a 18.</div>
+    <div class="passage-title">El pequeño vampiro en peligro</div>
+    <div class="passage-subtitle">Sommer-Bodenburg, A. (1995). Madrid: Alfaguara Infantil y Juvenil. (Fragmento).</div>
+    <div class="passage-body">
+      <p>Era sábado: el día en que sus padres salían de casa por la noche.</p>
+      <p>—¿A dónde van hoy? —quiso saber Antón por la tarde, cuando su madre se estaba poniendo los rulos en el baño.</p>
+      <p>—Ah —dijo la madre—, primero vamos a cenar y luego, quizás, a bailar.</p>
+      <p>—¿Cómo quizás? —preguntó Antón.</p>
+      <p>—No lo sabemos todavía —dijo la madre—. ¿Acaso es tan importante para ti?</p>
+      <p>—Nooo —gruñó Antón. Prefería no confesar que quería ver la película policiaca que empezaba a las once. Pero su madre ya había sospechado.</p>
+      <p>—Antón —dijo, volviéndose de tal manera que podía mirarle fijamente a los ojos—, no querrás, por casualidad, ver la televisión...</p>
+      <p>—Pero, mamá —exclamó Antón—, ¿cómo se te puede ocurrir eso?</p>
+      <p>Afortunadamente, su madre había vuelto a la tarea de rizarse el pelo, de modo de que ya no podía ver cómo el rostro de Antón se ponía colorado.</p>
+      <p>—Quizá vayamos también al cine —dijo ella—. En todo caso, no volveremos antes de medianoche.</p>
+      <p>Se había hecho de noche y Antón estaba solo en casa. Estaba en pijama, sentado en la cama; se había subido el cobertor hasta la barbilla y leía <em>La verdad sobre Frankenstein</em>. La historia tenía lugar en una feria anual. Un hombre con un abrigo negro acababa de salir a escena para anunciar la aparición del monstruo. Entonces sonó el despertador. Molesto, Antón levantó la vista de su libro. ¡Oh! ¡Ya casi las once, quedaba el tiempo justo para encender la televisión!</p>
+      <p>Antón saltó de la cama y apretó el mando de encendido. Entonces volvió a acomodarse en su cobertor y esperó a que, lentamente, apareciera la imagen. Pero aún ponían el programa deportivo. La habitación estaba bastante tenebrosa y sombría. King-Kong, en el póster de la pared, hacía una mueca horrenda que iba bien con el estado de ánimo de Antón: se sentía salvaje y abandonado como el único superviviente de una catástrofe marítima, náufrago en una isla del sur habitada por caníbales. Y la cama era su madriguera, suave y cálida, y si quería podía esconderse en ella y no dejarse ver. Había un montón de víveres delante de la entrada de la cueva; solo faltaba el agua de fuego. Antón pensó, deseoso, en la botella de jugo de manzana que había en el refrigerador, ¡pero hasta allí había un largo camino a través del oscuro pasillo! ¿Debería regresar nadando al barco, pasando al lado de los tiburones sedientos de sangre que solo esperaban sus víctimas? ¡¡Brrr!!</p>
+      <p>Pero ¿no morían los náufragos mucho más por la sed que por el hambre? Por tanto, se puso en camino.</p>
+    </div>
+  </div>`,
+
+  18: `<div class="passage-box">
+    <div class="passage-instruction">📖 Lee el siguiente texto y responde las preguntas 19 a 25.</div>
+    <div class="passage-title">La máquina que convierte el plástico en combustible</div>
+    <div class="passage-body">
+      <p>Si de reciclado de plásticos hablamos, es necesario hacer referencia al invento que se realizó en Japón y que ha destacado por sus innovadoras características: la máquina que convierte el plástico en combustible. Si quieres conocer de qué trata el invento y cómo es su funcionamiento, continúa leyendo.</p>
+      <p><strong>¿Cómo se convierte el plástico en combustible?</strong><br>
+      La máquina, inventada por Akinori Ito y vendida por la empresa japonesa Blest, calienta el plástico y atrapa los vapores a través de un sistema de tuberías que enfría y condensa dichos gases hasta convertirlos en aceite. Este aceite puede usarse directamente en generadores y estufas, aunque si se refina, se obtiene gasolina convencional.</p>
+      <p><strong>Costos</strong><br>
+      Este aparato necesita muy poca electricidad para convertir un kilogramo de plástico en un litro de aceite. Por lo tanto, rápidamente podríamos obtener litros de aceite, incluso en casa, ya que el uso de plásticos provenientes de residuos urbanos es realmente elevado. Sin embargo, uno de los inconvenientes que afectarían la obtención de esta máquina es su precio: unos $7.500.000.</p>
+      <p><strong>Beneficios de uso</strong><br>
+      Su funcionamiento busca cuidar el medioambiente. Al usar la máquina se libera dióxido de carbono (CO2) a la atmósfera, pero en una cantidad mucho menor a que si el plástico se quemara directamente. Asimismo, la máquina evita la emisión de una gran cantidad de sustancias tóxicas y gases contaminantes.</p>
+      <p>El sistema que propone Akinori Ito permite dar una segunda vida a los residuos plásticos y evitar que acaben en un vertedero o directamente en el mar. Por lo tanto, queda en evidencia su gran beneficio para reducir la contaminación del agua y la contaminación del suelo, siendo estas las principales áreas afectadas por los residuos plásticos.</p>
+      <p><strong>Bolsas plásticas, aliadas de la máquina</strong><br>
+      Que haya bolsas plásticas es un gran problema. La buena noticia que trae esta máquina es que ese problema puede transformarse en algo positivo, pues las bolsas constituyen un grave peligro para el medio ambiente. Una simple bolsa necesita de 100 a 400 años para degradarse de forma natural, y en su camino contamina los océanos y pone en peligro la vida de muchas especies marinas. Por lo tanto, que estas se puedan reunir y ser convertidas en combustible a través de esta máquina supone un gran beneficio para el planeta. Y tú, ¿qué haces con las bolsas plásticas?</p>
+      <p class="passage-note">Recuperado de https://twenergy.com/ecologia-y-reciclaje/curiosidades/maquina-convierte-plastico-en-combustible/ (Adaptación)</p>
+    </div>
+  </div>`
+};
+
+const questions = [
+  { q:"Según el texto, ¿con qué actitud recibe Malala el Premio Nobel?", opts:["Con paz.","Con orgullo.","Con sorpresa.","Con humildad."], ans:3 },
+  { q:"Relee el fragmento: \"Algunos me conocen como la niña a la que dispararon los Talibán. Otros, la joven que lucha por sus derechos\". ¿Qué quiere decir Malala en este fragmento?", opts:["Que unos la ven como víctima y otros como heroína.","Que unos la valoran por su origen y otros por sus logros.","Que unos la consideran pequeña y otros una mujer adulta.","Que unos la ven como una persona comprometida y otros testaruda."], ans:0 },
+  { q:"En una parte de su discurso, Malala habla de los niños del mundo. ¿Qué se puede inferir de esas palabras?", opts:["Que ella espera que los niños saquen su propia voz.","Que ella quiere que todos se sientan tan ganadores como ella.","Que ella busca que el premio haga que los niños sean responsables de sus vidas.","Que ella ve el premio como una oportunidad de que se tomen en cuenta a los niños."], ans:3 },
+  { q:"Relee: \"Gracias, padre, por no sujetar mis alas, por dejarme volar\". ¿Por qué agradece Malala a su padre en la frase subrayada?", opts:["Por empujarla a lograr grandes cosas.","Por enseñarle a luchar por sus derechos.","Por evitar castigarla cuando era pequeña.","Por permitir que cumpliera sus propias metas."], ans:3 },
+  { q:"¿Cuál es el tema central del texto de Malala?", opts:["La importancia de ganar un Premio Nobel.","Los verdaderos merecedores del Premio Nobel.","El trabajo realizado por Malala para recibir un premio.","El agradecimiento por el apoyo al recibir un Premio Nobel."], ans:3 },
+  { q:"¿Dónde se encontraron los hallazgos más antiguos de maíz?", opts:["En Europa.","En México.","En el Caribe.","En Centroamérica."], ans:1 },
+  { q:"¿De qué origen es la palabra choclo?", opts:["Taína.","Náhuatl.","Quechua.","Venezolana."], ans:2 },
+  { q:"Relee: \"Teniendo en cuenta que ahí estuvo el centro de la civilización Azteca, se puede concluir que el maíz constituyó para esos habitantes una fuente importante de alimentación\". ¿Por qué los Aztecas representaron el maíz en sus pirámides?", opts:["Porque era solo para ceremonias.","Porque era ahí donde lo cultivaban.","Porque era una forma de reconocerlo.","Porque era parte esencial de su cultura."], ans:3 },
+  { q:"¿Qué información aporta la imagen de la planta del maíz a lo expresado al inicio del texto?", opts:["Muestra cómo se debiera cultivar una planta de maíz.","Presenta las partes comestibles de la planta del maíz.","Permite ir comprendiendo la descripción de sus partes.","Explica la forma en que la planta de maíz ha cambiado."], ans:2 },
+  { q:"¿Qué información sobre el maíz se entrega al principio y al final del texto central?", opts:["Al principio se habla de sus variedades, y al final, de sus preparaciones.","Al principio se habla del origen, y al final, de las distintas formas de nombrar al maíz.","Al principio se habla del origen de nombre, y al final, de su relación con otros cereales.","Al principio se habla de su influencia en Europa, y al final, de su importancia en América."], ans:1 },
+  { q:"¿Qué quiere decir la expresión \"Se convirtió en un alimento básico destinado a alimentar a los más pobres, y en buena parte «discriminado» por su origen no europeo\"?", opts:["Que el maíz se mantuvo como un alimento desconocido para los europeos.","Que el maíz tenía pocas cualidades para satisfacer el hambre de los europeos.","Que el maíz fue comprendido por los europeos como un alimento sin importancia.","Que el maíz era considerado por los europeos como un alimento poco sofisticado."], ans:3 },
+  { q:"¿Cuál es el tema central del texto sobre el maíz?", opts:["El cultivo del maíz.","El valor económico del maíz.","El verdadero nombre del maíz.","El maíz en las distintas culturas."], ans:3 },
+  { q:"Según el texto, ¿cuál era el plan confirmado que tenían los padres de Antón?", opts:["Ir al mar.","Ir al cine.","Ir a cenar.","Ir a bailar."], ans:2 },
+  { q:"Según el texto, ¿para qué suena el despertador de Antón?", opts:["Para avisarle que debe ponerse su pijama.","Para avisarle que va a comenzar la película policiaca.","Para avisarle que sus padres están a punto de regresar.","Para avisarle que están dando el programa de deportes."], ans:1 },
+  { q:"¿Por qué le preocupaba a Antón la hora en que llegarían sus padres?", opts:["Porque tendría que ordenar toda la casa.","Porque quería hacer algo sin que ellos se enteraran.","Porque debía volver de su naufragio antes que ellos.","Porque sentía miedo de quedarse solo toda la noche."], ans:1 },
+  { q:"Relee: \"—Antón —dijo, volviéndose de tal manera que podía mirarle fijamente a los ojos—, no querrás, por casualidad, ver la televisión... —Pero, mamá —exclamó Antón—, ¿cómo se te puede ocurrir eso?\". Cuando Antón le da esa respuesta a su mamá, ¿qué está haciendo?", opts:["Cambiando su plan original.","Recapacitando sobre sus ideas.","Cuestionando el juicio hecho por su mamá.","Reconociendo sus intenciones ante su mamá."], ans:2 },
+  { q:"En el texto, ¿con qué se compara a Antón?", opts:["Con un tiburón, ya que tenía mucha sed.","Con un caníbal, pues estaba muy hambriento.","Con un náufrago, pues se sentía abandonado.","Con King-Kong, porque él también inspiraba temor."], ans:2 },
+  { q:"¿Para qué se describe lo que piensa Antón desde que enciende el televisor?", opts:["Para detallar el peligro que corría.","Para mostrar su gran imaginación.","Para criticar a sus padres que lo dejaron solo.","Para explicar el misterio que escondía su casa."], ans:1 },
+  { q:"¿Qué función cumple el sistema de tuberías de la máquina inventada por Akinori Ito?", opts:["Enfriar y condensar los gases que atrapa.","Conducir el aceite a generadores y estufas.","Refinar y transformar el aceite que se obtiene.","Atrapar sustancias tóxicas y gases contaminantes."], ans:0 },
+  { q:"¿Qué se puede obtener si se refina el aceite que produce la máquina?", opts:["Plástico reciclable.","Dióxido de carbono.","Gases condensados.","Gasolina convencional."], ans:3 },
+  { q:"¿Por qué se dice que la máquina ayudaría a reducir la contaminación del agua y del suelo?", opts:["Porque ayuda a limpiar las zonas de plásticos ya reciclados.","Porque acelera la degradación natural de una bolsa plástica.","Porque utiliza residuos que se encuentran actualmente en vertederos.","Porque da una segunda vida a plásticos que de otro modo irían al mar o a vertederos."], ans:3 },
+  { q:"¿Qué se puede inferir del último párrafo del texto?", opts:["Que las bolsas plásticas son inesperadamente beneficiosas para el medio ambiente.","Que la máquina ayuda a reducir el efecto de las bolsas plásticas en el medio ambiente.","Que el problema que suponen las bolsas plásticas para el planeta puede ser disminuido con esta máquina.","Que las especies marinas dejan de correr peligro con la contaminación desde que existe esta máquina."], ans:2 },
+  { q:"¿Qué información sobre la máquina se complementa con la imagen que la acompaña?", opts:["Funciona solo con energía eléctrica.","Puede utilizarse incluso en una casa.","Fue inventada para ayudar al medioambiente.","Convierte un kilo de plástico en un litro de aceite."], ans:1 },
+  { q:"¿Qué tipo de información se entrega en el apartado \"Costos\"?", opts:["Cómo y dónde obtener la máquina.","Los pros y contras para obtener la máquina.","Causas y consecuencias de obtener la máquina.","Lo que pasa antes y lo que pasa después de obtener la máquina."], ans:1 },
+  { q:"¿Cuál es el tema central del texto sobre la máquina?", opts:["Cómo se inventó una máquina que convierte el plástico en combustible.","Quiénes podrían hacer una máquina que convierte el plástico en combustible.","Dónde se podría utilizar una máquina que convierte el plástico en combustible.","Qué se puede lograr con una máquina que convierte el plástico en combustible."], ans:3 },
+];
+
+let current=0, answers=new Array(questions.length).fill(null);
+let timerInterval=null, timeLeft=TOTAL_TIME, startTime=null, studentName='';
+
+function startQuiz(){
+  studentName=document.getElementById('student-name').value.trim()||'Estudiante';
+  document.getElementById('start-screen').classList.remove('active');
+  document.getElementById('quiz-screen').classList.add('active');
+  document.getElementById('timer-wrap').style.display='flex';
+  buildDotMap(); renderQuestion(); startTimer();
+}
+function startTimer(){
+  startTime=Date.now(); updateTimerDisplay();
+  timerInterval=setInterval(()=>{timeLeft--;updateTimerDisplay();if(timeLeft<=0){clearInterval(timerInterval);submitQuiz();}},1000);
+}
+function updateTimerDisplay(){
+  const m=Math.floor(timeLeft/60).toString().padStart(2,'0');
+  const s=(timeLeft%60).toString().padStart(2,'0');
+  const el=document.getElementById('timer');
+  el.textContent=`${m}:${s}`;
+  el.className=timeLeft<=60?'danger':timeLeft<=300?'warn':'';
+}
+function buildDotMap(){
+  const map=document.getElementById('dot-map'); map.innerHTML='';
+  questions.forEach((_,i)=>{
+    const d=document.createElement('div');
+    d.className='dot'+(i===current?' current':'')+(answers[i]!==null?' answered':'');
+    d.textContent=i+1; d.onclick=()=>goTo(i); map.appendChild(d);
+  });
+}
+function goTo(idx){current=idx;renderQuestion();}
+function renderQuestion(){
+  const q=questions[current];
+  const pa=document.getElementById('passage-area');
+  const passageKeys=Object.keys(PASSAGES).map(Number).sort((a,b)=>a-b);
+  let shownPassage=null;
+  for(let k of passageKeys){ if(current>=k) shownPassage=k; }
+  pa.innerHTML=shownPassage!==null?PASSAGES[shownPassage]:'';
+  const card=document.getElementById('q-card');
+  let html=`<div class="q-number">${current+1}</div>`;
+  html+=`<div class="q-text">${q.q}</div>`;
+  html+=`<div class="options">`;
+  q.opts.forEach((opt,i)=>{
+    const sel=answers[current]===i?' selected':'';
+    html+=`<button class="opt-btn${sel}" onclick="selectAnswer(${i})"><span class="opt-label">${LABELS[i]}</span><span>${opt}</span></button>`;
+  });
+  html+=`</div>`;
+  card.innerHTML=html;
+  document.getElementById('q-num').textContent=current+1;
+  document.getElementById('btn-prev').disabled=current===0;
+  const isLast=current===questions.length-1;
+  const btn=document.getElementById('btn-next');
+  btn.textContent=isLast?'Enviar prueba ✓':'Siguiente →';
+  btn.className='btn-next'+(isLast?' finish':'');
+  btn.onclick=isLast?submitQuiz:()=>navigate(1);
+  updateProgress(); buildDotMap();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function selectAnswer(idx){
+  answers[current]=idx;
+  // Re-render options only without scrolling
+  const q=questions[current];
+  const opts=document.querySelectorAll('.opt-btn');
+  opts.forEach((btn,i)=>{
+    btn.className='opt-btn'+(answers[current]===i?' selected':'');
+    btn.querySelector('.opt-label').className='opt-label';
+  });
+  updateProgress(); buildDotMap();
+}
+function navigate(dir){const next=current+dir;if(next>=0&&next<questions.length){current=next;renderQuestion();}}
+function updateProgress(){
+  document.getElementById('progress-bar').style.width=(answers.filter(a=>a!==null).length/questions.length*100)+'%';
+}
+function submitQuiz(){
+  clearInterval(timerInterval);
+  const elapsed=Math.round((Date.now()-startTime)/1000);
+  const mins=Math.floor(elapsed/60), secs=elapsed%60;
+  let correct=0,wrong=0,blank=0;
+  questions.forEach((q,i)=>{if(answers[i]===null)blank++;else if(answers[i]===q.ans)correct++;else wrong++;});
+  const pct=Math.round(correct/questions.length*100);
+  const details=questions.map((q,i)=>{
+    const u=answers[i]!==null?LABELS[answers[i]]:'—';
+    const c=LABELS[q.ans];
+    const s=answers[i]===null?'Sin respuesta':answers[i]===q.ans?'✓ Correcta':'✗ Incorrecta';
+    return `P${i+1}: ${s} | Estudiante: ${u} | Correcta: ${c}`;
+  }).join('\n');
+  emailjs.send('service_kk0m83i','evurior',{
+    to_email:ADMIN_EMAIL, student_name:studentName,
+    grade:'7° Básico — Lenguaje',
+    access_code:studentCode,
+    score:`${correct}/25 (${pct}%)`,
+    correct, wrong, blank,
+    time_used:`${mins}m ${secs}s`,
+    details,
+    submitted_at:new Date().toLocaleString('es-CL',{timeZone:'America/Santiago'})
+  }).catch(()=>{});
+  document.getElementById('quiz-screen').classList.remove('active');
+  document.getElementById('submitted-screen').classList.add('active');
+  document.getElementById('timer-wrap').style.display='none';
+  document.getElementById('progress-bar').style.width='100%';
+  document.getElementById('sub-name').textContent=studentName;
+  console.log('RESULTS LJE 7',{studentName,correct,wrong,blank,pct,details});
+}
+</script>
+</body>
+</html>
