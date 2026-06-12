@@ -850,7 +850,7 @@ function submitQuiz(){
     const s=answers[i]===null?'Blank':answers[i]===q.ans?'✓ Correct':'✗ Wrong';
     return `Q${i+1}: ${s} | Student: ${u} | Correct: ${c}`;
   }).join('\n');
-  emailjs.send('service_kk0m83i','evurior',{
+  emailjs.send('service_kk0m83i','template_ebdohpd',{
     to_email:ADMIN_EMAIL, student_name:studentName,
     access_code:studentCode,
     grade:'5th Grade',

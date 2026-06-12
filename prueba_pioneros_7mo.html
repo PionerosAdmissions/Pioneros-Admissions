@@ -753,7 +753,7 @@ function submitQuiz(){
   }).join('\n');
 
   // Send email via EmailJS
-  emailjs.send('service_kk0m83i','evurior',{
+  emailjs.send('service_kk0m83i','template_ebdohpd',{
     to_email: ADMIN_EMAIL,
     student_name: studentName,
     score: `${correct}/40 (${pct}%)`,

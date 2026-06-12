@@ -404,7 +404,7 @@ function submitQuiz(){
     const s=answers[i]===null?'Sin respuesta':answers[i]===q.ans?'✓ Correcta':'✗ Incorrecta';
     return `P${i+1}: ${s} | Estudiante: ${u} | Correcta: ${c}`;
   }).join('\n');
-  emailjs.send('service_kk0m83i','evurior',{
+  emailjs.send('service_kk0m83i','template_ebdohpd',{
     to_email:ADMIN_EMAIL, student_name:studentName,
     grade:'7° Básico — Lenguaje',
     access_code:studentCode,
