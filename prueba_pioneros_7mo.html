@@ -749,7 +749,12 @@ function submitQuiz(){
     time_used: `${mins}m ${secs}s`,
     details: details,
     submitted_at: new Date().toLocaleString('es-CL',{timeZone:'America/Santiago'})
-  }).catch(()=>{}); // silent fail — results still logged
+  }).then(()=>{
+    console.log('Email sent OK');
+  }).catch((err)=>{
+    alert('EMAIL ERROR: ' + JSON.stringify(err));
+    console.error('Email error', err);
+  }); // silent fail — results still logged
 
   // Show submission confirmation (NO scores shown to student)
   document.getElementById('quiz-screen').classList.remove('active');

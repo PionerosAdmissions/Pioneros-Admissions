@@ -396,7 +396,12 @@ function submitQuiz(){
     time_used:`${mins}m ${secs}s`,
     details,
     submitted_at:new Date().toLocaleString('es-CL',{timeZone:'America/Santiago'})
-  }).catch(()=>{});
+  }).then(()=>{
+    console.log('Email sent OK');
+  }).catch((err)=>{
+    alert('EMAIL ERROR: ' + JSON.stringify(err));
+    console.error('Email error', err);
+  });
   document.getElementById('quiz-screen').classList.remove('active');
   document.getElementById('submitted-screen').classList.add('active');
   document.getElementById('timer-wrap').style.display='none';
