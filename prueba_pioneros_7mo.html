@@ -160,7 +160,7 @@
     </svg>
     <div class="brand-text">
       <span class="brand-sup">Admission 2026/27</span>
-      <span class="brand-main">Pioneros · Math Entrance Exam</span>
+      <span class="brand-main">Pioneros · 7th Grade Math Entrance Exam</span>
     </div>
   </div>
   <div class="timer-wrap" id="timer-wrap" style="display:none">
@@ -672,7 +672,13 @@ function buildDotMap(){
   });
 }
 
-function goTo(idx){current=idx;renderQuestion();}
+function goTo(idx){
+  if(idx>current && answers[current]===null){
+    alert('Por favor responde la pregunta actual antes de continuar.');
+    return;
+  }
+  current=idx;renderQuestion();
+}
 
 function renderQuestion(){
   const q=questions[current];
@@ -709,6 +715,10 @@ function selectAnswer(idx){
 }
 
 function navigate(dir){
+  if(dir>0 && answers[current]===null){
+    alert('Por favor responde la pregunta actual antes de continuar.');
+    return;
+  }
   const next=current+dir;
   if(next>=0&&next<questions.length){current=next;renderQuestion();}
 }
@@ -719,6 +729,10 @@ function updateProgress(){
 }
 
 function submitQuiz(){
+  if(answers[current]===null){
+    alert('Por favor responde la pregunta actual antes de enviar la prueba.');
+    return;
+  }
   clearInterval(timerInterval);
   const elapsed=Math.round((Date.now()-startTime)/1000);
   const mins=Math.floor(elapsed/60), secs=elapsed%60;

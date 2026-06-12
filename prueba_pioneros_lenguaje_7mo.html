@@ -331,7 +331,13 @@ function buildDotMap(){
     d.textContent=i+1; d.onclick=()=>goTo(i); map.appendChild(d);
   });
 }
-function goTo(idx){current=idx;renderQuestion();}
+function goTo(idx){
+  if(idx>current && answers[current]===null){
+    alert('Por favor responde la pregunta actual antes de continuar.');
+    return;
+  }
+  current=idx;renderQuestion();
+}
 function renderQuestion(){
   const q=questions[current];
   const pa=document.getElementById('passage-area');
@@ -370,11 +376,22 @@ function selectAnswer(idx){
   });
   updateProgress(); buildDotMap();
 }
-function navigate(dir){const next=current+dir;if(next>=0&&next<questions.length){current=next;renderQuestion();}}
+function navigate(dir){
+  if(dir>0 && answers[current]===null){
+    alert('Por favor responde la pregunta actual antes de continuar.');
+    return;
+  }
+  const next=current+dir;
+  if(next>=0&&next<questions.length){current=next;renderQuestion();}
+}
 function updateProgress(){
   document.getElementById('progress-bar').style.width=(answers.filter(a=>a!==null).length/questions.length*100)+'%';
 }
 function submitQuiz(){
+  if(answers[current]===null){
+    alert('Por favor responde la pregunta actual antes de enviar la prueba.');
+    return;
+  }
   clearInterval(timerInterval);
   const elapsed=Math.round((Date.now()-startTime)/1000);
   const mins=Math.floor(elapsed/60), secs=elapsed%60;
