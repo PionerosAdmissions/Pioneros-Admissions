@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prueba de Admisión · Lenguaje 6° · Pioneros</title>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap');
+  :root {
+    --navy:#1B2A4A; --navy-mid:#2C3E6B; --gold:#F0A500; --gold-light:#FDF3DC;
+    --green:#2D8A5E; --gray-50:#F8F9FB; --gray-100:#EEF0F5; --gray-300:#C8CCDA;
+    --gray-500:#7A809A; --gray-700:#3D4260; --white:#FFFFFF; --red:#C0392B;
+    --radius:12px; --radius-sm:8px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'DM Sans',sans-serif;background:var(--gray-50);color:var(--navy);min-height:100vh;}
+  .header{background:var(--navy);color:var(--white);padding:0 24px;display:flex;align-items:center;
+    justify-content:space-between;height:60px;position:sticky;top:0;z-index:100;
+    box-shadow:0 2px 12px rgba(27,42,74,.25);}
+  .header-brand{display:flex;align-items:center;gap:12px;line-height:1.2;}
+  .header-brand .brand-text{display:flex;flex-direction:column;}
+  .header-brand .brand-sup{font-size:10px;font-weight:500;color:rgba(255,255,255,.55);letter-spacing:2px;text-transform:uppercase;}
+  .header-brand .brand-main{font-size:16px;font-weight:700;color:#fff;}
+  .timer-wrap{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.1);
+    border:1px solid rgba(255,255,255,.18);border-radius:8px;padding:6px 14px;}
+  #timer{font-family:'DM Mono',monospace;font-size:18px;font-weight:500;letter-spacing:2px;color:var(--white);min-width:56px;text-align:right;}
+  #timer.warn{color:#FF9800;}
+  #timer.danger{color:#FF5252;animation:pulse 1s infinite;}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+  .progress-bar-wrap{height:4px;background:rgba(255,255,255,.15);position:sticky;top:60px;z-index:99;}
+  #progress-bar{height:100%;background:var(--gold);width:0%;transition:width .4s ease;}
+  .screen{display:none;}.screen.active{display:block;}
+
+  /* ACCESS */
+  #access-screen{max-width:480px;margin:80px auto;padding:24px;}
+  .access-card{background:var(--white);border-radius:16px;padding:40px;box-shadow:0 4px 24px rgba(27,42,74,.08);text-align:center;}
+  .access-card .lock-icon{font-size:48px;margin-bottom:16px;}
+  .access-card h2{font-size:22px;font-weight:700;color:var(--navy);margin-bottom:8px;}
+  .access-card p{color:var(--gray-500);font-size:14px;margin-bottom:24px;line-height:1.6;}
+  .access-field{margin-bottom:14px;text-align:left;}
+  .access-field label{font-size:13px;font-weight:600;color:var(--gray-700);display:block;margin-bottom:6px;}
+  .access-field input{width:100%;border:1.5px solid var(--gray-300);border-radius:var(--radius-sm);
+    padding:10px 14px;font-family:'DM Sans',sans-serif;font-size:15px;color:var(--navy);outline:none;letter-spacing:1px;}
+  .btn-access{width:100%;background:var(--navy);color:var(--white);border:none;border-radius:var(--radius-sm);
+    padding:14px;font-family:'DM Sans',sans-serif;font-size:16px;font-weight:700;cursor:pointer;}
+  .btn-access:hover{background:var(--navy-mid);}
+  .access-error{color:var(--red);font-size:13px;margin-top:10px;display:none;font-weight:600;}
+
+  /* START */
+  #start-screen{max-width:560px;margin:60px auto;padding:24px;}
+  .start-card{background:var(--white);border-radius:16px;padding:40px;box-shadow:0 4px 24px rgba(27,42,74,.08);text-align:center;}
+  .start-card .badge{display:inline-block;background:var(--gold-light);color:#8A5E00;font-size:12px;font-weight:600;
+    letter-spacing:1px;text-transform:uppercase;padding:4px 12px;border-radius:20px;margin-bottom:16px;}
+  .start-card h1{font-size:28px;font-weight:700;color:var(--navy);margin-bottom:8px;}
+  .start-card p{color:var(--gray-500);font-size:15px;line-height:1.6;margin-bottom:28px;}
+  .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:32px;}
+  .info-item{background:var(--gray-50);border-radius:var(--radius-sm);padding:14px;text-align:center;}
+  .info-item .val{font-size:22px;font-weight:700;color:var(--navy);}
+  .info-item .lbl{font-size:12px;color:var(--gray-500);margin-top:2px;}
+  .name-field{margin-bottom:20px;text-align:left;}
+  .name-field label{font-size:13px;font-weight:600;color:var(--gray-700);display:block;margin-bottom:6px;}
+  .name-field input{width:100%;border:1.5px solid var(--gray-300);border-radius:var(--radius-sm);
+    padding:10px 14px;font-family:'DM Sans',sans-serif;font-size:15px;color:var(--navy);outline:none;}
+  .btn-start{width:100%;background:var(--navy);color:var(--white);border:none;border-radius:var(--radius-sm);
+    padding:14px;font-family:'DM Sans',sans-serif;font-size:16px;font-weight:700;cursor:pointer;}
+  .btn-start:hover{background:var(--navy-mid);}
+
+  /* QUIZ */
+  #quiz-screen{max-width:800px;margin:0 auto;padding:28px 20px 60px;}
+  .q-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+  .q-counter{font-size:13px;font-weight:600;color:var(--gray-500);}
+  .q-counter span{color:var(--navy);font-size:17px;}
+
+  /* Reading passage */
+  .passage-box{background:var(--white);border-radius:12px;padding:28px;border:2px solid var(--gray-100);
+    margin-bottom:20px;box-shadow:0 2px 12px rgba(27,42,74,.05);}
+  .passage-header{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+    color:var(--gray-500);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--gray-100);}
+  .passage-title{font-size:18px;font-weight:800;color:var(--navy);margin-bottom:4px;}
+  .passage-subtitle{font-size:13px;color:var(--gray-500);margin-bottom:16px;font-style:italic;}
+  .passage-body{font-size:15px;line-height:1.8;color:var(--gray-700);}
+  .passage-body p{margin-bottom:12px;}
+  .passage-body .vocab-box{background:var(--gray-50);border-radius:8px;padding:12px 16px;
+    margin-top:16px;font-size:13px;border-left:3px solid var(--navy-mid);}
+  .passage-body .vocab-box strong{color:var(--navy);}
+  .passage-note{font-size:11px;color:var(--gray-500);margin-top:12px;font-style:italic;}
+  .passage-instruction{background:#EDF4FF;border:1.5px solid #BCD0F5;border-radius:8px;
+    padding:10px 16px;margin-bottom:16px;font-size:14px;font-weight:600;color:var(--navy-mid);}
+
+  /* Letter formatting */
+  .letter-box{font-family:'DM Mono',monospace;font-size:13px;line-height:1.9;background:#FAFAFA;
+    border-radius:8px;padding:20px;border:1px solid var(--gray-100);}
+
+  .q-card{background:var(--white);border-radius:16px;padding:28px 32px;
+    box-shadow:0 4px 20px rgba(27,42,74,.07);margin-bottom:16px;}
+  .q-number{display:inline-flex;align-items:center;justify-content:center;
+    width:32px;height:32px;background:var(--navy);color:var(--white);
+    font-size:14px;font-weight:700;border-radius:8px;margin-bottom:12px;}
+  .q-text{font-size:16px;font-weight:500;color:var(--navy);line-height:1.6;margin-bottom:6px;}
+  .q-quote{background:var(--gray-50);border-left:3px solid var(--navy-mid);padding:12px 16px;
+    border-radius:0 8px 8px 0;margin:12px 0;font-size:14px;font-style:italic;color:var(--gray-700);line-height:1.7;}
+
+  .options{display:flex;flex-direction:column;gap:10px;margin-top:16px;}
+  .opt-btn{display:flex;align-items:center;gap:14px;padding:13px 18px;
+    border:2px solid var(--gray-100);border-radius:var(--radius-sm);background:var(--gray-50);
+    cursor:pointer;font-family:'DM Sans',sans-serif;font-size:15px;color:var(--navy);
+    text-align:left;transition:border-color .15s,background .15s;}
+  .opt-btn:hover{border-color:var(--navy-mid);background:var(--white);}
+  .opt-btn.selected{border-color:var(--navy);background:#EDF0F8;}
+  .opt-label{width:26px;height:26px;border-radius:6px;background:var(--gray-100);
+    display:flex;align-items:center;justify-content:center;font-weight:700;
+    font-size:13px;color:var(--gray-700);flex-shrink:0;}
+  .opt-btn.selected .opt-label{background:var(--navy);color:var(--white);}
+
+  .q-actions{display:flex;justify-content:space-between;gap:12px;}
+  .btn-prev,.btn-next{flex:1;padding:13px;border-radius:var(--radius-sm);
+    font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;cursor:pointer;border:none;}
+  .btn-prev{background:var(--gray-100);color:var(--gray-700);}
+  .btn-prev:disabled{opacity:.35;cursor:default;}
+  .btn-next{background:var(--navy);color:var(--white);}
+  .btn-next:hover{background:var(--navy-mid);}
+  .btn-next.finish{background:var(--green);}
+
+  .dot-map{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px;}
+  .dot{width:20px;height:20px;border-radius:4px;background:#dde0ea;cursor:pointer;
+    font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;color:var(--gray-500);}
+  .dot.answered{background:var(--navy);color:var(--white);}
+  .dot.current{background:var(--gold);color:var(--navy);}
+
+  /* SUBMITTED */
+  #submitted-screen{max-width:520px;margin:80px auto;padding:24px;}
+  .submitted-card{background:var(--white);border-radius:16px;padding:48px 40px;
+    box-shadow:0 4px 24px rgba(27,42,74,.08);text-align:center;}
+  .submitted-card .icon{font-size:56px;margin-bottom:20px;}
+  .submitted-card h2{font-size:26px;font-weight:700;color:var(--navy);margin-bottom:12px;}
+  .submitted-card p{color:var(--gray-500);font-size:15px;line-height:1.7;}
+  .submitted-card .highlight{color:var(--navy);font-weight:600;}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-brand">
+    <svg width="38" height="44" viewBox="0 0 38 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="38" height="44" rx="6" fill="#1B2A4A"/>
+      <text x="4" y="36" font-family="Georgia,serif" font-size="36" font-weight="900" fill="white">P</text>
+    </svg>
+    <div class="brand-text">
+      <span class="brand-sup">Admisión 2026/27</span>
+      <span class="brand-main">Pioneros · Prueba de Lenguaje 6°</span>
+    </div>
+  </div>
+  <div class="timer-wrap" id="timer-wrap" style="display:none">
+    <span style="font-size:16px">⏱</span>
+    <span id="timer">90:00</span>
+  </div>
+</header>
+<div class="progress-bar-wrap"><div id="progress-bar"></div></div>
+
+<!-- ACCESS -->
+<div id="access-screen" class="screen active">
+  <div class="access-card">
+    <div class="lock-icon">🔐</div>
+    <h2>Acceso Restringido</h2>
+    <p>Esta prueba es solo para candidatos autorizados.<br>Ingresa tu nombre completo y el código de acceso que te envió Pioneros.</p>
+    <div class="access-field">
+      <label>Nombre completo</label>
+      <input id="access-name" type="text" placeholder="Escribe tu nombre completo">
+    </div>
+    <div class="access-field">
+      <label>Código de acceso</label>
+      <input id="access-code" type="text" placeholder="Ej: PIO-2026-XXXX" style="text-transform:uppercase">
+    </div>
+    <button class="btn-access" onclick="checkAccess()">Ingresar a la prueba →</button>
+    <div class="access-error" id="access-error">⚠ Código incorrecto. Por favor verifica e intenta nuevamente.</div>
+  </div>
+</div>
+
+<!-- START -->
+<div id="start-screen" class="screen">
+  <div class="start-card">
+    <span class="badge">Admisión 2026/27</span>
+    <h1>Prueba de Lenguaje</h1>
+    <p>Lee cada texto con atención antes de responder. Puedes navegar entre las preguntas antes de enviar.</p>
+    <div class="info-grid">
+      <div class="info-item"><div class="val">25</div><div class="lbl">Preguntas</div></div>
+      <div class="info-item"><div class="val">90'</div><div class="lbl">Tiempo límite</div></div>
+      <div class="info-item"><div class="val">4</div><div class="lbl">Alternativas</div></div>
+      <div class="info-item"><div class="val">A–D</div><div class="lbl">Selección única</div></div>
+    </div>
+    <div class="name-field">
+      <label>Tu nombre completo</label>
+      <input id="student-name" type="text" placeholder="Escribe tu nombre aquí">
+    </div>
+    <button class="btn-start" onclick="startQuiz()">Comenzar prueba →</button>
+  </div>
+</div>
+
+<!-- QUIZ -->
+<div id="quiz-screen" class="screen">
+  <div class="dot-map" id="dot-map"></div>
+  <div class="q-nav">
+    <div class="q-counter">Pregunta <span id="q-num">1</span> de 25</div>
+  </div>
+  <div id="passage-area"></div>
+  <div class="q-card" id="q-card"></div>
+  <div class="q-actions">
+    <button class="btn-prev" id="btn-prev" onclick="navigate(-1)" disabled>← Anterior</button>
+    <button class="btn-next" id="btn-next" onclick="navigate(1)">Siguiente →</button>
+  </div>
+</div>
+
+<!-- SUBMITTED -->
+<div id="submitted-screen" class="screen">
+  <div class="submitted-card">
+    <div class="icon">📬</div>
+    <h2>¡Prueba enviada!</h2>
+    <p>Gracias, <span class="highlight" id="sub-name"></span>.<br><br>
+    Tus respuestas han sido recibidas. El equipo de admisiones de Pioneros revisará tus resultados y se pondrá en contacto contigo pronto.<br><br>
+    ¡Mucho éxito! 🌟</p>
+  </div>
+</div>
+
+<script>
+(function(){emailjs.init({publicKey:"x6LTzX-hx-Gd5mTR0"});})();
+const TOTAL_TIME = 90*60;
+const LABELS = ['A','B','C','D'];
+const ADMIN_EMAIL = 'dplatz@cpioneros.cl';
+const VALID_CODES = ['PIO-2026-OPNK','PIO-2026-7UG1','PIO-2026-X1SW'];
+let studentCode = '';
+
+function checkAccess(){
+  const name = document.getElementById('access-name').value.trim();
+  const code = document.getElementById('access-code').value.trim().toUpperCase();
+  const err = document.getElementById('access-error');
+  if(!name){err.textContent='⚠ Por favor ingresa tu nombre completo.';err.style.display='block';return;}
+  if(!VALID_CODES.includes(code)){err.textContent='⚠ Código incorrecto. Por favor verifica e intenta nuevamente.';err.style.display='block';return;}
+  err.style.display='none'; studentCode=code;
+  document.getElementById('access-screen').classList.remove('active');
+  document.getElementById('start-screen').classList.add('active');
+  document.getElementById('student-name').value=name;
+  document.getElementById('student-name').readOnly=true;
+}
+
+// ── PASSAGES ─────────────────────────────────────────────────────────────────
+const PASSAGES = {
+  0: `<div class="passage-box">
+    <div class="passage-instruction">📖 Lee el siguiente texto y responde las preguntas 1 a 3.</div>
+    <div class="passage-title">¿CÓMO ARMAR UN TELÉFONO CON VASOS?</div>
+    <div class="passage-body">
+      <ol style="padding-left:20px;line-height:1.9">
+        <li>Consigue: 2 vasos plásticos, 1 hilo largo de cuerda fina o de lana y 1 aguja grande.</li>
+        <li>Toma los vasos y, con una aguja, haz un agujero en el fondo de cada uno.</li>
+        <li>Luego, pasa el hilo o lana por el agujero del primer vaso.</li>
+        <li>Tira del hilo. Pasa la otra punta del hilo a través del agujero del segundo vaso.</li>
+        <li>Haz un nudo en las puntas del hilo que quedaron por fuera de los vasos para que, cuando tires de él, el hilo no pase por los agujeros. Corta el resto del hilo que quede detrás del nudo.</li>
+        <li>Invita a una amiga o un amigo para que use uno de los vasos. Mantengan el hilo tirante y ¡ya tienen teléfonos! Mientras uno habla por un vaso, el otro escucha con el otro.</li>
+      </ol>
+      <p class="passage-note">Fuente: Aptus</p>
+    </div>
+  </div>`,
+
+  3: `<div class="passage-box">
+    <div class="passage-instruction">📖 Lee el siguiente texto y responde las preguntas 4 a 7.</div>
+    <div class="passage-title">EL CHIMPANCÉ</div>
+    <div class="passage-body">
+      <p>El chimpancé es el más inteligente de los simios, puede aprender muchas cosas y de manera muy rápida. Algunos incluso han logrado comunicarse con los mismos signos que ocupan las personas sordas.</p>
+      <p>El chimpancé vive en las selvas de África, siempre en familia. Muchas veces alcanza hasta cincuenta años. Habita en el suelo, aunque a veces también sube a los árboles, donde construye una cama con hojas y ramas.</p>
+      <p>Cuando nace un chimpancé, la madre lo muestra de inmediato al grupo para que sea protegido por todos. Las crías viven cinco años junto a sus madres, tiempo en que aprenden todo lo que necesitan para sobrevivir por sí mismas.</p>
+      <p>El chimpancé es tan inteligente que puede solucionar pequeños problemas; por ejemplo, ocupa herramientas que él mismo fabrica. Para capturar hormigas, una comida que le encanta, elige una rama larga, le saca las hojas y la mete dentro de un hormiguero. Espera a que las hormigas se suban a la rama, luego la saca y rápidamente se la mete en la boca. También usa piedras para partir la cáscara de los frutos que le gusta comer.</p>
+      <p class="passage-note">Fundación Astoreca (2009). Curiosidades de la naturaleza. Santiago: Fundación Astoreca.</p>
+    </div>
+  </div>`,
+
+  7: `<div class="passage-box">
+    <div class="passage-instruction">📖 Lee el siguiente texto y responde las preguntas 8 a 14.</div>
+    <div class="passage-title">El origen de la niebla</div>
+    <div class="passage-body">
+      <p>Cuando la tierra era joven, los tuniqs y los inuits vivían en la tierra, pero eran enemigos. Un día, un cazador inuit fue a pescar para calmar el hambre de su familia; sin embargo, no consiguió nada en todo el día. El cazador miró en todas direcciones, pero no encontró ninguna presa. Finalmente, vio a un hombre en la lejanía, y a medida que se acercaba a él, la figura se volvía más grande: se trataba de un gigante tuniq. Viendo al gigante, el cazador comprendió que su vida estaba en peligro, y para evitar una muerte segura, el cazador se <strong>tumbó</strong> en el suelo y se hizo el muerto.</p>
+      <p>El gigante alcanzó pronto al <strong>endeble</strong> cazador, levantándolo para ver si respiraba; pero el cazador sostuvo su aliento. "Está muerto", pensó el gigante y agarró al cazador llevándolo hasta su casa. El hombre seguía fingiendo estar muerto.</p>
+      <p>A lo largo del camino, a medida que el gigante avanzaba en su regreso a casa, el inteligente cazador iba sujetando y agarrando árboles y arbustos, de manera que, sin darse cuenta, el gigante estaba arrastrando una gran cantidad de peso. Cuando llegó a su casa, el gigante estaba <strong>exhausto</strong>.</p>
+      <p>El gigante dejó al cazador, al que creía muerto, en un rincón de la mesa para comérselo más tarde; y como se sentía tan agotado, tuvo que tumbarse a descansar.</p>
+      <p>Finalmente, cuando el gigante se quedó dormido, el cazador cogió su hacha y se liberó. Empezó a huir, siguiendo sus propios pasos hacia atrás. Pero la esposa del gigante, que también era enorme, estaba juntando madera para cocinar al cazador y lo vio intentando escapar, así que comenzó a perseguirlo.</p>
+      <p>Como lo estaba alcanzando rápidamente, el cazador hizo un corte profundo en la Tierra, del cual brotó con fuerza un río. La esposa del gigante se detuvo al ver aquel río ante ella y entonces miró al inuit y le preguntó: "¿Cómo pudiste atravesar este río?" El inteligente cazador respondió: "Me bebí el agua".</p>
+      <p>Afanosa, la mujer del gigante comenzó a beber y beber más agua. Cuanto más bebía, más se hinchaba y más crecía, pero ella seguía bebiendo agua, porque el río no se agotaba. Bebió y bebió hasta que explotó con toda el agua dentro. Con el viento, las gotitas de agua fueron esparcidas por el aire y así es cómo se formó la niebla. El inuit esperó a que se disipase aquella niebla recién originada y finalmente pudo escapar del lugar y regresar con su familia sano y salvo.</p>
+      <div class="vocab-box">
+        <strong>Tumbarse:</strong> echarse, especialmente a dormir.<br>
+        <strong>Endeble:</strong> débil, flojo, de resistencia insuficiente.<br>
+        <strong>Exhausto:</strong> muy cansado.
+      </div>
+      <p class="passage-note">Fuente: "El origen de la niebla". Recuperado el 18 de junio de 2012 de http://bib.cervantesvirtual.com/historia/TH/cosmogonia_inuit.shtml#13</p>
+    </div>
+  </div>`,
+
+  14: `<div class="passage-box">
+    <div class="passage-instruction">📖 Lee el siguiente texto y responde las preguntas 15 a 21.</div>
+    <div class="passage-title">El joven cangrejo</div>
+    <div class="passage-body">
+      <p>Un joven cangrejo pensó: "¿Por qué toda mi familia camina hacia atrás? Quiero aprender a caminar hacia delante, como las ranas, y que se me caiga la cola si no lo consigo".</p>
+      <p>Empezó a entrenarse a escondidas, entre las piedras de su arroyo, y los primeros días le costaba muchísimo trabajo lograrlo. Chocaba, se <strong>magullaba</strong> y una pata se le enredaba con la otra. Pero las cosas fueron mejorando lentamente, porque todo puede aprenderse cuando se desea de veras.</p>
+      <p>Cuando estuvo seguro de sí mismo, se presentó ante su familia y les dijo: -Fíjense. Y dio una magnífica carrera hacia delante.</p>
+      <p>-Hijo mío -dijo llorando la madre- ¿has perdido el juicio? Camina como te hemos enseñado; camina como tus hermanos, que tanto te quieren.</p>
+      <p>Sus hermanos, no obstante, se mataban de risa.</p>
+      <p>El padre se le quedó mirando un rato severamente y dijo: -¡Ya basta! Si quieres quedarte con nosotros, camina como todos los cangrejos. Si quieres hacer lo que te parezca, el arroyo es bastante grande. Vete y no regreses más.</p>
+      <p>El buen cangrejo quería a su familia, pero estaba convencido de que tenía la razón. Abrazó a su madre, saludó a su padre y a sus hermanos, y se marchó.</p>
+      <p>Su paso despertó inmediatamente la sorpresa de un grupo de ranas que, como buenas comadres, se habían reunido en torno a una hoja de <strong>nenúfar</strong> para charlar.</p>
+      <p>-El mundo va al revés -dijo una rana-. Miren a aquel cangrejo. -Ya no hay educación -dijo la otra rana. -Vaya, vaya -dijo una tercera.</p>
+      <p>Pero, todo hay que decirlo, el cangrejo continuó adelante por el camino que había elegido. En cierto momento oyó que lo llamaba un viejo cangrejote de expresión melancólica, que estaba solitario junto a una piedra.</p>
+      <p>-Buenos días -dijo el joven cangrejo. El viejo le observó atentamente y luego le preguntó: -¿Qué crees que estás haciendo? También yo, cuando era joven, pensaba enseñar a caminar hacia adelante a los cangrejos. Y mira lo que he conseguido: vivo solo y la gente se cortaría la lengua antes de dirigirme la palabra. Mientras estés a tiempo de hacerlo, hazme caso: resígnate a caminar como los demás y un día me agradecerás el consejo.</p>
+      <p>El joven cangrejo no sabía qué responder y no dijo nada. Pero pensaba: "Yo tengo la razón". Y después de saludar atentamente al viejo, volvió a emprender de nuevo su camino orgullosamente.</p>
+      <p>¿Llegará muy lejos? ¿Tendrá suerte? ¿Logrará enderezar todas las cosas torcidas del mundo? Nosotros no lo sabemos, porque está todavía caminando con el coraje y la decisión del primer día. Solo podemos desearle de todo corazón: ¡Buen viaje!</p>
+      <div class="vocab-box">
+        <strong>Magullar:</strong> golpearse, lesionarse.<br>
+        <strong>Nenúfar:</strong> flor acuática.
+      </div>
+      <p class="passage-note">Recuperado de: Cuentos por teléfono. Gianni Rodari. Editorial Juventud (Adaptación)</p>
+    </div>
+  </div>`,
+
+  21: `<div class="passage-box">
+    <div class="passage-instruction">📖 Lee el siguiente texto y responde las preguntas 22 a 25.</div>
+    <div class="passage-title">Carta a la Junta de Vecinos</div>
+    <div class="passage-body">
+      <div class="letter-box">
+Copiapó, 6 de abril de 2015
+
+Srta.
+Adriana Ramos Riquelme
+Presidenta de la Junta de Vecinos
+Presente
+
+Estimada Srta. Adriana:
+
+A través de esta carta nos dirigimos a Ud. con la intención de convocar
+a una reunión extraordinaria en la sede de la Junta de Vecinos, ubicada
+en Av. Frida Kahlo 334, con la finalidad de presentar la propuesta de
+mejoramiento de las zonas de juegos para niños de la comuna, que se
+está desarrollando en conjunto con la Ilustre Municipalidad de Copiapó.
+
+Nuestro Grupo de Desarrollo Urbano ha logrado sacar adelante proyectos
+como las áreas verdes del antiguo <strong>vertedero</strong>, la construcción de la
+biblioteca comunitaria y la puesta en marcha de los talleres de verano
+para mujeres.
+
+Tras una evaluación, hemos decidido que el mejor espacio para realizar
+el trabajo es la <strong>intersección</strong> de las calles Urquiza y María Benavente,
+sector que pertenece a su Junta de Vecinos y que actualmente cuenta
+solo con algunos bancos para sentarse y una pileta de agua que no
+funciona desde hace cinco años.
+
+La reunión se realizará el próximo lunes a las 19:00 hrs. en su sede, y
+contará con la presencia del encargado de obra para este proyecto, la
+señora alcaldesa y dos senadores de la región.
+
+De antemano le agradecemos su comprensión y dejamos extendida la
+invitación para quienes Ud. estime adecuado.
+
+Saluda atentamente,
+
+                              Sonia Gutiérrez Lagos
+                              Secretaria Comunal
+                              Grupo de Desarrollo Urbano
+      </div>
+      <div class="vocab-box" style="margin-top:12px">
+        <strong>Vertedero:</strong> lugar donde se vierten basuras o escombros.<br>
+        <strong>Intersección:</strong> encuentro de dos calles.
+      </div>
+      <p class="passage-note">Fuente: Archivo editorial Aptus Chile</p>
+    </div>
+  </div>`
+};
+
+
+// ── QUESTIONS ─────────────────────────────────────────────────────────────────
+const questions = [
+  { q:"Según el texto, ¿para qué se hacen los nudos?", opts:["Para unir los dos vasos.","Para mantener el hilo tirante.","Para evitar que el hilo pase por los agujeros.","Para hacer un agujero en el fondo de cada vaso."], ans:2 },
+  { q:"Una vez que ya están listos los teléfonos, ¿qué debe hacer la persona para escuchar a la otra?", opts:["Anudar bien los hilos y hablar bien fuerte por el vaso.","Mantener el hilo tirante y ponerse el vaso en la oreja.","Cortar el resto de los hilos y acercar el vaso a su boca.","Poner uno de los vasos en su boca y el otro en su oreja."], ans:1 },
+  { q:"¿Para qué se escribió el texto leído?", opts:["Invitar a hacer un teléfono siguiendo instrucciones.","Enseñar paso a paso cómo se hace un teléfono con vasos.","Opinar sobre la utilidad de hacer un teléfono siguiendo instrucciones.","Explicar la importancia de cada paso para hacer un teléfono con vasos."], ans:1 },
+  { q:"Según el texto, ¿qué aprendizaje obtienen los chimpancés de sus madres?", opts:["Todo lo que requieren para alimentarse solos.","Todo lo que necesitan para sobrevivir por sí mismos.","Todo lo que requieren para comunicarse con personas.","Todo lo que necesitan para que el grupo familiar los proteja."], ans:1 },
+  { q:"¿Cuánto puede llegar a vivir un chimpancé?", opts:["Más de cinco años.","Menos de cinco años.","Hasta cincuenta años.","Más de cincuenta años."], ans:2 },
+  { q:"En el texto, ¿qué característica del chimpancé lo hace un animal que se destaca del resto?", opts:["Sus hábitos alimenticios.","Sus costumbres de vida.","Su capacidad de aprender.","Su manera de relacionarse."], ans:2 },
+  { q:"En el texto, ¿para qué se menciona que el chimpancé utiliza herramientas que él mismo fabrica?", opts:["Para describir la similitud con otros animales.","Para mostrar que puede crear una civilización.","Para explicar cómo parte las cáscaras de los frutos.","Para ejemplificar su capacidad de solucionar problemas."], ans:3 },
+  { q:"¿Qué caracterizaba a los tuniqs?", opts:["Eran astutos.","Eran enormes.","Eran buenos pescadores.","Eran conocedores de los ríos."], ans:1 },
+  { q:"¿Por qué el gigante se quedó dormido?", opts:["Se aburrió de esperar a que despertara el hombre.","Se sentía cansado por caminar desde tan lejos.","Acostumbraba a reposar antes de comer.","Había arrastrado mucho peso."], ans:3 },
+  { q:"¿Qué hizo el cazador para evitar que el gigante lo matara?", opts:["Se hizo el muerto.","Se cubrió de ramas.","Se protegió con un hacha.","Se escondió en una mesa."], ans:0 },
+  { q:"¿Qué caracterizaba el ambiente donde se desarrolla la historia?", opts:["Hacía muchísimo frío.","Siempre estaba nublado.","Tenía árboles y arbustos.","Era una zona cubierta de agua."], ans:2 },
+  { q:"Relee: \"La esposa del gigante se detuvo al ver aquel río ante ella y entonces miró al inuit y le preguntó: ¿Cómo pudiste atravesar este río?\" ¿Cómo se siente la mujer?", opts:["Enojada.","Sorprendida.","Desconfiada.","Decepcionada."], ans:1 },
+  { q:"En el texto, ¿qué quiere decir la expresión: \"Cuando la tierra era joven\"?", opts:["Que se había originado la niebla.","Que en ella habitaban nuevos pueblos.","Que en ella la vida nacía por primera vez.","Que se había formado hacía poco tiempo."], ans:3 },
+  { q:"¿Qué consiguió el inuit con sus decisiones a lo largo de la historia?", opts:["Alimentar a su familia.","Superar la adversidad.","Conocer a sus enemigos.","Conseguir formar la niebla."], ans:1 },
+  { q:"¿Cómo reaccionó el padre del cangrejo cuando lo vio caminar hacia delante?", opts:["Lo obligó a irse.","Le dio dos opciones.","Le reconoció que tenía razón.","Lo defendió de sus hermanos."], ans:1 },
+  { q:"¿Qué pasó con el viejo cangrejote cuando quiso enseñar a caminar hacia delante?", opts:["Se quedó solo.","Se fue de viaje.","Dejó de hablarle a los demás.","Se dedicó a aconsejar a otros cangrejos."], ans:0 },
+  { q:"¿Qué se puede inferir de la reacción de todos ante la idea del cangrejo?", opts:["Que lo importante es la familia.","Que es imposible dar en el gusto al resto.","Que los deseos del padre deben ser obedecidos.","Que la naturaleza de los cangrejos es caminar hacia atrás."], ans:1 },
+  { q:"¿Qué consecuencia tuvo para el cangrejo la opinión de su padre?", opts:["Debió dejar su casa.","Debió buscar otra familia.","Debió irse a vivir con las ranas.","Debió volver a ser como antes."], ans:0 },
+  { q:"¿Qué elemento del ambiente se describe en el texto?", opts:["El arroyo donde vivían era grande.","Había muchos caminos para elegir.","Había muchas piedras donde apoyarse.","La zona estaba cubierta de plantas acuáticas."], ans:2 },
+  { q:"¿Qué caracterizaba al cangrejo a lo largo de la historia?", opts:["Era conflictivo, pues le gustaba hacer enojar a los demás.","Era obstinado, pues seguía sus ideas a pesar de la oposición del resto.","Era convincente, pues lograba que todos los demás creyeran sus ideas.","Era testarudo, pues le gustaba discutir hasta que el resto le encontrara la razón."], ans:1 },
+  { q:"¿Cuál es el tema central del texto leído?", opts:["El origen de los cangrejos.","Seguir los propios ideales.","La fuerza de la naturaleza.","La importancia de practicar."], ans:1 },
+  { q:"¿Dónde se realizará la reunión a la que se convoca en la carta?", opts:["En la biblioteca comunitaria.","En la Municipalidad de Copiapó.","En Urquiza con María Benavente.","En la sede de la Junta de Vecinos."], ans:3 },
+  { q:"De acuerdo con lo leído, ¿por qué se propone la intersección de Urquiza y María Benavente para realizar las obras?", opts:["Porque lo pidió la Junta de vecinos.","Porque en ese lugar viven muchos niños.","Porque la zona se encuentra muy deteriorada.","Porque pertenece al Grupo de Desarrollo Urbano."], ans:2 },
+  { q:"¿Con qué propósito se menciona la construcción de la biblioteca comunitaria y la puesta en marcha de los talleres de verano para mujeres?", opts:["Para nombrar los grandes proyectos que la Municipalidad de Copiapó está haciendo.","Para enumerar las preocupaciones de los integrantes de la Junta de Vecinos de Copiapó.","Para señalar qué proyecto tiene mayor proyección dentro de la ciudad de Copiapó.","Para reforzar la idea de que el Grupo puede ejecutar proyectos sociales de calidad en Copiapó."], ans:3 },
+  { q:"¿Cuál de las siguientes preguntas se responde con la información que entrega el texto?", opts:["¿Cuántos niños serán beneficiados?","¿Dónde se realizará el proyecto?","¿Cuándo se iniciarán las obras?","¿Qué juegos se instalarán?"], ans:1 },
+];
+
+
+let current=0, answers=new Array(questions.length).fill(null);
+let timerInterval=null, timeLeft=TOTAL_TIME, startTime=null, studentName='';
+
+function startQuiz(){
+  studentName=document.getElementById('student-name').value.trim()||'Estudiante';
+  document.getElementById('start-screen').classList.remove('active');
+  document.getElementById('quiz-screen').classList.add('active');
+  document.getElementById('timer-wrap').style.display='flex';
+  buildDotMap(); renderQuestion(); startTimer();
+}
+function startTimer(){
+  startTime=Date.now(); updateTimerDisplay();
+  timerInterval=setInterval(()=>{timeLeft--;updateTimerDisplay();if(timeLeft<=0){clearInterval(timerInterval);submitQuiz();}},1000);
+}
+function updateTimerDisplay(){
+  const m=Math.floor(timeLeft/60).toString().padStart(2,'0');
+  const s=(timeLeft%60).toString().padStart(2,'0');
+  const el=document.getElementById('timer');
+  el.textContent=`${m}:${s}`;
+  el.className=timeLeft<=60?'danger':timeLeft<=300?'warn':'';
+}
+function buildDotMap(){
+  const map=document.getElementById('dot-map'); map.innerHTML='';
+  questions.forEach((_,i)=>{
+    const d=document.createElement('div');
+    d.className='dot'+(i===current?' current':'')+(answers[i]!==null?' answered':'');
+    d.textContent=i+1; d.onclick=()=>goTo(i); map.appendChild(d);
+  });
+}
+function goTo(idx){
+  if(idx>current && answers[current]===null){
+    alert('Por favor responde la pregunta actual antes de continuar.');
+    return;
+  }
+  current=idx;renderQuestion();
+}
+function renderQuestion(){
+  const q=questions[current];
+  // Show passage if needed
+  const pa=document.getElementById('passage-area');
+  const passageKeys=Object.keys(PASSAGES).map(Number).sort((a,b)=>a-b);
+  let shownPassage=null;
+  for(let k of passageKeys){ if(current>=k) shownPassage=k; }
+  pa.innerHTML = shownPassage!==null ? PASSAGES[shownPassage] : '';
+
+  const card=document.getElementById('q-card');
+  let html=`<div class="q-number">${current+1}</div>`;
+  html+=`<div class="q-text">${q.q}</div>`;
+  if(q.quote) html+=`<div class="q-quote">${q.quote}</div>`;
+  html+=`<div class="options">`;
+  q.opts.forEach((opt,i)=>{
+    const sel=answers[current]===i?' selected':'';
+    html+=`<button class="opt-btn${sel}" onclick="selectAnswer(${i})"><span class="opt-label">${LABELS[i]}</span><span>${opt}</span></button>`;
+  });
+  html+=`</div>`;
+  card.innerHTML=html;
+  document.getElementById('q-num').textContent=current+1;
+  document.getElementById('btn-prev').disabled=current===0;
+  const isLast=current===questions.length-1;
+  const btn=document.getElementById('btn-next');
+  btn.textContent=isLast?'Enviar prueba ✓':'Siguiente →';
+  btn.className='btn-next'+(isLast?' finish':'');
+  btn.onclick=isLast?submitQuiz:()=>navigate(1);
+  updateProgress(); buildDotMap();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function selectAnswer(idx){
+  answers[current]=idx;
+  // Re-render options only without scrolling
+  const q=questions[current];
+  const opts=document.querySelectorAll('.opt-btn');
+  opts.forEach((btn,i)=>{
+    btn.className='opt-btn'+(answers[current]===i?' selected':'');
+    btn.querySelector('.opt-label').className='opt-label';
+  });
+  updateProgress(); buildDotMap();
+}
+function navigate(dir){
+  if(dir>0 && answers[current]===null){
+    alert('Por favor responde la pregunta actual antes de continuar.');
+    return;
+  }
+  const next=current+dir;
+  if(next>=0&&next<questions.length){current=next;renderQuestion();}
+}
+function updateProgress(){
+  document.getElementById('progress-bar').style.width=(answers.filter(a=>a!==null).length/questions.length*100)+'%';
+}
+function submitQuiz(){
+  if(answers[current]===null){
+    alert('Por favor responde la pregunta actual antes de enviar la prueba.');
+    return;
+  }
+  clearInterval(timerInterval);
+  const elapsed=Math.round((Date.now()-startTime)/1000);
+  const mins=Math.floor(elapsed/60), secs=elapsed%60;
+  let correct=0,wrong=0,blank=0;
+  questions.forEach((q,i)=>{if(answers[i]===null)blank++;else if(answers[i]===q.ans)correct++;else wrong++;});
+  const pct=Math.round(correct/questions.length*100);
+  const details=questions.map((q,i)=>{
+    const u=answers[i]!==null?LABELS[answers[i]]:'—';
+    const c=LABELS[q.ans];
+    const s=answers[i]===null?'Sin respuesta':answers[i]===q.ans?'✓ Correcta':'✗ Incorrecta';
+    return `P${i+1}: ${s} | Estudiante: ${u} | Correcta: ${c}`;
+  }).join('\n');
+  emailjs.send('service_kk0m83i','template_ebdohpd',{
+    to_email:ADMIN_EMAIL, student_name:studentName,
+    grade:'5° Básico — Lenguaje',
+    access_code:studentCode,
+    score:`${correct}/25 (${pct}%)`,
+    correct, wrong, blank,
+    time_used:`${mins}m ${secs}s`,
+    details,
+    submitted_at:new Date().toLocaleString('es-CL',{timeZone:'America/Santiago'})
+  }).then(()=>{
+    console.log('Email sent OK');
+  }).catch((err)=>{
+    alert('EMAIL ERROR: ' + JSON.stringify(err));
+    console.error('Email error', err);
+  });
+  document.getElementById('quiz-screen').classList.remove('active');
+  document.getElementById('submitted-screen').classList.add('active');
+  document.getElementById('timer-wrap').style.display='none';
+  document.getElementById('progress-bar').style.width='100%';
+  document.getElementById('sub-name').textContent=studentName;
+  console.log('RESULTS LJE 5',{studentName,correct,wrong,blank,pct,details});
+}
+</script>
+</body>
+</html>
