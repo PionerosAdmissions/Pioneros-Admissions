@@ -4,46 +4,26 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Admisión 2026/27 · Pioneros 10th Grade · Matemática</title>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <style>
   :root{
-    --navy:#152744;
-    --navy-2:#22385c;
-    --paper:#f7f4ee;
-    --paper-2:#eee9de;
-    --line:#d8d0bd;
-    --ink:#1c1c1c;
-    --muted:#6b6558;
-    --accent:#a3372f;
-    --accent-2:#4c7a63;
-    --focus:#2f6fed;
+    --navy:#152744;--navy-2:#22385c;--paper:#f7f4ee;--paper-2:#eee9de;--line:#d8d0bd;
+    --ink:#1c1c1c;--muted:#6b6558;--accent:#a3372f;--accent-2:#4c7a63;--focus:#2f6fed;
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
-  body{
-    background:var(--paper);
-    color:var(--ink);
-    font-family:'Iowan Old Style','Palatino Linotype',Georgia,'Times New Roman',serif;
-    line-height:1.5;
-    min-height:100vh;
-  }
+  body{background:var(--paper);color:var(--ink);font-family:'Iowan Old Style','Palatino Linotype',Georgia,'Times New Roman',serif;line-height:1.5;min-height:100vh;}
   .sans{font-family:'Helvetica Neue',Arial,sans-serif;}
-  a{color:inherit;}
-  button{font-family:inherit;cursor:pointer;}
+  a{color:inherit;}button{font-family:inherit;cursor:pointer;}
   :focus-visible{outline:3px solid var(--focus);outline-offset:2px;}
-
   .shell{max-width:840px;margin:0 auto;padding:28px 20px 80px;}
-  header.masthead{
-    display:flex;align-items:center;gap:16px;
-    border-bottom:3px solid var(--navy);padding-bottom:14px;margin-bottom:28px;
-  }
+  header.masthead{display:flex;align-items:center;gap:16px;border-bottom:3px solid var(--navy);padding-bottom:14px;margin-bottom:28px;}
   .crest{width:52px;height:auto;display:flex;align-items:center;justify-content:center;flex:none;}
-  .crest img{width:100%;height:auto;display:block;}
   .masthead-text{flex:1;}
   .masthead-text .eyebrow{font-family:'Helvetica Neue',Arial,sans-serif;font-size:11px;letter-spacing:.04em;color:var(--muted);margin:0 0 2px;}
   .masthead-text h1{margin:0;font-size:22px;font-weight:600;color:var(--navy);}
   .clock{font-family:'Helvetica Neue',Arial,sans-serif;font-variant-numeric:tabular-nums;font-size:20px;font-weight:600;color:var(--navy);border:1px solid var(--navy);padding:6px 12px;background:#fff;min-width:78px;text-align:center;}
   .clock.low{color:var(--accent);border-color:var(--accent);}
-
   .card{background:#fff;border:1px solid var(--line);padding:36px 32px;}
   .gate h2{margin-top:0;color:var(--navy);font-size:19px;}
   .gate p{color:var(--muted);font-size:15px;}
@@ -57,18 +37,15 @@
   .btn.secondary{background:transparent;color:var(--navy);border:1px solid var(--navy);}
   .btn.secondary:hover{background:var(--paper-2);}
   .btn[disabled]{opacity:.4;cursor:not-allowed;}
-
   .stat-row{display:flex;gap:0;margin:26px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
   .stat{flex:1;padding:16px 10px;text-align:center;border-right:1px solid var(--line);}
   .stat:last-child{border-right:none;}
   .stat .n{font-size:26px;color:var(--navy);font-weight:600;display:block;}
   .stat .lbl{font-family:'Helvetica Neue',Arial,sans-serif;font-size:11.5px;color:var(--muted);}
-
   .progress-wrap{margin-bottom:22px;}
   .progress-meta{display:flex;justify-content:space-between;align-items:baseline;font-family:'Helvetica Neue',Arial,sans-serif;font-size:12.5px;color:var(--muted);margin-bottom:6px;}
   .progress-bar{height:4px;background:var(--paper-2);}
   .progress-bar > div{height:100%;background:var(--accent-2);transition:width .25s;}
-
   .qhead{font-family:'Helvetica Neue',Arial,sans-serif;font-size:12.5px;color:var(--muted);margin-bottom:10px;}
   .qtext{font-size:19px;color:var(--ink);margin:0 0 18px;}
   .figure{margin:0 0 20px;text-align:center;}
@@ -78,9 +55,8 @@
   table.datatable{border-collapse:collapse;width:100%;font-family:'Helvetica Neue',Arial,sans-serif;font-size:13px;}
   table.datatable th,table.datatable td{border:1px solid var(--line);padding:6px 10px;text-align:center;}
   table.datatable th{background:var(--paper-2);}
-
   .options{list-style:none;margin:0 0 26px;padding:0;}
-  .option{border:1px solid var(--line);background:#fff;margin-bottom:10px;display:flex;align-items:flex-start;gap:12px;padding:13px 16px;transition:border-color .12s, background .12s;}
+  .option{border:1px solid var(--line);background:#fff;margin-bottom:10px;display:flex;align-items:flex-start;gap:12px;padding:13px 16px;transition:border-color .12s, background .12s;cursor:pointer;}
   .option:hover{border-color:var(--navy);}
   .option.selected{border-color:var(--navy);background:#eef1f6;}
   .option input{margin-top:3px;flex:none;}
@@ -91,7 +67,6 @@
   .options.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
   .options.grid .option{margin-bottom:0;flex-direction:column;align-items:center;text-align:center;}
   .options.grid .option .letter{width:auto;margin-bottom:6px;}
-
   .navrow{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:10px;}
   .navrow .spacer{flex:1;}
   .jumpgrid{display:flex;flex-wrap:wrap;gap:6px;margin:22px 0 0;font-family:'Helvetica Neue',Arial,sans-serif;}
@@ -100,28 +75,23 @@
   .jumpgrid button.answered{background:var(--paper-2);color:var(--ink);}
   details.jump-toggle{margin-top:18px;font-family:'Helvetica Neue',Arial,sans-serif;font-size:13px;color:var(--navy);}
   details.jump-toggle summary{cursor:pointer;}
-
   .done{text-align:center;padding:50px 20px;}
   .done .mark{font-size:44px;margin-bottom:6px;}
   .done h2{color:var(--navy);margin-bottom:6px;}
   .done p{color:var(--muted);max-width:440px;margin:0 auto 6px;}
-  .done .btn{margin-top:24px;}
-
   .hidden{display:none !important;}
-
-  @media (max-width:560px){
-    .stat-row{flex-wrap:wrap;}
-    .stat{flex:1 1 33%;border-bottom:1px solid var(--line);}
-    .options.grid{grid-template-columns:1fr;}
-    .qtext{font-size:17px;}
-  }
+  @media (max-width:560px){.stat-row{flex-wrap:wrap;}.stat{flex:1 1 33%;border-bottom:1px solid var(--line);}.options.grid{grid-template-columns:1fr;}.qtext{font-size:17px;}}
 </style>
 </head>
 <body>
 <div class="shell">
-
   <header class="masthead">
-    <div class="crest"><img src="data:image/png;base64,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" alt="Logo Pioneros"></div>
+    <div class="crest">
+      <svg width="44" height="52" viewBox="0 0 44 52" xmlns="http://www.w3.org/2000/svg">
+        <rect width="44" height="52" rx="6" fill="#152744"/>
+        <text x="4" y="44" font-family="Georgia,serif" font-size="44" font-weight="900" fill="white">P</text>
+      </svg>
+    </div>
     <div class="masthead-text">
       <p class="eyebrow sans">ADMISIÓN 2026/27 · PIONEROS · 10TH GRADE</p>
       <h1>Matemática</h1>
@@ -129,8 +99,9 @@
     <div class="clock sans hidden" id="clock">90:00</div>
   </header>
 
+  <!-- ACCESS GATE -->
   <section id="screen-gate" class="card gate">
-    <h2>Acceso restringido</h2>
+    <h2>Acceso restringido 🔐</h2>
     <p>Esta prueba es solo para postulantes autorizados. Ingresa tu nombre completo y el código de acceso que te envió el colegio.</p>
     <div class="field">
       <label for="in-name">Nombre completo</label>
@@ -138,15 +109,16 @@
     </div>
     <div class="field">
       <label for="in-code">Código de acceso</label>
-      <input type="text" id="in-code" autocomplete="off" placeholder="Código entregado por Pioneros">
+      <input type="text" id="in-code" autocomplete="off" placeholder="Ej: PIO-2026-XXXX" style="text-transform:uppercase">
     </div>
-    <p class="errormsg" id="gate-error">Código de acceso inválido o nombre incompleto. Verifica e intenta nuevamente.</p>
+    <p class="errormsg" id="gate-error">⚠ Código de acceso inválido o nombre incompleto. Verifica e intenta nuevamente.</p>
     <button class="btn" id="btn-enter">Ingresar a la prueba →</button>
   </section>
 
+  <!-- INTRO -->
   <section id="screen-intro" class="card hidden">
     <p class="sans" style="font-size:11px;color:var(--muted);letter-spacing:.04em;">ADMISIÓN 2026/27</p>
-    <h2 style="font-size:24px;">Prueba de Admisión · Matemática</h2>
+    <h2 style="font-size:24px;">Prueba de Admisión · Matemática 10°</h2>
     <p style="color:var(--muted);">Responde todas las preguntas con calma. Puedes moverte entre ellas antes de enviar tus respuestas.</p>
     <div class="stat-row sans">
       <div class="stat"><span class="n">36</span><span class="lbl">Preguntas</span></div>
@@ -154,35 +126,27 @@
       <div class="stat"><span class="n">4</span><span class="lbl">Alternativas</span></div>
       <div class="stat"><span class="n">A–D</span><span class="lbl">Respuesta única</span></div>
     </div>
-    <div class="field">
-      <label for="in-name-2">Confirma tu nombre completo</label>
-      <input type="text" id="in-name-2">
-    </div>
     <button class="btn" id="btn-start">Comenzar prueba →</button>
   </section>
 
+  <!-- QUIZ -->
   <section id="screen-quiz" class="hidden">
     <div class="progress-wrap">
-      <div class="progress-meta">
-        <span id="qcounter">Pregunta 1 de 36</span>
-      </div>
+      <div class="progress-meta"><span id="qcounter">Pregunta 1 de 36</span></div>
       <div class="progress-bar"><div id="progress-fill" style="width:0%"></div></div>
     </div>
-
     <div class="card">
       <div id="q-figure"></div>
       <div class="qhead sans" id="q-tag"></div>
       <p class="qtext" id="q-text"></p>
       <div id="q-table"></div>
       <ul class="options" id="q-options"></ul>
-
       <div class="navrow">
         <button class="btn secondary" id="btn-prev">← Anterior</button>
         <div class="spacer"></div>
         <button class="btn secondary" id="btn-next">Siguiente →</button>
         <button class="btn hidden" id="btn-finish">Terminar y enviar</button>
       </div>
-
       <details class="jump-toggle">
         <summary>Ver todas las preguntas</summary>
         <div class="jumpgrid" id="jumpgrid"></div>
@@ -190,6 +154,7 @@
     </div>
   </section>
 
+  <!-- CONFIRM -->
   <section id="screen-confirm" class="card hidden">
     <h2>¿Enviar tus respuestas?</h2>
     <p id="confirm-summary" style="color:var(--muted);"></p>
@@ -200,279 +165,108 @@
     </div>
   </section>
 
+  <!-- DONE -->
   <section id="screen-done" class="card done hidden">
     <div class="mark">📬</div>
     <h2>¡Prueba enviada!</h2>
     <p>Gracias, <strong id="done-name"></strong>. Tus respuestas fueron recibidas. El equipo de admisiones de Pioneros revisará tus resultados y se pondrá en contacto contigo pronto.</p>
     <p>¡Mucha suerte! 🌟</p>
-    <button class="btn secondary" id="btn-download">Descargar mis respuestas (.json)</button>
   </section>
-
 </div>
 
 <script>
-/* ===================== DATA — Matemática · 10th Grade ===================== */
+(function(){emailjs.init({publicKey:"x6LTzX-hx-Gd5mTR0"});})();
 
+const VALID_CODES = ['PIO-2026-OPNK','PIO-2026-7UG1','PIO-2026-X1SW'];
+const ADMIN_EMAIL = 'dplatz@cpioneros.cl';
+
+/* ===== SVG FIGURES ===== */
 const SVG = {};
-
-SVG.areaDiagram = `
-<svg viewBox="0 0 300 260" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica,Arial,sans-serif">
-  <rect x="70" y="20" width="140" height="120" fill="#eef1f6" stroke="#152744"/>
-  <rect x="210" y="20" width="60" height="120" fill="#dfe6f0" stroke="#152744"/>
-  <rect x="70" y="140" width="140" height="45" fill="#c9d2df" stroke="#152744"/>
-  <rect x="210" y="140" width="60" height="45" fill="#b9c4d6" stroke="#152744"/>
-  <rect x="70" y="185" width="140" height="45" fill="#a9b6cb" stroke="#152744"/>
-  <rect x="210" y="185" width="60" height="45" fill="#98a8c2" stroke="#152744"/>
-  <text x="135" y="85" text-anchor="middle" font-size="15">A1</text>
-  <text x="238" y="85" text-anchor="middle" font-size="15">A4</text>
-  <text x="135" y="167" text-anchor="middle" font-size="15">A2</text>
-  <text x="238" y="167" text-anchor="middle" font-size="15">A5</text>
-  <text x="135" y="212" text-anchor="middle" font-size="15">A3</text>
-  <text x="238" y="212" text-anchor="middle" font-size="15">A6</text>
-  <text x="45" y="83" font-size="13" font-style="italic">a</text>
-  <text x="45" y="166" font-size="13" font-style="italic">b</text>
-  <text x="45" y="211" font-size="13" font-style="italic">b</text>
-  <text x="135" y="245" text-anchor="middle" font-size="13" font-style="italic">a</text>
-  <text x="238" y="245" text-anchor="middle" font-size="13" font-style="italic">b</text>
-</svg>`;
-
-SVG.circleSector = `
-<svg viewBox="0 0 240 220" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica,Arial,sans-serif">
-  <circle cx="120" cy="120" r="90" fill="none" stroke="#152744" stroke-width="1.5"/>
-  <path d="M120,120 L120,30 A90,90 0 0,1 197.9,75 Z" fill="#c9d2df" stroke="#152744"/>
-  <line x1="120" y1="120" x2="120" y2="30" stroke="#152744"/>
-  <line x1="120" y1="120" x2="197.9" y2="75" stroke="#152744"/>
-  <text x="150" y="105" font-size="13">60°</text>
-  <text x="100" y="60" font-size="13">12 cm</text>
-  <circle cx="120" cy="120" r="2" fill="#152744"/>
-  <text x="108" y="140" font-size="13">O</text>
-</svg>`;
-
-SVG.cone = `
-<svg viewBox="0 0 260 200" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica,Arial,sans-serif">
-  <ellipse cx="130" cy="160" rx="70" ry="16" fill="none" stroke="#152744"/>
-  <line x1="60" y1="160" x2="130" y2="30" stroke="#152744"/>
-  <line x1="200" y1="160" x2="130" y2="30" stroke="#152744"/>
-  <line x1="130" y1="30" x2="130" y2="160" stroke="#152744" stroke-dasharray="4 3"/>
-  <line x1="130" y1="160" x2="200" y2="160" stroke="#152744" stroke-dasharray="4 3"/>
-  <text x="150" y="95" font-size="13">50 cm</text>
-  <text x="95" y="100" font-size="13">40 cm</text>
-  <text x="155" y="175" font-size="13">30 cm</text>
-</svg>`;
-
-SVG.cylinder = `
-<svg viewBox="0 0 220 260" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica,Arial,sans-serif">
-  <ellipse cx="110" cy="40" rx="60" ry="16" fill="#fff" stroke="#152744"/>
-  <line x1="50" y1="40" x2="50" y2="200" stroke="#152744"/>
-  <line x1="170" y1="40" x2="170" y2="200" stroke="#152744"/>
-  <ellipse cx="110" cy="200" rx="60" ry="16" fill="none" stroke="#152744"/>
-  <rect x="50" y="120" width="120" height="80" fill="#c9d2df" stroke="none"/>
-  <ellipse cx="110" cy="120" rx="60" ry="16" fill="#dfe6f0" stroke="#152744"/>
-  <line x1="50" y1="200" x2="170" y2="200" stroke="#152744"/>
-  <text x="175" y="30" font-size="13">10 cm</text>
-  <text x="20" y="120" font-size="13">50 cm</text>
-  <text x="175" y="165" font-size="12">Volumen de</text>
-  <text x="175" y="178" font-size="12">agua 6 000 cm³</text>
-</svg>`;
-
-SVG.parallelLines = `
-<svg viewBox="0 0 260 220" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica,Arial,sans-serif">
-  <line x1="120" y1="10" x2="120" y2="210" stroke="#152744"/>
-  <line x1="30" y1="140" x2="220" y2="55" stroke="#152744"/>
-  <line x1="30" y1="200" x2="230" y2="90" stroke="#152744"/>
-  <text x="225" y="55" font-size="13">L1</text>
-  <text x="233" y="92" font-size="13">L2</text>
-  <text x="55" y="115" font-size="12">4 cm</text>
-  <text x="90" y="90" font-size="12">6 cm</text>
-  <text x="55" y="190" font-size="12">8 cm</text>
-  <text x="150" y="150" font-size="12" font-style="italic">x</text>
-</svg>`;
-
-SVG.muelle = `
-<svg viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica,Arial,sans-serif">
-  <rect x="0" y="0" width="320" height="150" fill="#eef1f6"/>
-  <rect x="0" y="140" width="320" height="10" fill="#152744"/>
-  <text x="20" y="70" font-size="13" font-style="italic">Río</text>
-  <rect x="90" y="105" width="18" height="35" fill="#c9a97a" stroke="#152744"/>
-  <line x1="108" y1="105" x2="200" y2="20" stroke="#152744" stroke-dasharray="4 3"/>
-  <line x1="200" y1="20" x2="200" y2="140" stroke="#152744"/>
-  <rect x="192" y="132" width="8" height="8" fill="none" stroke="#152744"/>
-  <text x="205" y="80" font-size="13" font-style="italic">x</text>
-  <text x="55" y="128" font-size="11">1,4 m</text>
-  <line x1="90" y1="150" x2="108" y2="150" stroke="#152744"/>
-  <line x1="108" y1="150" x2="200" y2="150" stroke="#152744"/>
-  <text x="94" y="163" font-size="11">1 m</text>
-  <text x="145" y="163" font-size="11">5 m</text>
-</svg>`;
-
-SVG.triangleAED = `
-<svg viewBox="0 0 260 200" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica,Arial,sans-serif">
-  <polygon points="60,20 60,170 220,170" fill="none" stroke="#152744"/>
-  <line x1="60" y1="80" x2="150" y2="80" stroke="#152744"/>
-  <rect x="60" y="70" width="10" height="10" fill="none" stroke="#152744"/>
-  <rect x="60" y="160" width="10" height="10" fill="none" stroke="#152744"/>
-  <text x="45" y="18" font-size="13">A</text>
-  <text x="42" y="85" font-size="13">E</text>
-  <text x="155" y="78" font-size="13">D</text>
-  <text x="42" y="182" font-size="13">B</text>
-  <text x="225" y="178" font-size="13">C</text>
-  <text x="95" y="72" font-size="12">10 cm</text>
-  <text x="130" y="188" font-size="12">30 cm</text>
-</svg>`;
-
-SVG.mapCities = `
-<svg viewBox="0 0 260 180" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica,Arial,sans-serif">
-  <rect x="10" y="10" width="240" height="160" fill="#eef1f6" stroke="#152744"/>
-  <circle cx="60" cy="50" r="4" fill="#152744"/>
-  <text x="35" y="40" font-size="12">Ciudad A</text>
-  <circle cx="170" cy="120" r="4" fill="#152744"/>
-  <text x="178" y="124" font-size="12">Ciudad B</text>
-  <line x1="60" y1="50" x2="170" y2="120" stroke="#152744" stroke-dasharray="4 3"/>
-  <text x="95" y="80" font-size="12">4 cm</text>
-</svg>`;
-
-SVG.triangleABC22 = `
-<svg viewBox="0 0 220 160" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica,Arial,sans-serif">
-  <polygon points="30,130 190,130 90,20" fill="none" stroke="#152744"/>
-  <line x1="90" y1="20" x2="90" y2="130" stroke="#152744" stroke-dasharray="4 3"/>
-  <rect x="80" y="120" width="10" height="10" fill="none" stroke="#152744"/>
-  <text x="15" y="145" font-size="13">A</text>
-  <text x="195" y="145" font-size="13">B</text>
-  <text x="90" y="15" font-size="13">C</text>
-  <text x="95" y="80" font-size="12">6 cm</text>
-  <text x="45" y="150" font-size="12">2 cm</text>
-</svg>`;
+SVG.areaDiagram = `<svg viewBox="0 0 300 260" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica,Arial,sans-serif"><rect x="70" y="20" width="140" height="120" fill="#eef1f6" stroke="#152744"/><rect x="210" y="20" width="60" height="120" fill="#dfe6f0" stroke="#152744"/><rect x="70" y="140" width="140" height="45" fill="#c9d2df" stroke="#152744"/><rect x="210" y="140" width="60" height="45" fill="#b9c4d6" stroke="#152744"/><rect x="70" y="185" width="140" height="45" fill="#a9b6cb" stroke="#152744"/><rect x="210" y="185" width="60" height="45" fill="#98a8c2" stroke="#152744"/><text x="135" y="85" text-anchor="middle" font-size="15">A1</text><text x="238" y="85" text-anchor="middle" font-size="15">A4</text><text x="135" y="167" text-anchor="middle" font-size="15">A2</text><text x="238" y="167" text-anchor="middle" font-size="15">A5</text><text x="135" y="212" text-anchor="middle" font-size="15">A3</text><text x="238" y="212" text-anchor="middle" font-size="15">A6</text><text x="45" y="83" font-size="13" font-style="italic">a</text><text x="45" y="166" font-size="13" font-style="italic">b</text><text x="45" y="211" font-size="13" font-style="italic">b</text><text x="135" y="245" text-anchor="middle" font-size="13" font-style="italic">a</text><text x="238" y="245" text-anchor="middle" font-size="13" font-style="italic">b</text></svg>`;
+SVG.circleSector = `<svg viewBox="0 0 240 220" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica,Arial,sans-serif"><circle cx="120" cy="120" r="90" fill="none" stroke="#152744" stroke-width="1.5"/><path d="M120,120 L120,30 A90,90 0 0,1 197.9,75 Z" fill="#c9d2df" stroke="#152744"/><line x1="120" y1="120" x2="120" y2="30" stroke="#152744"/><line x1="120" y1="120" x2="197.9" y2="75" stroke="#152744"/><text x="150" y="105" font-size="13">60°</text><text x="100" y="60" font-size="13">12 cm</text><circle cx="120" cy="120" r="2" fill="#152744"/><text x="108" y="140" font-size="13">O</text></svg>`;
+SVG.cone = `<svg viewBox="0 0 260 200" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica,Arial,sans-serif"><ellipse cx="130" cy="160" rx="70" ry="16" fill="none" stroke="#152744"/><line x1="60" y1="160" x2="130" y2="30" stroke="#152744"/><line x1="200" y1="160" x2="130" y2="30" stroke="#152744"/><line x1="130" y1="30" x2="130" y2="160" stroke="#152744" stroke-dasharray="4 3"/><line x1="130" y1="160" x2="200" y2="160" stroke="#152744" stroke-dasharray="4 3"/><text x="150" y="95" font-size="13">50 cm</text><text x="95" y="100" font-size="13">40 cm</text><text x="155" y="175" font-size="13">30 cm</text></svg>`;
+SVG.cylinder = `<svg viewBox="0 0 220 260" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica,Arial,sans-serif"><ellipse cx="110" cy="40" rx="60" ry="16" fill="#fff" stroke="#152744"/><line x1="50" y1="40" x2="50" y2="200" stroke="#152744"/><line x1="170" y1="40" x2="170" y2="200" stroke="#152744"/><ellipse cx="110" cy="200" rx="60" ry="16" fill="none" stroke="#152744"/><rect x="50" y="120" width="120" height="80" fill="#c9d2df" stroke="none"/><ellipse cx="110" cy="120" rx="60" ry="16" fill="#dfe6f0" stroke="#152744"/><line x1="50" y1="200" x2="170" y2="200" stroke="#152744"/><text x="175" y="30" font-size="13">10 cm</text><text x="20" y="120" font-size="13">50 cm</text><text x="175" y="165" font-size="12">Volumen de</text><text x="175" y="178" font-size="12">agua 6 000 cm³</text></svg>`;
+SVG.parallelLines = `<svg viewBox="0 0 260 220" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica,Arial,sans-serif"><line x1="120" y1="10" x2="120" y2="210" stroke="#152744"/><line x1="30" y1="140" x2="220" y2="55" stroke="#152744"/><line x1="30" y1="200" x2="230" y2="90" stroke="#152744"/><text x="225" y="55" font-size="13">L1</text><text x="233" y="92" font-size="13">L2</text><text x="55" y="115" font-size="12">4 cm</text><text x="90" y="90" font-size="12">6 cm</text><text x="55" y="190" font-size="12">8 cm</text><text x="150" y="150" font-size="12" font-style="italic">x</text></svg>`;
+SVG.muelle = `<svg viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica,Arial,sans-serif"><rect x="0" y="0" width="320" height="150" fill="#eef1f6"/><rect x="0" y="140" width="320" height="10" fill="#152744"/><text x="20" y="70" font-size="13" font-style="italic">Río</text><rect x="90" y="105" width="18" height="35" fill="#c9a97a" stroke="#152744"/><line x1="108" y1="105" x2="200" y2="20" stroke="#152744" stroke-dasharray="4 3"/><line x1="200" y1="20" x2="200" y2="140" stroke="#152744"/><rect x="192" y="132" width="8" height="8" fill="none" stroke="#152744"/><text x="205" y="80" font-size="13" font-style="italic">x</text><text x="55" y="128" font-size="11">1,4 m</text><line x1="90" y1="150" x2="108" y2="150" stroke="#152744"/><line x1="108" y1="150" x2="200" y2="150" stroke="#152744"/><text x="94" y="163" font-size="11">1 m</text><text x="145" y="163" font-size="11">5 m</text></svg>`;
+SVG.triangleAED = `<svg viewBox="0 0 260 200" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica,Arial,sans-serif"><polygon points="60,20 60,170 220,170" fill="none" stroke="#152744"/><line x1="60" y1="80" x2="150" y2="80" stroke="#152744"/><rect x="60" y="70" width="10" height="10" fill="none" stroke="#152744"/><rect x="60" y="160" width="10" height="10" fill="none" stroke="#152744"/><text x="45" y="18" font-size="13">A</text><text x="42" y="85" font-size="13">E</text><text x="155" y="78" font-size="13">D</text><text x="42" y="182" font-size="13">B</text><text x="225" y="178" font-size="13">C</text><text x="95" y="72" font-size="12">10 cm</text><text x="130" y="188" font-size="12">30 cm</text></svg>`;
+SVG.mapCities = `<svg viewBox="0 0 260 180" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica,Arial,sans-serif"><rect x="10" y="10" width="240" height="160" fill="#eef1f6" stroke="#152744"/><circle cx="60" cy="50" r="4" fill="#152744"/><text x="35" y="40" font-size="12">Ciudad A</text><circle cx="170" cy="120" r="4" fill="#152744"/><text x="178" y="124" font-size="12">Ciudad B</text><line x1="60" y1="50" x2="170" y2="120" stroke="#152744" stroke-dasharray="4 3"/><text x="95" y="80" font-size="12">4 cm</text></svg>`;
+SVG.triangleABC22 = `<svg viewBox="0 0 220 160" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica,Arial,sans-serif"><polygon points="30,130 190,130 90,20" fill="none" stroke="#152744"/><line x1="90" y1="20" x2="90" y2="130" stroke="#152744" stroke-dasharray="4 3"/><rect x="80" y="120" width="10" height="10" fill="none" stroke="#152744"/><text x="15" y="145" font-size="13">A</text><text x="195" y="145" font-size="13">B</text><text x="90" y="15" font-size="13">C</text><text x="95" y="80" font-size="12">6 cm</text><text x="45" y="150" font-size="12">2 cm</text></svg>`;
 
 function homothetyThumb(pos){
-  const configs = {
-    A:`<polygon points="118,60 128,50 132,64" fill="#98a8c2" stroke="#152744"/><polygon points="150,55 178,40 186,66" fill="#98a8c2" stroke="#152744" opacity="0.55"/>`,
-    B:`<polygon points="98,58 108,46 114,62" fill="#98a8c2" stroke="#152744"/><polygon points="150,55 178,40 186,66" fill="#98a8c2" stroke="#152744" opacity="0.55"/>`,
-    C:`<polygon points="30,55 58,40 66,66" fill="#98a8c2" stroke="#152744" opacity="0.55"/><polygon points="98,58 108,46 114,62" fill="#98a8c2" stroke="#152744"/>`,
-    D:`<polygon points="118,60 128,50 132,64" fill="#98a8c2" stroke="#152744"/><polygon points="140,45 195,20 205,72" fill="#98a8c2" stroke="#152744" opacity="0.55"/>`
-  };
-  return `<svg viewBox="0 0 220 110" width="180" height="90" xmlns="http://www.w3.org/2000/svg">
-    <line x1="10" y1="90" x2="210" y2="10" stroke="#152744" stroke-width="1"/>
-    <line x1="10" y1="20" x2="210" y2="95" stroke="#152744" stroke-width="1"/>
-    ${configs[pos]}
-    <circle cx="110" cy="58" r="2" fill="#152744"/>
-    <text x="112" y="53" font-size="10" font-family="Helvetica,Arial,sans-serif">O</text>
-  </svg>`;
+  const configs={A:`<polygon points="118,60 128,50 132,64" fill="#98a8c2" stroke="#152744"/><polygon points="150,55 178,40 186,66" fill="#98a8c2" stroke="#152744" opacity="0.55"/>`,B:`<polygon points="98,58 108,46 114,62" fill="#98a8c2" stroke="#152744"/><polygon points="150,55 178,40 186,66" fill="#98a8c2" stroke="#152744" opacity="0.55"/>`,C:`<polygon points="30,55 58,40 66,66" fill="#98a8c2" stroke="#152744" opacity="0.55"/><polygon points="98,58 108,46 114,62" fill="#98a8c2" stroke="#152744"/>`,D:`<polygon points="118,60 128,50 132,64" fill="#98a8c2" stroke="#152744"/><polygon points="140,45 195,20 205,72" fill="#98a8c2" stroke="#152744" opacity="0.55"/>`};
+  return `<svg viewBox="0 0 220 110" width="180" height="90" xmlns="http://www.w3.org/2000/svg"><line x1="10" y1="90" x2="210" y2="10" stroke="#152744" stroke-width="1"/><line x1="10" y1="20" x2="210" y2="95" stroke="#152744" stroke-width="1"/>${configs[pos]}<circle cx="110" cy="58" r="2" fill="#152744"/><text x="112" y="53" font-size="10" font-family="Helvetica,Arial,sans-serif">O</text></svg>`;
 }
-
 function linesThumb(pos){
-  const inner = {
-    A:`<line x1="0" y1="140" x2="220" y2="10" stroke="#152744" stroke-width="1.4"/>
-       <line x1="0" y1="120" x2="220" y2="-10" stroke="#152744" stroke-width="1.4" transform="translate(10,10)"/>
-       <line x1="0" y1="105" x2="220" y2="-25" stroke="#152744" stroke-width="1.4" transform="translate(20,20)"/>`,
-    B:`<line x1="70" y1="150" x2="230" y2="70" stroke="#152744" stroke-width="1.4"/>
-       <line x1="90" y1="150" x2="250" y2="70" stroke="#152744" stroke-width="1.4"/>
-       <line x1="110" y1="150" x2="270" y2="70" stroke="#152744" stroke-width="1.4"/>`,
-    C:`<line x1="10" y1="60" x2="230" y2="60" stroke="#152744" stroke-width="1.4"/>
-       <line x1="10" y1="90" x2="230" y2="90" stroke="#152744" stroke-width="1.4"/>
-       <line x1="10" y1="120" x2="230" y2="120" stroke="#152744" stroke-width="1.4"/>`,
-    D:`<line x1="60" y1="160" x2="150" y2="10" stroke="#152744" stroke-width="1.4"/>
-       <line x1="90" y1="160" x2="180" y2="10" stroke="#152744" stroke-width="1.4"/>
-       <line x1="120" y1="160" x2="210" y2="10" stroke="#152744" stroke-width="1.4"/>`
-  };
-  return `<svg viewBox="0 0 240 170" width="170" height="120" xmlns="http://www.w3.org/2000/svg">
-    <line x1="0" y1="150" x2="240" y2="150" stroke="#c7c0ae"/>
-    <line x1="20" y1="0" x2="20" y2="170" stroke="#c7c0ae"/>
-    ${inner[pos]}
-  </svg>`;
+  const inner={A:`<line x1="0" y1="140" x2="220" y2="10" stroke="#152744" stroke-width="1.4"/><line x1="0" y1="120" x2="220" y2="-10" stroke="#152744" stroke-width="1.4" transform="translate(10,10)"/><line x1="0" y1="105" x2="220" y2="-25" stroke="#152744" stroke-width="1.4" transform="translate(20,20)"/>`,B:`<line x1="70" y1="150" x2="230" y2="70" stroke="#152744" stroke-width="1.4"/><line x1="90" y1="150" x2="250" y2="70" stroke="#152744" stroke-width="1.4"/><line x1="110" y1="150" x2="270" y2="70" stroke="#152744" stroke-width="1.4"/>`,C:`<line x1="10" y1="60" x2="230" y2="60" stroke="#152744" stroke-width="1.4"/><line x1="10" y1="90" x2="230" y2="90" stroke="#152744" stroke-width="1.4"/><line x1="10" y1="120" x2="230" y2="120" stroke="#152744" stroke-width="1.4"/>`,D:`<line x1="60" y1="160" x2="150" y2="10" stroke="#152744" stroke-width="1.4"/><line x1="90" y1="160" x2="180" y2="10" stroke="#152744" stroke-width="1.4"/><line x1="120" y1="160" x2="210" y2="10" stroke="#152744" stroke-width="1.4"/>`};
+  return `<svg viewBox="0 0 240 170" width="170" height="120" xmlns="http://www.w3.org/2000/svg"><line x1="0" y1="150" x2="240" y2="150" stroke="#c7c0ae"/><line x1="20" y1="0" x2="20" y2="170" stroke="#c7c0ae"/>${inner[pos]}</svg>`;
 }
-
 function gridThumb(which){
-  const marker = which==='A' ? `<circle cx="112" cy="60" r="3" fill="#a3372f"/><text x="118" y="58" font-size="10">(4,4)</text>` :
-                 which==='B' ? `<circle cx="72" cy="60" r="3" fill="#a3372f"/><text x="78" y="58" font-size="10">(2,4)</text>` :
-                 which==='C' ? `<circle cx="52" cy="60" r="3" fill="#a3372f"/><text x="58" y="58" font-size="10">(1,4)</text>` :
-                                `<circle cx="32" cy="60" r="3" fill="#a3372f"/><text x="38" y="58" font-size="10">(0,4)</text>`;
-  return `<svg viewBox="0 0 220 150" width="170" height="115" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica,Arial,sans-serif">
-    <line x1="0" y1="140" x2="220" y2="140" stroke="#c7c0ae"/>
-    <line x1="20" y1="0" x2="20" y2="150" stroke="#c7c0ae"/>
-    <polygon points="55,90 68,80 78,86 74,100 60,102" fill="#98a8c2" stroke="#152744"/>
-    <text x="45" y="112" font-size="9">Figura 1</text>
-    ${marker}
-  </svg>`;
+  const marker=which==='A'?`<circle cx="112" cy="60" r="3" fill="#a3372f"/><text x="118" y="58" font-size="10">(4,4)</text>`:which==='B'?`<circle cx="72" cy="60" r="3" fill="#a3372f"/><text x="78" y="58" font-size="10">(2,4)</text>`:which==='C'?`<circle cx="52" cy="60" r="3" fill="#a3372f"/><text x="58" y="58" font-size="10">(1,4)</text>`:`<circle cx="32" cy="60" r="3" fill="#a3372f"/><text x="38" y="58" font-size="10">(0,4)</text>`;
+  return `<svg viewBox="0 0 220 150" width="170" height="115" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica,Arial,sans-serif"><line x1="0" y1="140" x2="220" y2="140" stroke="#c7c0ae"/><line x1="20" y1="0" x2="20" y2="150" stroke="#c7c0ae"/><polygon points="55,90 68,80 78,86 74,100 60,102" fill="#98a8c2" stroke="#152744"/><text x="45" y="112" font-size="9">Figura 1</text>${marker}</svg>`;
 }
 
-const QUESTIONS = [
-  {text:"¿Cuál de los siguientes números NO es racional?", options:["–1","0","2/5","π"]},
-  {text:"Resuelve: − 1/2 + 0,4 + 1 1/5 =", options:["−11/17","11/10","9/17","7/5"]},
-  {text:"¿Cuánto es (1/5)⁰?", options:["0","1","1/5","6/5"]},
-  {text:"Las letras m, n y p representan números enteros y se sabe que np = mp = 2. ¿Cuánto es el valor de ( (1/3)ⁿ · (1/3)ᵐ )ᵖ ?", options:["1/3","1/12","1/81","1/6 561"]},
-  {text:"Al reducir la expresión: (x − y)² + (x + y)(x − y) = Se obtiene:", options:["4x³y","2x² − 2y²","2x² + 2xy","2x² − 2xy"]},
-  {figure:SVG.areaDiagram, cap:"Áreas A1 a A6 formadas por segmentos a y b.", text:"En la siguiente imagen, los números representan las medidas de las distintas áreas. ¿Qué operación debe resolverse para obtener un área equivalente a (a + b)² − (a + b)(a − b)?", options:["A2 + A3 + A2 + A3","A1 + A1 + A1 + A1","A2 + A3 + A5 + A6","A1 + A2 + A3 + A4 + A5 + A6"]},
-  {text:"¿Qué expresión debe agregarse a p² + 36q² para que se forme un trinomio que se puede expresar como cuadrado de binomio?", options:["9pq","12pq","18pq","p + 18q"]},
-  {text:"Observa el sistema de ecuaciones: x − 2y = 10; 6 − x + 4y = 8. ¿Cuál es la solución del sistema?", options:["x = 28 ; y = 9","x = 6 ; y = 22","x = 22 ; y = 6","x = 12 ; y = 34"]},
-  {text:"En el siguiente sistema de ecuaciones k representa un número entero: y − 2x = 10; 2y + kx = 30. ¿Qué valor de k hace que el sistema no tenga solución?", options:["−4","−2","2","15"]},
-  {text:"La ecuación de una recta es 2x − y + 8 = 0. ¿Cuánto es su pendiente?", options:["−8","−2","2","4"]},
-  {text:"El perímetro (P) de un rectángulo depende de su largo (l) y de su ancho (a). ¿Qué función modela esta relación?", options:["P(l,a) = a · l","P(l,a) = a + l","P(l,a) = 2a + l","P(l,a) = 2a + 2l"]},
-  {text:"Considera la función c = f(x,y) = x − 2y. ¿Qué opción muestra los gráficos que se obtienen para c = 1, 2 y 3?", optionsGrid:true, options:[
-    {letter:"A", figure:linesThumb('A')},{letter:"B", figure:linesThumb('B')},{letter:"C", figure:linesThumb('C')},{letter:"D", figure:linesThumb('D')}]},
-  {figure:SVG.circleSector, cap:"Circunferencia de centro O, radio 12 cm, ángulo 60°.", text:"Observa la circunferencia de centro O. ¿Cuántos centímetros mide el perímetro del sector gris?", options:["4π","24π","24 + 4π","24 + 6π"]},
-  {text:"Marcelo marcó en una circunferencia dos radios distintos, formando dos sectores circulares y pintó gris uno de ellos. El área del sector gris es 12π cm². ¿Qué combinación de valores para el ángulo del centro y el radio de la circunferencia hace que tenga esa área?", table:{head:["","Ángulo del centro","Radio (en cm)"], rows:[["A","60°","12"],["B","60°","2"],["C","120°","6"],["D","120°","36"]]}, options:["60° y 12 cm","60° y 2 cm","120° y 6 cm","120° y 36 cm"]},
-  {figure:SVG.cone, cap:"Agujero cónico: radio 30 cm, altura 40 cm, generatriz 50 cm.", text:"Una empresa constructora utiliza un taladro cónico para hacer un agujero. La superficie lateral del agujero se cubrirá con cemento. ¿Cuánto mide el área de la superficie que se cubrirá con cemento?", options:["400π cm²","1 500π cm²","2 400π cm²","3 000π cm²"]},
-  {figure:SVG.cylinder, cap:"Cilindro de radio 10 cm y altura 50 cm, con 6 000 cm³ de agua. (Considera π = 3)", text:"Cada 5 minutos se vaciarán en el cilindro 3 000 cm³ de agua. ¿A los cuántos minutos se completará de agua el cilindro?", options:["A los 5 minutos.","A los 10 minutos.","A los 15 minutos.","A los 20 minutos."]},
-  {text:"Observa el triángulo señalado sobre dos rectas que se cruzan en el punto O. Después de realizarle una homotecia con razón de −1/2, ¿cuál opción muestra la homotecia y la figura original?", optionsGrid:true, options:[
-    {letter:"A", figure:homothetyThumb('A')},{letter:"B", figure:homothetyThumb('B')},{letter:"C", figure:homothetyThumb('C')},{letter:"D", figure:homothetyThumb('D')}]},
-  {figure:SVG.parallelLines, cap:"Las líneas L1 y L2 son paralelas.", text:"¿Cuánto mide el segmento x?", options:["10 cm.","12 cm.","14 cm.","18 cm."]},
-  {figure:SVG.muelle, cap:"Muelle rectangular sobre un río.", text:"Sobre un río hay un muelle rectangular, con 1,4 m de altura visible, 1 m de ancho del muelle y 5 m hasta el punto de observación en la orilla opuesta. ¿Cuánto mide el ancho del río?", options:["4,2 m.","7 m.","7,4 m.","8,4 m."]},
-  {figure:SVG.triangleAED, cap:"Triángulo ABC con segmento ED paralelo al lado BC.", text:"En el triángulo ABC se dibujó el segmento ED paralelo al lado BC. El área del triángulo AED es 40 cm². ¿Cuánto mide el área del triángulo ABC?", options:["120 cm²","150 cm²","240 cm²","360 cm²"]},
-  {figure:SVG.mapCities, cap:"Mapa con ciudades A y B, separadas por 4 cm en el mapa.", text:"José sabe que en ese mapa, dos ciudades que están a 6 cm en la vida real se encuentran a 240 km. ¿Cuál es la distancia en la vida real entre la ciudad A y la ciudad B?", options:["80 km.","160 km.","238 km.","360 km."]},
-  {figure:SVG.triangleABC22, cap:"Triángulo ABC con altura CD = 6 cm y AD = 2 cm.", text:"¿Cuánto mide el área del triángulo ABC?", options:["26 cm²","54 cm²","60 cm²","120 cm²"]},
-  {text:"En una imagen, la figura 2 es el resultado de hacer una homotecia a la figura 1 con respecto al punto F. Para obtener una nueva figura se realizará otra homotecia a la figura 1, con la misma razón pero cambiando el centro de la homotecia, para que la figura resultante quede completamente en el II cuadrante. ¿Cuál de los siguientes puntos del plano sirve como nuevo centro de la homotecia?", optionsGrid:true, options:[
-    {letter:"A", figure:gridThumb('A')},{letter:"B", figure:gridThumb('B')},{letter:"C", figure:gridThumb('C')},{letter:"D", figure:gridThumb('D')}]},
-  {text:"En una imagen, el triángulo A'B'C' es el resultado de hacer una homotecia al triángulo ABC con centro en (0, 0), donde A(2,0), B(3,1), C(2,2) y A'(6,0), B'(9,3), C'(6,6). ¿Cuál es la razón de homotecia?", options:["2","3","4","6"]},
-  {text:"En una empresa trabajan 20 personas de distintas edades. Un gráfico de dispersión muestra que, a medida que aumenta el tiempo que llevan en la empresa (eje horizontal), el sueldo (eje vertical) también aumenta de forma consistente, con los puntos alineados en una tendencia ascendente clara. ¿Qué tipo de relación hay entre el sueldo de un trabajador y los años que lleva en la empresa?", options:["Ninguna.","Lineal débil.","Lineal directa.","Lineal indirecta."]},
-  {text:"En un consultorio, cada una de las personas que asistió respondió una sola opción ante: ¿Eres hombre o mujer? y ¿Vives en zona rural o urbana? Resumen: 30 hombres, 20 mujeres, 15 hombres viven en zona rural, 12 mujeres viven en zona urbana. ¿Cuál opción muestra la información correcta acerca de las personas que fueron al consultorio?", table:{head:["","Urbana","Rural"], rows:[["Mujeres — A)","10","10"],["Hombres — A)","15","15"],["Mujeres — B)","20","20"],["Hombres — B)","30","30"],["Mujeres — C)","12","8"],["Hombres — C)","20","10"],["Mujeres — D)","12","8"],["Hombres — D)","15","15"]]}, options:[
-    "A) Mujeres: 10 urbana / 10 rural — Hombres: 15 urbana / 15 rural.",
-    "B) Mujeres: 20 urbana / 20 rural — Hombres: 30 urbana / 30 rural.",
-    "C) Mujeres: 12 urbana / 8 rural — Hombres: 20 urbana / 10 rural.",
-    "D) Mujeres: 12 urbana / 8 rural — Hombres: 15 urbana / 15 rural."]},
-  {text:"A un grupo de hombres y mujeres de distintas edades se les tomó una prueba (puntaje vs. edad). Los puntos de las mujeres se ubican consistentemente por encima de los de los hombres en todas las edades, pero ambos grupos muestran una tendencia creciente y la distancia entre ambas nubes de puntos se mantiene aproximadamente constante a medida que aumenta la edad. ¿Cuál de las siguientes afirmaciones siempre es correcta?", options:["Mujeres y hombres tuvieron buenos resultados.","Los hombres y las mujeres tienen los mismos resultados.","Fueron más las mujeres que los hombres que rindieron la prueba.","A mayor edad, la diferencia entre los puntajes de mujeres y hombres disminuye."]},
-  {text:"El administrador de una página web recibe recursos cada vez que una persona que visita el sitio hace clic en un anuncio publicitario. Registro: Lunes 40 visitas/12 clics; Martes 50/20; Miércoles 55/22; Jueves 57/30; Viernes 70/40; Sábado 65/26. Considerando que el número de visitas y el número de clics deben graficarse día a día, ¿qué opción representa correctamente esta tabla (visitas siempre por encima de los clics, ambos con la tendencia y valores exactos de la tabla)?", table:{head:["","Lun","Mar","Mié","Jue","Vie","Sáb"], rows:[["N° de visitas","40","50","55","57","70","65"],["N° de clic","12","20","22","30","40","26"]]}, options:[
-    "A) Visitas y clics siguen exactamente los valores de la tabla en cada día.",
-    "B) Los valores de clic aparecen adelantados en un día respecto a la tabla.",
-    "C) Visitas y clics se muestran como una línea plana constante, sin variación.",
-    "D) Los valores de clic del viernes y sábado están invertidos respecto a la tabla."]},
-  {text:"En un gráfico, cada punto representa un país según el dinero invertido en educación (eje vertical) y la cantidad de personas recluidas en cárceles (eje horizontal). La mayoría de los países se alinean en una tendencia decreciente clara, salvo dos países que se ubican muy por debajo de esa tendencia. Considerando la relación que muestra el conjunto de países, ¿cuántos países tienen un comportamiento muy distinto al resto?", options:["2","4","41","43"]},
-  {text:"En una caja solo hay bolitas blancas, negras y azules. P(blanca) = 0,1 y P(negra) = 0,7. Al sacar una al azar, ¿cuál es la probabilidad de sacar una blanca o azul?", options:["0","0,1","0,2","0,3"]},
-  {text:"Considera un naipe inglés (52 cartas: 4 pintas —corazones y diamantes en rojo; tréboles y picas en negro— cada una con cartas del As al Rey). Al escoger una carta al azar, ¿cuál es la probabilidad de que sea negra y esté entre 4 y 8?", options:["1/2","1/13","3/26","1/52"]},
-  {text:"Camilo lanzará dos dados normales. ¿Cuál es la probabilidad de que la suma sea menor que 5 o mayor que 9?", options:["1/2","1/3","1/4","1/6"]},
-  {text:"Un experimento consiste en dejar caer una bolita en un tablero de Galton con 4 niveles de bifurcación, para que llegue a alguna de 4 cajas finales (A, B, C, D). Al llegar a cualquier nivel, la probabilidad de ir a la derecha o a la izquierda es la misma. De todos los caminos posibles, ¿cuántos llegan a la caja B?", options:["1","2","3","4"]},
-  {text:"Si el experimento del tablero de Galton (cajas A, B, C, D) se repitiera con 800 bolitas sin sacarlas de las cajas, ¿qué opción muestra cantidades más probables que tenga cada caja?", table:{head:["Opción","A","B","C","D"], rows:[["A)","95","308","297","100"],["B)","0","400","400","0"],["C)","20","380","380","20"],["D)","200","200","200","200"]]}, options:["A) 95 / 308 / 297 / 100","B) 0 / 400 / 400 / 0","C) 20 / 380 / 380 / 20","D) 200 / 200 / 200 / 200"]},
-  {text:"Con un computador, Gabriela simulará el lanzamiento de dos dados al mismo tiempo 10 000 veces. ¿Cuántas veces se esperaría que la suma sea 2, aproximadamente?", options:["1","280","1 670","5 000"]},
-  {text:"Un número entero siempre es también un número:", options:["natural.","racional.","negativo.","irracional."]},
+const QUESTIONS=[
+  {text:"¿Cuál de los siguientes números NO es racional?",options:["–1","0","2/5","π"],ans:"D"},
+  {text:"Resuelve: − 1/2 + 0,4 + 1 1/5 =",options:["−11/17","11/10","9/17","7/5"],ans:"B"},
+  {text:"¿Cuánto es (1/5)⁰?",options:["0","1","1/5","6/5"],ans:"B"},
+  {text:"Las letras m, n y p representan números enteros y se sabe que np = mp = 2. ¿Cuánto es el valor de ( (1/3)ⁿ · (1/3)ᵐ )ᵖ ?",options:["1/3","1/12","1/81","1/6 561"],ans:"C"},
+  {text:"Al reducir la expresión: (x − y)² + (x + y)(x − y) = Se obtiene:",options:["4x³y","2x² − 2y²","2x² + 2xy","2x² − 2xy"],ans:"B"},
+  {figure:SVG.areaDiagram,cap:"Áreas A1 a A6 formadas por segmentos a y b.",text:"En la siguiente imagen, los números representan las medidas de las distintas áreas. ¿Qué operación debe resolverse para obtener un área equivalente a (a + b)² − (a + b)(a − b)?",options:["A2 + A3 + A2 + A3","A1 + A1 + A1 + A1","A2 + A3 + A5 + A6","A1 + A2 + A3 + A4 + A5 + A6"],ans:"C"},
+  {text:"¿Qué expresión debe agregarse a p² + 36q² para que se forme un trinomio que se puede expresar como cuadrado de binomio?",options:["9pq","12pq","18pq","p + 18q"],ans:"B"},
+  {text:"Observa el sistema de ecuaciones: x − 2y = 10; 6 − x + 4y = 8. ¿Cuál es la solución del sistema?",options:["x = 28 ; y = 9","x = 6 ; y = 22","x = 22 ; y = 6","x = 12 ; y = 34"],ans:"C"},
+  {text:"En el siguiente sistema de ecuaciones k representa un número entero: y − 2x = 10; 2y + kx = 30. ¿Qué valor de k hace que el sistema no tenga solución?",options:["−4","−2","2","15"],ans:"A"},
+  {text:"La ecuación de una recta es 2x − y + 8 = 0. ¿Cuánto es su pendiente?",options:["−8","−2","2","4"],ans:"C"},
+  {text:"El perímetro (P) de un rectángulo depende de su largo (l) y de su ancho (a). ¿Qué función modela esta relación?",options:["P(l,a) = a · l","P(l,a) = a + l","P(l,a) = 2a + l","P(l,a) = 2a + 2l"],ans:"D"},
+  {text:"Considera la función c = f(x,y) = x − 2y. ¿Qué opción muestra los gráficos que se obtienen para c = 1, 2 y 3?",optionsGrid:true,options:[{letter:"A",figure:linesThumb("A")},{letter:"B",figure:linesThumb("B")},{letter:"C",figure:linesThumb("C")},{letter:"D",figure:linesThumb("D")}],ans:"D"},
+  {figure:SVG.circleSector,cap:"Circunferencia de centro O, radio 12 cm, ángulo 60°.",text:"Observa la circunferencia de centro O. ¿Cuántos centímetros mide el perímetro del sector gris?",options:["4π","24π","24 + 4π","24 + 6π"],ans:"C"},
+  {text:"Marcelo marcó en una circunferencia dos radios distintos, formando dos sectores circulares y pintó gris uno de ellos. El área del sector gris es 12π cm². ¿Qué combinación de valores para el ángulo del centro y el radio de la circunferencia hace que tenga esa área?",table:{head:["","Ángulo del centro","Radio (en cm)"],rows:[["A","60°","12"],["B","60°","2"],["C","120°","6"],["D","120°","36"]]},options:["60° y 12 cm","60° y 2 cm","120° y 6 cm","120° y 36 cm"],ans:"C"},
+  {figure:SVG.cone,cap:"Agujero cónico: radio 30 cm, altura 40 cm, generatriz 50 cm.",text:"Una empresa constructora utiliza un taladro cónico para hacer un agujero. La superficie lateral del agujero se cubrirá con cemento. ¿Cuánto mide el área de la superficie que se cubrirá con cemento?",options:["400π cm²","1 500π cm²","2 400π cm²","3 000π cm²"],ans:"B"},
+  {figure:SVG.cylinder,cap:"Cilindro de radio 10 cm y altura 50 cm, con 6 000 cm³ de agua. (Considera π = 3)",text:"Cada 5 minutos se vaciarán en el cilindro 3 000 cm³ de agua. ¿A los cuántos minutos se completará de agua el cilindro?",options:["A los 5 minutos.","A los 10 minutos.","A los 15 minutos.","A los 20 minutos."],ans:"B"},
+  {text:"Observa el triángulo señalado sobre dos rectas que se cruzan en el punto O. Después de realizarle una homotecia con razón de −1/2, ¿cuál opción muestra la homotecia y la figura original?",optionsGrid:true,options:[{letter:"A",figure:homothetyThumb("A")},{letter:"B",figure:homothetyThumb("B")},{letter:"C",figure:homothetyThumb("C")},{letter:"D",figure:homothetyThumb("D")}],ans:"B"},
+  {figure:SVG.parallelLines,cap:"Las líneas L1 y L2 son paralelas.",text:"¿Cuánto mide el segmento x?",options:["10 cm.","12 cm.","14 cm.","18 cm."],ans:"B"},
+  {figure:SVG.muelle,cap:"Muelle rectangular sobre un río.",text:"Sobre un río hay un muelle rectangular, con 1,4 m de altura visible, 1 m de ancho del muelle y 5 m hasta el punto de observación en la orilla opuesta. ¿Cuánto mide el ancho del río?",options:["4,2 m.","7 m.","7,4 m.","8,4 m."],ans:"B"},
+  {figure:SVG.triangleAED,cap:"Triángulo ABC con segmento ED paralelo al lado BC.",text:"En el triángulo ABC se dibujó el segmento ED paralelo al lado BC. El área del triángulo AED es 40 cm². ¿Cuánto mide el área del triángulo ABC?",options:["120 cm²","150 cm²","240 cm²","360 cm²"],ans:"D"},
+  {figure:SVG.mapCities,cap:"Mapa con ciudades A y B, separadas por 4 cm en el mapa.",text:"José sabe que en ese mapa, dos ciudades que están a 6 cm en la vida real se encuentran a 240 km. ¿Cuál es la distancia en la vida real entre la ciudad A y la ciudad B?",options:["80 km.","160 km.","238 km.","360 km."],ans:"B"},
+  {figure:SVG.triangleABC22,cap:"Triángulo ABC con altura CD = 6 cm y AD = 2 cm.",text:"¿Cuánto mide el área del triángulo ABC?",options:["26 cm²","54 cm²","60 cm²","120 cm²"],ans:"B"},
+  {text:"En una imagen, la figura 2 es el resultado de hacer una homotecia a la figura 1 con respecto al punto F. Para obtener una nueva figura se realizará otra homotecia a la figura 1, con la misma razón pero cambiando el centro de la homotecia, para que la figura resultante quede completamente en el II cuadrante. ¿Cuál de los siguientes puntos del plano sirve como nuevo centro de la homotecia?",optionsGrid:true,options:[{letter:"A",figure:gridThumb("A")},{letter:"B",figure:gridThumb("B")},{letter:"C",figure:gridThumb("C")},{letter:"D",figure:gridThumb("D")}],ans:"B"},
+  {text:"En una imagen, el triángulo A'B'C' es el resultado de hacer una homotecia al triángulo ABC con centro en (0, 0), donde A(2,0), B(3,1), C(2,2) y A'(6,0), B'(9,3), C'(6,6). ¿Cuál es la razón de homotecia?",options:["2","3","4","6"],ans:"B"},
+  {text:"En una empresa trabajan 20 personas de distintas edades. Un gráfico de dispersión muestra que, a medida que aumenta el tiempo que llevan en la empresa (eje horizontal), el sueldo (eje vertical) también aumenta de forma consistente. ¿Qué tipo de relación hay entre el sueldo de un trabajador y los años que lleva en la empresa?",options:["Ninguna.","Lineal débil.","Lineal directa.","Lineal indirecta."],ans:"C"},
+  {text:"En un consultorio, cada persona respondió: ¿Eres hombre o mujer? y ¿Vives en zona rural o urbana? Hay 30 hombres, 20 mujeres; 15 hombres viven en zona rural, 12 mujeres viven en zona urbana. ¿Cuál opción muestra la información correcta?",table:{head:["","Urbana","Rural"],rows:[["A) Mujeres","10","10"],["A) Hombres","15","15"],["B) Mujeres","20","20"],["B) Hombres","30","30"],["C) Mujeres","12","8"],["C) Hombres","20","10"],["D) Mujeres","12","8"],["D) Hombres","15","15"]]},options:["A) Mujeres: 10/10 — Hombres: 15/15","B) Mujeres: 20/20 — Hombres: 30/30","C) Mujeres: 12/8 — Hombres: 20/10","D) Mujeres: 12/8 — Hombres: 15/15"],ans:"D"},
+  {text:"A un grupo de hombres y mujeres se les tomó una prueba. Los puntos de las mujeres se ubican consistentemente por encima de los hombres en todas las edades, ambos con tendencia creciente y distancia constante. ¿Cuál de las siguientes afirmaciones siempre es correcta?",options:["Mujeres y hombres tuvieron buenos resultados.","Los hombres y las mujeres tienen los mismos resultados.","Fueron más las mujeres que los hombres que rindieron la prueba.","A mayor edad, la diferencia entre los puntajes de mujeres y hombres disminuye."],ans:"A"},
+  {text:"Un administrador web registra visitas y clics diarios: Lun 40/12, Mar 50/20, Mié 55/22, Jue 57/30, Vie 70/40, Sáb 65/26. ¿Qué opción representa correctamente esta tabla?",table:{head:["","Lun","Mar","Mié","Jue","Vie","Sáb"],rows:[["Visitas","40","50","55","57","70","65"],["Clics","12","20","22","30","40","26"]]},options:["A) Visitas y clics siguen exactamente los valores de la tabla.","B) Los valores de clic aparecen adelantados un día.","C) Visitas y clics se muestran como línea plana constante.","D) Los valores de clic del viernes y sábado están invertidos."],ans:"A"},
+  {text:"En un gráfico, cada punto representa un país según dinero invertido en educación (eje vertical) y personas recluidas (eje horizontal). La mayoría se alinea en tendencia decreciente, salvo dos países muy por debajo. ¿Cuántos países tienen comportamiento muy distinto al resto?",options:["2","4","41","43"],ans:"A"},
+  {text:"En una caja solo hay bolitas blancas, negras y azules. P(blanca) = 0,1 y P(negra) = 0,7. Al sacar una al azar, ¿cuál es la probabilidad de sacar una blanca o azul?",options:["0","0,1","0,2","0,3"],ans:"D"},
+  {text:"Considera un naipe inglés (52 cartas: 4 pintas, corazones y diamantes en rojo, tréboles y picas en negro, cartas del As al Rey). Al escoger una carta al azar, ¿cuál es la probabilidad de que sea negra y esté entre 4 y 8?",options:["1/2","1/13","3/26","1/52"],ans:"C"},
+  {text:"Camilo lanzará dos dados normales. ¿Cuál es la probabilidad de que la suma sea menor que 5 o mayor que 9?",options:["1/2","1/3","1/4","1/6"],ans:"B"},
+  {text:"Un experimento consiste en dejar caer una bolita en un tablero de Galton con 4 niveles de bifurcación, para que llegue a alguna de 4 cajas (A, B, C, D). Al llegar a cualquier nivel, la probabilidad de ir a la derecha o izquierda es la misma. De todos los caminos posibles, ¿cuántos llegan a la caja B?",options:["1","2","3","4"],ans:"C"},
+  {text:"Si el experimento del tablero de Galton se repitiera con 800 bolitas, ¿qué opción muestra cantidades más probables?",table:{head:["Opción","A","B","C","D"],rows:[["A)","95","308","297","100"],["B)","0","400","400","0"],["C)","20","380","380","20"],["D)","200","200","200","200"]]},options:["A) 95 / 308 / 297 / 100","B) 0 / 400 / 400 / 0","C) 20 / 380 / 380 / 20","D) 200 / 200 / 200 / 200"],ans:"A"},
+  {text:"Con un computador, Gabriela simulará el lanzamiento de dos dados al mismo tiempo 10 000 veces. ¿Cuántas veces se esperaría que la suma sea 2, aproximadamente?",options:["1","280","1 670","5 000"],ans:"B"},
+  {text:"Un número entero siempre es también un número:",options:["natural.","racional.","negativo.","irracional."],ans:"B"},
 ];
 
-/* ===================== STATE & LOGIC ===================== */
-const state = { name:"", current:0, answers:new Array(QUESTIONS.length).fill(null), secondsLeft:90*60, timerId:null, submitted:false };
-const ACCESS_CODE = "PIONEROS10"; // demo access code — reemplázalo por el código real de la admisión
-const $ = (id)=>document.getElementById(id);
+/* ===== STATE ===== */
+const state={name:"",code:"",current:0,answers:new Array(QUESTIONS.length).fill(null),secondsLeft:90*60,timerId:null,submitted:false,startTime:null};
+const $=(id)=>document.getElementById(id);
 
 function showScreen(id){
-  ["screen-gate","screen-intro","screen-quiz","screen-confirm","screen-done"].forEach(s=>{
-    $(s).classList.toggle("hidden", s!==id);
-  });
-  $("clock").classList.toggle("hidden", id!=="screen-quiz");
+  ["screen-gate","screen-intro","screen-quiz","screen-confirm","screen-done"].forEach(s=>{$(s).classList.toggle("hidden",s!==id);});
+  $("clock").classList.toggle("hidden",id!=="screen-quiz");
 }
 
-$("btn-enter").addEventListener("click", ()=>{
-  const name = $("in-name").value.trim();
-  const code = $("in-code").value.trim();
-  if(!name || code.toUpperCase() !== ACCESS_CODE){
-    $("gate-error").style.display = "block";
+$("btn-enter").addEventListener("click",()=>{
+  const name=$("in-name").value.trim();
+  const code=$("in-code").value.trim().toUpperCase();
+  if(!name||!VALID_CODES.includes(code)){
+    $("gate-error").style.display="block";
     return;
   }
-  $("gate-error").style.display = "none";
-  state.name = name;
-  $("in-name-2").value = name;
+  $("gate-error").style.display="none";
+  state.name=name; state.code=code;
   showScreen("screen-intro");
 });
 
-$("btn-start").addEventListener("click", ()=>{
-  const name = $("in-name-2").value.trim();
-  if(name) state.name = name;
+$("btn-start").addEventListener("click",()=>{
+  state.startTime=Date.now();
   showScreen("screen-quiz");
   buildJumpgrid();
   renderQuestion();
@@ -481,131 +275,109 @@ $("btn-start").addEventListener("click", ()=>{
 
 function startTimer(){
   updateClock();
-  state.timerId = setInterval(()=>{
-    state.secondsLeft--;
-    updateClock();
-    if(state.secondsLeft<=0){
-      clearInterval(state.timerId);
-      goToConfirm();
-    }
-  },1000);
+  state.timerId=setInterval(()=>{state.secondsLeft--;updateClock();if(state.secondsLeft<=0){clearInterval(state.timerId);goToConfirm();}},1000);
 }
 function updateClock(){
-  const m = Math.floor(state.secondsLeft/60);
-  const s = state.secondsLeft%60;
-  $("clock").textContent = String(m).padStart(2,"0")+":"+String(s).padStart(2,"0");
-  $("clock").classList.toggle("low", state.secondsLeft <= 300);
+  const m=Math.floor(state.secondsLeft/60),s=state.secondsLeft%60;
+  $("clock").textContent=String(m).padStart(2,"0")+":"+String(s).padStart(2,"0");
+  $("clock").classList.toggle("low",state.secondsLeft<=300);
 }
 
 function renderQuestion(){
-  const i = state.current;
-  const q = QUESTIONS[i];
-
-  $("qcounter").textContent = `Pregunta ${i+1} de ${QUESTIONS.length}`;
-  $("progress-fill").style.width = ((i+1)/QUESTIONS.length*100)+"%";
-
-  const figEl = $("q-figure");
-  figEl.innerHTML = q.figure ? `<div class="figure">${q.figure}${q.cap?`<div class="cap">${q.cap}</div>`:""}</div>` : "";
-
-  $("q-tag").textContent = "PREGUNTA "+(i+1);
-  $("q-text").innerHTML = q.text;
-
-  const tableEl = $("q-table");
+  const i=state.current,q=QUESTIONS[i];
+  $("qcounter").textContent=`Pregunta ${i+1} de ${QUESTIONS.length}`;
+  $("progress-fill").style.width=((i+1)/QUESTIONS.length*100)+"%";
+  $("q-figure").innerHTML=q.figure?`<div class="figure">${q.figure}${q.cap?`<div class="cap">${q.cap}</div>`:""}</div>`:"";
+  $("q-tag").textContent="PREGUNTA "+(i+1);
+  $("q-text").innerHTML=q.text;
+  const tableEl=$("q-table");
   if(q.table){
-    let rows = q.table.rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join("")}</tr>`).join("");
-    let head = `<tr>${q.table.head.map(h=>`<th>${h}</th>`).join("")}</tr>`;
-    tableEl.innerHTML = `<div class="table-wrap"><table class="datatable">${head}${rows}</table></div>`;
-  } else {
-    tableEl.innerHTML = "";
-  }
-
-  const optEl = $("q-options");
-  optEl.className = q.optionsGrid ? "options grid" : "options";
-  optEl.innerHTML = "";
-  const letters = ["A","B","C","D"];
+    let rows=q.table.rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join("")}</tr>`).join("");
+    let head=`<tr>${q.table.head.map(h=>`<th>${h}</th>`).join("")}</tr>`;
+    tableEl.innerHTML=`<div class="table-wrap"><table class="datatable">${head}${rows}</table></div>`;
+  }else{tableEl.innerHTML="";}
+  const optEl=$("q-options");
+  optEl.className=q.optionsGrid?"options grid":"options";
+  optEl.innerHTML="";
+  const letters=["A","B","C","D"];
   q.options.forEach((opt,idx)=>{
-    const letter = letters[idx];
-    const isObj = typeof opt === "object";
-    const li = document.createElement("li");
-    li.className = "option" + (state.answers[i]===letter ? " selected":"");
-    li.innerHTML = `
-      <input type="radio" name="q${i}" id="q${i}o${idx}" value="${letter}" ${state.answers[i]===letter?"checked":""}>
-      <span class="letter">${letter}</span>
-      <span class="otext">${isObj ? (opt.figure?`<span class="option-figure">${opt.figure}</span>`:"") : opt}</span>
-    `;
-    li.addEventListener("click", ()=>{
-      state.answers[i] = letter;
-      renderQuestion();
-      updateJumpgrid();
-    });
+    const letter=letters[idx],isObj=typeof opt==="object";
+    const li=document.createElement("li");
+    li.className="option"+(state.answers[i]===letter?" selected":"");
+    li.innerHTML=`<input type="radio" name="q${i}" value="${letter}" ${state.answers[i]===letter?"checked":""}><span class="letter">${letter}</span><span class="otext">${isObj?(opt.figure?`<span class="option-figure">${opt.figure}</span>`:""):opt}</span>`;
+    li.addEventListener("click",()=>{state.answers[i]=letter;renderQuestion();updateJumpgrid();});
     optEl.appendChild(li);
   });
-
-  $("btn-prev").disabled = i===0;
-  const isLast = i===QUESTIONS.length-1;
-  $("btn-next").classList.toggle("hidden", isLast);
-  $("btn-finish").classList.toggle("hidden", !isLast);
-
+  $("btn-prev").disabled=i===0;
+  const isLast=i===QUESTIONS.length-1;
+  $("btn-next").classList.toggle("hidden",isLast);
+  $("btn-finish").classList.toggle("hidden",!isLast);
   updateJumpgrid();
 }
 
-$("btn-prev").addEventListener("click", ()=>{ if(state.current>0){ state.current--; renderQuestion(); }});
-$("btn-next").addEventListener("click", ()=>{ if(state.current<QUESTIONS.length-1){ state.current++; renderQuestion(); }});
-$("btn-finish").addEventListener("click", goToConfirm);
+$("btn-prev").addEventListener("click",()=>{
+  if(state.answers[state.current]===null){alert("Por favor responde la pregunta actual antes de continuar.");return;}
+  if(state.current>0){state.current--;renderQuestion();}
+});
+$("btn-next").addEventListener("click",()=>{
+  if(state.answers[state.current]===null){alert("Por favor responde la pregunta actual antes de continuar.");return;}
+  if(state.current<QUESTIONS.length-1){state.current++;renderQuestion();}
+});
+$("btn-finish").addEventListener("click",()=>{
+  if(state.answers[state.current]===null){alert("Por favor responde la pregunta actual antes de enviar.");return;}
+  goToConfirm();
+});
 
 function buildJumpgrid(){
-  const grid = $("jumpgrid");
-  grid.innerHTML = "";
+  const grid=$("jumpgrid");grid.innerHTML="";
   QUESTIONS.forEach((q,idx)=>{
-    const b = document.createElement("button");
-    b.textContent = idx+1;
-    b.addEventListener("click", ()=>{ state.current = idx; renderQuestion(); });
+    const b=document.createElement("button");b.textContent=idx+1;
+    b.addEventListener("click",()=>{
+      if(idx>state.current&&state.answers[state.current]===null){alert("Por favor responde la pregunta actual antes de continuar.");return;}
+      state.current=idx;renderQuestion();
+    });
     grid.appendChild(b);
   });
 }
 function updateJumpgrid(){
-  const buttons = $("jumpgrid").children;
-  for(let idx=0; idx<buttons.length; idx++){
-    buttons[idx].classList.toggle("current", idx===state.current);
-    buttons[idx].classList.toggle("answered", !!state.answers[idx]);
-  }
+  const buttons=$("jumpgrid").children;
+  for(let idx=0;idx<buttons.length;idx++){buttons[idx].classList.toggle("current",idx===state.current);buttons[idx].classList.toggle("answered",!!state.answers[idx]);}
 }
 
 function goToConfirm(){
-  const answered = state.answers.filter(a=>a!==null).length;
-  const missing = QUESTIONS.length - answered;
-  $("confirm-summary").textContent = missing===0
-    ? `Respondiste las ${QUESTIONS.length} preguntas. Una vez enviada, no podrás modificar tus respuestas.`
-    : `Respondiste ${answered} de ${QUESTIONS.length} preguntas (te faltan ${missing}). Una vez enviada, no podrás modificar tus respuestas.`;
+  const answered=state.answers.filter(a=>a!==null).length,missing=QUESTIONS.length-answered;
+  $("confirm-summary").textContent=missing===0?`Respondiste las ${QUESTIONS.length} preguntas. Una vez enviada, no podrás modificar tus respuestas.`:`Respondiste ${answered} de ${QUESTIONS.length} preguntas (te faltan ${missing}). Una vez enviada, no podrás modificar tus respuestas.`;
   showScreen("screen-confirm");
 }
-$("btn-back-to-quiz").addEventListener("click", ()=>showScreen("screen-quiz"));
-$("btn-confirm-submit").addEventListener("click", ()=>{
-  if(state.timerId) clearInterval(state.timerId);
-  state.submitted = true;
-  $("done-name").textContent = state.name || "postulante";
-  showScreen("screen-done");
-});
+$("btn-back-to-quiz").addEventListener("click",()=>showScreen("screen-quiz"));
+$("btn-confirm-submit").addEventListener("click",submitQuiz);
 
-$("btn-download").addEventListener("click", ()=>{
-  const payload = {
-    prueba:"Matemática · 10th Grade",
-    nombre: state.name,
-    enviado: new Date().toISOString(),
-    respuestas: QUESTIONS.map((q,idx)=>({
-      numero:idx+1, pregunta:q.text.replace(/<[^>]+>/g,""), respuesta: state.answers[idx]
-    }))
-  };
-  const blob = new Blob([JSON.stringify(payload,null,2)], {type:"application/json"});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = `respuestas_matematica_${(state.name||"postulante").replace(/\s+/g,"_")}.json`;
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-  URL.revokeObjectURL(url);
-});
+function submitQuiz(){
+  if(state.timerId)clearInterval(state.timerId);
+  state.submitted=true;
+  const elapsed=Math.round((Date.now()-state.startTime)/1000);
+  const mins=Math.floor(elapsed/60),secs=elapsed%60;
+  let correct=0,wrong=0,blank=0;
+  QUESTIONS.forEach((q,i)=>{if(state.answers[i]===null)blank++;else if(state.answers[i]===q.ans)correct++;else wrong++;});
+  const pct=Math.round(correct/QUESTIONS.length*100);
+  const details=QUESTIONS.map((q,i)=>{
+    const u=state.answers[i]||"—",c=q.ans;
+    const s=state.answers[i]===null?"Sin respuesta":state.answers[i]===q.ans?"✓ Correcta":"✗ Incorrecta";
+    return `P${i+1}: ${s} | Estudiante: ${u} | Correcta: ${c}`;
+  }).join("\n");
+  emailjs.send("service_kk0m83i","template_ebdohpd",{
+    to_email:ADMIN_EMAIL,student_name:state.name,
+    grade:"10° — Matemática",
+    access_code:state.code,
+    score:`${correct}/36 (${pct}%)`,
+    correct,wrong,blank,
+    time_used:`${mins}m ${secs}s`,
+    details,
+    submitted_at:new Date().toLocaleString("es-CL",{timeZone:"America/Santiago"})
+  }).then(()=>{console.log("Email sent OK");}).catch((err)=>{alert("EMAIL ERROR: "+JSON.stringify(err));console.error(err);});
+  $("done-name").textContent=state.name||"postulante";
+  showScreen("screen-done");
+}
 </script>
 </body>
 </html>

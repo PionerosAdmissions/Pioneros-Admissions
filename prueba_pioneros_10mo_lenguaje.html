@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Admisión 2026/27 · Pioneros 10th Grade · Lenguaje</title>
 <style>
@@ -374,8 +375,10 @@ const QUESTIONS = [
 ];
 
 /* ===================== STATE & LOGIC ===================== */
-const state = { name:"", current:0, answers:new Array(QUESTIONS.length).fill(null), secondsLeft:60*60, timerId:null, submitted:false };
-const ACCESS_CODE = "PIONEROS10"; // demo access code — reemplázalo por el código real de la admisión
+(function(){emailjs.init({publicKey:"x6LTzX-hx-Gd5mTR0"});})();
+const VALID_CODES = ['PIO-2026-OPNK','PIO-2026-7UG1','PIO-2026-X1SW'];
+const ADMIN_EMAIL = 'dplatz@cpioneros.cl';
+const state = { name:"", code:"", current:0, answers:new Array(QUESTIONS.length).fill(null), secondsLeft:90*60, timerId:null, submitted:false, startTime:null };
 const $ = (id)=>document.getElementById(id);
 
 function showScreen(id){
@@ -387,18 +390,19 @@ function showScreen(id){
 
 $("btn-enter").addEventListener("click", ()=>{
   const name = $("in-name").value.trim();
-  const code = $("in-code").value.trim();
-  if(!name || code.toUpperCase() !== ACCESS_CODE){
+  const code = $("in-code").value.trim().toUpperCase();
+  if(!name || !VALID_CODES.includes(code)){
     $("gate-error").style.display = "block";
     return;
   }
   $("gate-error").style.display = "none";
-  state.name = name;
+  state.name = name; state.code = code;
   $("in-name-2").value = name;
   showScreen("screen-intro");
 });
 
 $("btn-start").addEventListener("click", ()=>{
+  state.startTime = Date.now();
   const name = $("in-name-2").value.trim();
   if(name) state.name = name;
   showScreen("screen-quiz");
@@ -472,7 +476,10 @@ function renderQuestion(){
 }
 
 $("btn-prev").addEventListener("click", ()=>{ if(state.current>0){ state.current--; renderQuestion(); }});
-$("btn-next").addEventListener("click", ()=>{ if(state.current<QUESTIONS.length-1){ state.current++; renderQuestion(); }});
+$("btn-next").addEventListener("click", ()=>{
+  if(state.answers[state.current]===null){alert("Por favor responde la pregunta actual antes de continuar.");return;}
+  if(state.current<QUESTIONS.length-1){ state.current++; renderQuestion(); }
+});
 $("btn-finish").addEventListener("click", goToConfirm);
 
 function buildJumpgrid(){
@@ -505,29 +512,35 @@ $("btn-back-to-quiz").addEventListener("click", ()=>showScreen("screen-quiz"));
 $("btn-confirm-submit").addEventListener("click", ()=>{
   if(state.timerId) clearInterval(state.timerId);
   state.submitted = true;
+  const elapsed = Math.round((Date.now()-state.startTime)/1000);
+  const mins = Math.floor(elapsed/60), secs = elapsed%60;
+  let correct=0, wrong=0, blank=0;
+  QUESTIONS.forEach((q,i)=>{
+    if(state.answers[i]===null) blank++;
+    else if(state.answers[i]===q.ans) correct++;
+    else wrong++;
+  });
+  const pct = Math.round(correct/QUESTIONS.length*100);
+  const details = QUESTIONS.map((q,i)=>{
+    const u=state.answers[i]||"—", c=q.ans||"?";
+    const s=state.answers[i]===null?"Sin respuesta":state.answers[i]===(q.ans||"?")?"✓ Correcta":"✗ Incorrecta";
+    return `P${i+1}: ${s} | Estudiante: ${u} | Correcta: ${c}`;
+  }).join("\n");
+  emailjs.send("service_kk0m83i","template_ebdohpd",{
+    to_email:ADMIN_EMAIL, student_name:state.name,
+    grade:"10° — Lenguaje",
+    access_code:state.code,
+    score:`${correct}/${QUESTIONS.length} (${pct}%)`,
+    correct, wrong, blank,
+    time_used:`${mins}m ${secs}s`,
+    details,
+    submitted_at:new Date().toLocaleString("es-CL",{timeZone:"America/Santiago"})
+  }).then(()=>{console.log("Email sent OK");}).catch((err)=>{alert("EMAIL ERROR: "+JSON.stringify(err));});
   $("done-name").textContent = state.name || "postulante";
   showScreen("screen-done");
 });
 
-$("btn-download").addEventListener("click", ()=>{
-  const payload = {
-    prueba:"Lenguaje y Comunicación · 10th Grade",
-    nombre: state.name,
-    enviado: new Date().toISOString(),
-    respuestas: QUESTIONS.map((q,idx)=>({
-      numero:idx+1, pregunta:q.text.replace(/<[^>]+>/g,""), respuesta: state.answers[idx]
-    }))
-  };
-  const blob = new Blob([JSON.stringify(payload,null,2)], {type:"application/json"});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = `respuestas_lenguaje_${(state.name||"postulante").replace(/\s+/g,"_")}.json`;
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-  URL.revokeObjectURL(url);
-});
+
 </script>
 </body>
 </html>
