@@ -207,7 +207,6 @@
     <h2>¡Prueba enviada!</h2>
     <p>Gracias, <strong id="done-name"></strong>. Tus respuestas fueron recibidas. El equipo de admisiones de Pioneros revisará tus resultados y se pondrá en contacto contigo pronto.</p>
     <p>¡Mucha suerte! 🌟</p>
-    <button class="btn secondary" id="btn-download">Descargar mis respuestas (.json)</button>
   </section>
 
 </div>
@@ -431,8 +430,8 @@ function buildRespuestasTexto(){
       textoOpcion = q.options[letras.indexOf(letra)] || "";
     }
     const preguntaLimpia = q.text.replace(/<[^>]+>/g,"");
-    return `${idx+1}. ${preguntaLimpia}\nRespuesta: ${letra}${textoOpcion? " — "+textoOpcion : ""}`;
-  }).join("\n\n");
+    return `<b>${idx+1}.</b> ${preguntaLimpia}<br><b>Respuesta: ${letra}</b>${textoOpcion? " — "+textoOpcion : ""}`;
+  }).join("<br><br>");
 }
 
 function buildDownloadPayload(){
@@ -486,18 +485,6 @@ $("btn-confirm-submit").addEventListener("click", ()=>{
     });
 });
 
-$("btn-download").addEventListener("click", ()=>{
-  const payload = buildDownloadPayload();
-  const blob = new Blob([JSON.stringify(payload,null,2)], {type:"application/json"});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = `respuestas_matematica_${(state.name||"postulante").replace(/\s+/g,"_")}.json`;
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-  URL.revokeObjectURL(url);
-});
 </script>
 </body>
 </html>
