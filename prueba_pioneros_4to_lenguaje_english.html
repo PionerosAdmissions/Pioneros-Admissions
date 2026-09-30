@@ -347,7 +347,7 @@ const LENGUAJE_QUESTIONS = [
    ENGLISH — 38 preguntas (Parts 1–6 adapted as MC)
 ================================================================ */
 const ENGLISH_QUESTIONS = [
-  // PART 1: Match descriptions to words (10 questions)
+  // PART 1: Match descriptions to words (6 questions)
   {
     passage: "PART 1 – Match the description to the correct word.\nChoose the word that best matches each description.",
     passageTitle: "Part 1: Vocabulary Matching",
@@ -385,228 +385,119 @@ const ENGLISH_QUESTIONS = [
     options: ["A. a journalist", "B. a pilot", "C. a doctor", "D. a builder"],
     answer: 1
   },
+  // PART 2 (formerly Part 4): Gap-fill — The Seasons (5 questions)
   {
-    passage: null,
-    question: "7. Publications with articles, photos and stories that come out every week or month.",
-    options: ["A. stamps", "B. postcards", "C. sugar", "D. magazines"],
-    answer: 3
-  },
-  {
-    passage: null,
-    question: "8. A sport played on ice with sticks and a puck.",
-    options: ["A. basketball", "B. golf", "C. hockey", "D. jam"],
-    answer: 2
-  },
-  {
-    passage: null,
-    question: "9. A sweet white or brown substance used in cooking and drinks.",
-    options: ["A. jam", "B. hockey", "C. sugar", "D. stamps"],
-    answer: 2
-  },
-  {
-    passage: null,
-    question: "10. A sport played outdoors where you hit a small ball into a hole.",
-    options: ["A. hockey", "B. basketball", "C. postcards", "D. golf"],
-    answer: 3
-  },
-  // PART 2: Conversation matching (5 questions)
-  {
-    passage: "PART 2 – Read the conversation between Katy and Emma.\nChoose the best reply for each question.\n\n" +
-      "Katy is interviewing Emma about her job at a small flower shop.\n\n" +
-      "Available replies:\n" +
-      "A. Sometimes I sit at my desk and sometimes I go out.\n" +
-      "B. No, I've never tried it.\n" +
-      "C. OK, but only when I am in a meeting.\n" +
-      "D. I took the bus to work for a year.\n" +
-      "E. It closes at six o'clock every day.\n" +
-      "F. Usually when I've finished everything that I've got to do.\n" +
-      "G. I take the bus if it's raining.\n" +
-      "H. Only a few. It's a small business.",
-    passageTitle: "Part 2: Conversation",
-    question: "11. Katy: \"How do you come to work?\"\nEmma: ___",
-    options: ["A. Sometimes I sit at my desk and sometimes I go out.", "B. Only a few. It's a small business.", "C. OK, but only when I am in a meeting.", "D. I take the bus if it's raining."],
-    answer: 3
-  },
-  {
-    passage: null,
-    question: "12. Katy: \"How many people work here?\"\nEmma: ___",
-    options: ["A. I took the bus to work for a year.", "B. Only a few. It's a small business.", "C. It closes at six o'clock every day.", "D. Usually when I've finished everything that I've got to do."],
-    answer: 1
-  },
-  {
-    passage: null,
-    question: "13. Katy: \"Where do you work during the day?\"\nEmma: ___",
-    options: ["A. Sometimes I sit at my desk and sometimes I go out.", "B. No, I've never tried it.", "C. OK, but only when I am in a meeting.", "D. I take the bus if it's raining."],
-    answer: 0
-  },
-  {
-    passage: null,
-    question: "14. Katy: \"Can I call you on your mobile phone if I need more information?\"\nEmma: ___",
-    options: ["A. I took the bus to work for a year.", "B. Usually when I've finished everything that I've got to do.", "C. OK, but only when I am in a meeting.", "D. It closes at six o'clock every day."],
-    answer: 2
-  },
-  {
-    passage: null,
-    question: "15. Katy: \"When do you usually leave work?\"\nEmma: ___",
-    options: ["A. No, I've never tried it.", "B. Only a few. It's a small business.", "C. I take the bus if it's raining.", "D. Usually when I've finished everything that I've got to do."],
-    answer: 3
-  },
-  // PART 3: Gap-fill — Harry's island hotel (6 questions)
-  {
-    passage: "PART 3 – Read the story about Harry and his island hotel.\nChoose the correct word to complete each gap.\n\n" +
-      "Harry owns a small hotel on an island. Last winter, a terrible ___(1)___ damaged the hotel kitchen. " +
-      "Harry had to find a new ___(2)___ for his guests to eat. He worked hard to get everything ___(3)___. " +
-      "He put extra food in the ___(4)___ so it would stay fresh. Then a fallen tree ___(5)___ the power line. " +
-      "___(6)___ had to learn the hotel's recipes very quickly.",
-    passageTitle: "Part 3: Harry's Island Hotel",
-    question: "16. Choose the correct word for gap (1): 'a terrible ___ damaged the kitchen.'",
-    options: ["A. sun", "B. storm", "C. morning", "D. summer"],
-    answer: 1
-  },
-  {
-    passage: null,
-    question: "17. Choose the correct word for gap (2): 'find a new ___ for his guests to eat.'",
-    options: ["A. room", "B. island", "C. restaurant", "D. kitchen"],
-    answer: 2
-  },
-  {
-    passage: null,
-    question: "18. Choose the correct word for gap (3): 'get everything ___.'",
-    options: ["A. ready", "B. closed", "C. broken", "D. empty"],
-    answer: 0
-  },
-  {
-    passage: null,
-    question: "19. Choose the correct word for gap (4): 'put extra food in the ___.'",
-    options: ["A. garden", "B. fridge", "C. boat", "D. box"],
-    answer: 1
-  },
-  {
-    passage: null,
-    question: "20. Choose the correct word for gap (5): 'a fallen tree ___ the power line.'",
-    options: ["A. painted", "B. built", "C. cut", "D. moved"],
-    answer: 2
-  },
-  {
-    passage: null,
-    question: "21. Choose the correct word for gap (6): '___ had to learn the hotel's recipes very quickly.'",
-    options: ["A. The old workers", "B. Harry's family", "C. The new cooks", "D. The hotel guests"],
-    answer: 2
-  },
-  // PART 4: Gap-fill — The Seasons (10 questions)
-  {
-    passage: "PART 4 – Read the text about the seasons.\nChoose the correct word for each gap.\n\n" +
+    passage: "PART 2 – Read the text about the seasons.\nChoose the correct word for each gap.\n\n" +
       "___(1)___ year has four seasons. Spring ___(2)___ in March and lasts ___(3)___ June. " +
-      "During winter, many trees ___(4)___ their leaves. ___(5)___ summer arrives, the days are long and warm. " +
-      "In autumn, flowers grow again ___(6)___ the countryside. In winter, the days are ___(7)___. " +
-      "Then spring comes ___(8)___. The seasons repeat in the ___(9)___ order every year. " +
-      "People ___(10)___ all ages enjoy the changing seasons.",
-    passageTitle: "Part 4: The Seasons",
-    question: "22. Choose the correct word for gap (1): '___ year has four seasons.'",
+      "During winter, many trees ___(4)___ their leaves. ___(5)___ summer arrives, the days are long and warm.",
+    passageTitle: "Part 2: The Seasons",
+    question: "7. Choose the correct word for gap (1): '___ year has four seasons.'",
     options: ["A. Each", "B. All", "C. Many", "D. Some"],
     answer: 0
   },
   {
     passage: null,
-    question: "23. Choose the correct word for gap (2): 'Spring ___ in March.'",
+    question: "8. Choose the correct word for gap (2): 'Spring ___ in March.'",
     options: ["A. ends", "B. begins", "C. stops", "D. arrives at"],
     answer: 1
   },
   {
     passage: null,
-    question: "24. Choose the correct word for gap (3): 'lasts ___ June.'",
+    question: "9. Choose the correct word for gap (3): 'lasts ___ June.'",
     options: ["A. since", "B. at", "C. until", "D. for"],
     answer: 2
   },
   {
     passage: null,
-    question: "25. Choose the correct word for gap (4): 'many trees ___ their leaves.'",
+    question: "10. Choose the correct word for gap (4): 'many trees ___ their leaves.'",
     options: ["A. grow", "B. find", "C. keep", "D. lose"],
     answer: 3
   },
   {
     passage: null,
-    question: "26. Choose the correct word for gap (5): '___ summer arrives, the days are long.'",
+    question: "11. Choose the correct word for gap (5): '___ summer arrives, the days are long.'",
     options: ["A. Because", "B. When", "C. If", "D. Although"],
     answer: 1
   },
+  // PART 3 (formerly Part 5): Reading comprehension — Mr Park's Castle Visit (7 questions)
   {
-    passage: null,
-    question: "27. Choose the correct word for gap (6): 'flowers grow again ___ the countryside.'",
-    options: ["A. on", "B. at", "C. in", "D. by"],
-    answer: 2
-  },
-  {
-    passage: null,
-    question: "28. Choose the correct word for gap (7): 'the days are ___.'",
-    options: ["A. longer", "B. warmer", "C. shorter", "D. hotter"],
-    answer: 2
-  },
-  {
-    passage: null,
-    question: "29. Choose the correct word for gap (8): 'Then spring comes ___.'",
-    options: ["A. never", "B. again", "C. before", "D. already"],
-    answer: 1
-  },
-  {
-    passage: null,
-    question: "30. Choose the correct word for gap (9): 'in the ___ order.'",
-    options: ["A. different", "B. mixed", "C. same", "D. new"],
-    answer: 2
-  },
-  {
-    passage: null,
-    question: "31. Choose the correct word for gap (10): 'People ___ all ages enjoy the seasons.'",
-    options: ["A. at", "B. for", "C. in", "D. of"],
-    answer: 3
-  },
-  // PART 5: Short-answer comprehension — Mr Park's class (7 questions)
-  {
-    passage: "PART 5 – Read about Mr Park's class visit to a castle.\nChoose the best answer for each question.\n\n" +
+    passage: "PART 3 – Read about Mr Park's class visit to a castle.\nChoose the best answer for each question.\n\n" +
       "Mr Park's class visited an old castle by the sea. They travelled by bus for two hours. " +
       "When they arrived, they drank some juice and then explored different parts of the castle. " +
       "They had a race across the castle gardens. One student, Tom, hurt his leg during the race. " +
       "At the end of the visit, they saw a painting of a horse in the great hall.",
-    passageTitle: "Part 5: Mr Park's Castle Visit",
-    question: "32. How did the class travel to the castle?",
+    passageTitle: "Part 3: Mr Park's Castle Visit",
+    question: "12. How did the class travel to the castle?",
     options: ["A. By bus.", "B. By train.", "C. By car.", "D. On foot."],
     answer: 0
   },
   {
     passage: null,
-    question: "33. Where was the castle?",
+    question: "13. Where was the castle?",
     options: ["A. In the mountains.", "B. By the sea.", "C. In the city.", "D. Near a forest."],
     answer: 1
   },
   {
     passage: null,
-    question: "34. What did the students drink when they arrived?",
+    question: "14. What did the students drink when they arrived?",
     options: ["A. Tea.", "B. Water.", "C. Juice.", "D. Milk."],
     answer: 2
   },
   {
     passage: null,
-    question: "35. What did the students explore?",
+    question: "15. What did the students explore?",
     options: ["A. Only the tower.", "B. The garden only.", "C. The library.", "D. Different parts of the castle."],
     answer: 3
   },
   {
     passage: null,
-    question: "36. What activity did the students do in the gardens?",
+    question: "16. What activity did the students do in the gardens?",
     options: ["A. They played football.", "B. They had a race.", "C. They painted pictures.", "D. They had a picnic."],
     answer: 1
   },
   {
     passage: null,
-    question: "37. What happened to Tom?",
+    question: "17. What happened to Tom?",
     options: ["A. He got lost.", "B. He won the race.", "C. He hurt his leg.", "D. He broke his arm."],
     answer: 2
   },
   {
     passage: null,
-    question: "38. What did they see in the great hall?",
+    question: "18. What did they see in the great hall?",
     options: ["A. A painting of a horse.", "B. A map of the castle.", "C. A statue of a king.", "D. A painting of the sea."],
     answer: 0
+  },
+  // PART 4: Listening — Sophie (5 questions, Web Speech API)
+  {
+    passage: "PART 4 – Listening.\nPress the button below to listen to Sophie. You can listen up to 2 times.\nThen answer the questions.\n\n[LISTENING_WIDGET]",
+    passageTitle: "Part 4: Listening — Meet Sophie",
+    question: "19. How old is Sophie?",
+    options: ["A. 7 years old", "B. 8 years old", "C. 9 years old", "D. 10 years old"],
+    answer: 2
+  },
+  {
+    passage: null,
+    question: "20. Where does Sophie live?",
+    options: ["A. Near the school", "B. Near the park", "C. Near the beach", "D. Near the forest"],
+    answer: 1
+  },
+  {
+    passage: null,
+    question: "21. What is Sophie's favourite subject at school?",
+    options: ["A. Maths", "B. English", "C. Science", "D. Art"],
+    answer: 3
+  },
+  {
+    passage: null,
+    question: "22. What is the name of Sophie's dog?",
+    options: ["A. Max", "B. Sam", "C. Bob", "D. Rex"],
+    answer: 0
+  },
+  {
+    passage: null,
+    question: "23. What is Sophie's favourite food?",
+    options: ["A. Sushi", "B. Salad", "C. Pasta", "D. Pizza"],
+    answer: 3
   }
 ];
 
@@ -696,10 +587,24 @@ function renderQuestion() {
   const ans = currentAnswers();
   const q = qs[state.current];
   let html = "";
-  if (q.passage) {
+  // Find the nearest passage (current or last question that had one)
+  let activePassage = null, activePassageTitle = null;
+  for (let i = state.current; i >= 0; i--) {
+    if (qs[i].passage) { activePassage = qs[i].passage; activePassageTitle = qs[i].passageTitle; break; }
+  }
+  if (activePassage) {
+    const passageHtml = activePassage.includes("[LISTENING_WIDGET]")
+      ? activePassage.replace(/\n/g, "<br>").replace("[LISTENING_WIDGET]", `
+          <div id="listening-widget" style="background:#fff3cd;border:2px solid #f0c040;border-radius:10px;padding:16px 20px;margin-top:12px;text-align:center">
+            <div style="font-size:.95rem;font-weight:700;color:#7a5c00;margin-bottom:6px">🎧 Listening — Sophie</div>
+            <div style="font-size:.85rem;color:#555;margin-bottom:12px">Puedes escuchar el audio hasta <strong>2 veces</strong>.<br>Escucha con atención y luego responde las preguntas.</div>
+            <button id="play-sophie-btn" onclick="playSophie()" style="background:#1a2340;color:#fff;border:none;padding:11px 28px;border-radius:8px;font-size:1rem;font-weight:600;cursor:pointer;transition:background .2s">▶ Play Audio</button>
+            <div id="sophie-status" style="margin-top:8px;font-size:.82rem;color:#888"></div>
+          </div>`)
+      : activePassage.replace(/\n/g, "<br>");
     html += `<div class="q-card">
-      <div class="passage-title">${q.passageTitle}</div>
-      <div class="passage-box">${q.passage.replace(/\n/g, "<br>")}</div>
+      <div class="passage-title">${activePassageTitle}</div>
+      <div class="passage-box">${passageHtml}</div>
     </div>`;
   }
   html += `<div class="q-card">
@@ -892,6 +797,66 @@ function calcScore(questions, answers) {
   return { correct, wrong, blank };
 }
 
+/* ================================================================
+   LISTENING — Web Speech API (Sophie)
+================================================================ */
+const SOPHIE_TEXT = "Hi! My name is Sophie. I am nine years old. I live in a house near the park. I have one brother and one sister. My favourite subject at school is Art. On weekends, I like to ride my bike and play with my dog, Max. Max is brown and very friendly. My favourite food is pizza.";
+let sophiePlaysLeft = 2;
+
+function playSophie() {
+  const btn = document.getElementById("play-sophie-btn");
+  const status = document.getElementById("sophie-status");
+  if (!btn || !status) return;
+  if (sophiePlaysLeft <= 0) {
+    status.textContent = "Has alcanzado el máximo de reproducciones (2).";
+    return;
+  }
+  if (!window.speechSynthesis) {
+    status.textContent = "Tu navegador no soporta audio. Pide ayuda al supervisor.";
+    return;
+  }
+  window.speechSynthesis.cancel();
+  const utter = new SpeechSynthesisUtterance(SOPHIE_TEXT);
+  utter.lang = "en-GB";
+  utter.rate = 0.85;
+  utter.pitch = 1.1;
+  // Select a female English voice if available
+  const voices = window.speechSynthesis.getVoices();
+  const femaleVoice = voices.find(v =>
+    v.lang.startsWith("en") && /female|woman|girl|samantha|karen|victoria|zira|hazel|fiona|moira|tessa|kate|susan|kathy|vicki|allison|ava|serena|emily|heather|aria|jenny|natasha/i.test(v.name)
+  ) || voices.find(v => v.lang.startsWith("en-GB")) || voices.find(v => v.lang.startsWith("en"));
+  if (femaleVoice) utter.voice = femaleVoice;
+  sophiePlaysLeft--;
+  const playsUsed = 2 - sophiePlaysLeft;
+  btn.disabled = true;
+  btn.textContent = "🔊 Reproduciendo...";
+  status.textContent = `Reproducción ${playsUsed}/2`;
+  utter.onend = () => {
+    if (sophiePlaysLeft > 0) {
+      btn.disabled = false;
+      btn.textContent = "▶ Play Audio (1 vez más)";
+      status.textContent = `Reproducción ${playsUsed}/2 completada. Puedes escuchar 1 vez más.`;
+    } else {
+      btn.disabled = true;
+      btn.textContent = "✓ Audio completado";
+      status.textContent = "Has usado las 2 reproducciones. Responde las preguntas.";
+    }
+  };
+  utter.onerror = () => {
+    sophiePlaysLeft++;
+    btn.disabled = false;
+    btn.textContent = sophiePlaysLeft === 2 ? "▶ Play Audio" : "▶ Play Audio (1 vez más)";
+    status.textContent = "Error al reproducir. Intenta de nuevo.";
+  };
+  window.speechSynthesis.speak(utter);
+}
+
+// Preload voices (some browsers require this)
+if (window.speechSynthesis) {
+  window.speechSynthesis.getVoices();
+  window.speechSynthesis.onvoiceschanged = () => { window.speechSynthesis.getVoices(); };
+}
+
 function sendCombinedEmail() {
   const lScore = calcScore(LENGUAJE_QUESTIONS, state.answersL);
   const eScore = calcScore(ENGLISH_QUESTIONS, state.answersE);
@@ -901,7 +866,7 @@ function sendCombinedEmail() {
   const totalWrong = lScore.wrong + eScore.wrong;
   const totalBlank = lScore.blank + eScore.blank;
   const detailsL = buildDetails(LENGUAJE_QUESTIONS, state.answersL, "=== LENGUAJE / COMPRENSION DE LECTURA (23 preguntas) ===");
-  const detailsE = buildDetails(ENGLISH_QUESTIONS, state.answersE, "=== ENGLISH ENTRANCE EXAM (38 preguntas) ===");
+  const detailsE = buildDetails(ENGLISH_QUESTIONS, state.answersE, "=== ENGLISH ENTRANCE EXAM (23 preguntas) ===");
   const timeUsedL = state.startTimeL ? Math.floor((state.startTimeE - state.startTimeL) / 1000) : 0;
   const timeUsedE = state.startTimeE ? Math.floor((Date.now() - state.startTimeE) / 1000) : 0;
   const totalTime = timeUsedL + timeUsedE;
