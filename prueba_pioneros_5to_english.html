@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Entrance Exam 5th Grade — English | Colegio Pioneros</title>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f4f8;color:#1a2340;min-height:100vh}
+header{background:#1a2340;color:#fff;padding:14px 24px;display:flex;align-items:center;gap:14px}
+header h1{font-size:1.05rem;font-weight:600;line-height:1.3}
+#timer-bar{background:#1e3a5f;color:#fff;text-align:center;padding:8px;font-size:1rem;font-weight:700;letter-spacing:.5px;position:sticky;top:0;z-index:100;display:none}
+#timer-bar.warning{background:#c0392b}
+#section-label{background:#2980b9;color:#fff;text-align:center;padding:6px;font-size:.85rem;font-weight:600;letter-spacing:.5px;position:sticky;top:41px;z-index:99;display:none}
+.screen{display:none;padding:24px;max-width:860px;margin:0 auto}
+.screen.active{display:block}
+/* Cover */
+#cover{text-align:center;padding-top:40px}
+#cover h2{font-size:1.6rem;color:#1a2340;margin-bottom:8px}
+#cover p{color:#555;margin-bottom:24px;font-size:.95rem}
+#cover input{width:100%;max-width:420px;padding:12px 16px;border:2px solid #2980b9;border-radius:8px;font-size:1rem;margin-bottom:12px;display:block;margin-left:auto;margin-right:auto}
+.btn-main{background:#1a2340;color:#fff;border:none;padding:13px 36px;border-radius:8px;font-size:1rem;font-weight:600;cursor:pointer;transition:background .2s}
+.btn-main:hover{background:#2c3e6b}
+.btn-main:disabled{background:#999;cursor:not-allowed}
+/* Quiz */
+#quiz-area{padding:16px 0}
+.passage-box{background:#eaf2fb;border-left:4px solid #2980b9;border-radius:6px;padding:16px 18px;margin-bottom:18px;font-size:.93rem;line-height:1.65}
+.passage-title{font-weight:700;color:#1a2340;margin-bottom:8px;font-size:.97rem}
+.q-card{background:#fff;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.08);padding:20px 22px;margin-bottom:16px}
+.q-num{font-size:.78rem;color:#2980b9;font-weight:700;text-transform:uppercase;margin-bottom:6px}
+.q-text{font-size:.97rem;line-height:1.55;margin-bottom:14px}
+.options label{display:flex;align-items:flex-start;gap:10px;padding:9px 12px;border-radius:6px;cursor:pointer;font-size:.93rem;line-height:1.4;border:1.5px solid transparent;margin-bottom:6px;transition:background .15s,border-color .15s}
+.options label:hover{background:#f0f6fc}
+.options input[type=radio]{accent-color:#1a2340;margin-top:3px;flex-shrink:0}
+.options label.selected{background:#ddeeff;border-color:#2980b9}
+/* Jump grid */
+#jump-grid{background:#fff;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.08);padding:14px 16px;margin-bottom:18px}
+#jump-grid h3{font-size:.82rem;color:#555;font-weight:600;margin-bottom:10px;text-transform:uppercase}
+.grid{display:flex;flex-wrap:wrap;gap:6px}
+.jbtn{width:34px;height:34px;border-radius:6px;border:1.5px solid #ccc;background:#f8f8f8;cursor:pointer;font-size:.82rem;font-weight:600;transition:all .15s}
+.jbtn.answered{background:#1a2340;color:#fff;border-color:#1a2340}
+.jbtn.current{border-color:#2980b9;box-shadow:0 0 0 2px #a8d0f0}
+/* Nav */
+.nav-row{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+.btn-nav{background:#e8ecf0;color:#1a2340;border:none;padding:10px 22px;border-radius:8px;font-size:.93rem;font-weight:600;cursor:pointer;transition:background .2s}
+.btn-nav:hover{background:#d0d8e4}
+.btn-submit{background:#27ae60;color:#fff;border:none;padding:10px 22px;border-radius:8px;font-size:.93rem;font-weight:600;cursor:pointer}
+.btn-submit:hover{background:#229954}
+/* Listening widget */
+#listening-widget{background:#fff3cd;border:2px solid #f0c040;border-radius:10px;padding:16px 18px;margin:12px 0;text-align:center}
+#listening-widget p{font-size:.9rem;color:#555;margin-bottom:10px}
+#play-btn{background:#1a2340;color:#fff;border:none;padding:10px 24px;border-radius:8px;font-size:.95rem;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:8px;margin:0 auto}
+#play-btn:disabled{background:#999;cursor:not-allowed}
+#listen-status{font-size:.82rem;color:#888;margin-top:8px}
+/* Results */
+#results{text-align:center;padding-top:30px}
+#results h2{font-size:1.5rem;margin-bottom:12px;color:#1a2340}
+.score-box{background:#fff;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,.1);padding:28px;max-width:460px;margin:0 auto 24px}
+.score-big{font-size:3rem;font-weight:700;color:#1a2340}
+.score-sub{font-size:1rem;color:#555;margin-top:4px}
+.score-details{display:flex;justify-content:center;gap:24px;margin-top:18px;font-size:.95rem}
+.sd-item{text-align:center}
+.sd-num{font-size:1.6rem;font-weight:700}
+.sd-label{font-size:.78rem;color:#777;text-transform:uppercase}
+#status-msg{margin-top:18px;font-size:.93rem;color:#555;padding:0 12px}
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>Entrance Exam 5th Grade — English<br><span style="font-weight:400;font-size:.9rem;opacity:.85">Colegio Pioneros</span></h1>
+  </div>
+</header>
+<div id="timer-bar">⏱ 60:00</div>
+<div id="section-label">Part 1 – Reading: Signs & Messages</div>
+
+<!-- COVER -->
+<div id="cover" class="screen active">
+  <h2>English Entrance Exam</h2>
+  <p>5th Grade &nbsp;·&nbsp; 20 questions &nbsp;·&nbsp; 60 minutes</p>
+  <input id="inp-name" type="text" placeholder="Student's full name" autocomplete="off">
+  <input id="inp-grade" type="text" value="5th Grade" readonly style="background:#f5f5f5;color:#777">
+  
+  <br>
+  <button class="btn-main" onclick="startExam()">Start Exam</button>
+  <div id="cover-err" style="color:#c0392b;margin-top:12px;font-size:.9rem"></div>
+</div>
+
+<!-- QUIZ -->
+<div id="quiz" class="screen">
+  <div id="jump-grid">
+    <h3>Questions</h3>
+    <div class="grid" id="grid-cells"></div>
+  </div>
+  <div id="quiz-area"></div>
+  <div class="nav-row">
+    <button class="btn-nav" id="btn-prev" onclick="go(-1)">← Previous</button>
+    <button class="btn-nav" id="btn-next" onclick="go(1)">Next →</button>
+    <button class="btn-submit" id="btn-submit" onclick="confirmSubmit()" style="display:none">Submit Exam</button>
+  </div>
+</div>
+
+<!-- RESULTS -->
+<div id="results" class="screen">
+  <h2>Results</h2>
+  <div class="score-box">
+    <div class="score-big" id="res-pct">—</div>
+    <div class="score-sub" id="res-label">calculating…</div>
+    <div class="score-details">
+      <div class="sd-item"><div class="sd-num" id="res-ok" style="color:#27ae60">—</div><div class="sd-label">Correct</div></div>
+      <div class="sd-item"><div class="sd-num" id="res-wrong" style="color:#e74c3c">—</div><div class="sd-label">Wrong</div></div>
+      <div class="sd-item"><div class="sd-num" id="res-blank" style="color:#f39c12">—</div><div class="sd-label">Blank</div></div>
+    </div>
+  </div>
+  <div id="status-msg">Sending results…</div>
+</div>
+
+<script>
+(function(){ emailjs.init({publicKey:"x6LTzX-hx-Gd5mTR0"}); })();
+
+const ADMIN_EMAIL = "dplatz@cpioneros.cl";
+const TOTAL_TIME = 60 * 60; // 60 minutes
+
+// ─── SOPHIE listening text (spoken by Web Speech API) ───
+const SOPHIE_TEXT = "Hi! My name is Luca. I am ten years old and I live in a house near the sea. I have one sister. Her name is Sofia. We go to the same school. My favourite subject is Science because I love animals and nature. After school, I usually play football with my friends. On weekends, I like to read books or go to the park with my dog. His name is Biscuit and he is small and white. My favourite food is pasta. What about you?";
+
+let sophiePlays = 0;
+const MAX_PLAYS = 2;
+
+function playSophie() {
+  if (sophiePlays >= MAX_PLAYS) return;
+  if (!window.speechSynthesis) {
+    document.getElementById('listen-status').textContent = "Your browser doesn't support audio. Read the text carefully.";
+    return;
+  }
+  window.speechSynthesis.cancel();
+  const utter = new SpeechSynthesisUtterance(SOPHIE_TEXT);
+  utter.lang = 'en-GB';
+  utter.rate = 0.88;
+  utter.pitch = 1.1;
+  // prefer a child/female voice
+  const voices = window.speechSynthesis.getVoices();
+  const preferred = voices.find(v => /female|girl|zira|samantha|karen|moira|tessa/i.test(v.name) && /en/i.test(v.lang))
+                 || voices.find(v => /en/i.test(v.lang));
+  if (preferred) utter.voice = preferred;
+  sophiePlays++;
+  const btn = document.getElementById('play-btn');
+  const status = document.getElementById('listen-status');
+  btn.disabled = true;
+  btn.textContent = '🔊 Playing…';
+  status.textContent = sophiePlays >= MAX_PLAYS ? 'You have used both plays.' : `Play ${sophiePlays} of ${MAX_PLAYS} used.`;
+  utter.onend = () => {
+    if (sophiePlays < MAX_PLAYS) {
+      btn.disabled = false;
+      btn.innerHTML = '▶ Play Again (' + (MAX_PLAYS - sophiePlays) + ' left)';
+    } else {
+      btn.textContent = 'No more plays';
+    }
+  };
+  window.speechSynthesis.speak(utter);
+}
+
+// ─── QUESTIONS ───
+// passage = shown above the question (backward lookup for grouped passages)
+// passageTitle = bold heading above passage box
+// answer: 0=A, 1=B, 2=C
+
+const QUESTIONS = [
+  // ── PART 1: Signs & Messages (Q1–4) ──
+  {
+    part: "Part 1 – Reading: Signs & Messages",
+    passage: null,
+    passageTitle: null,
+    question: "1. What does the sign say?<br><br><div style=\"display:inline-block;border:4px solid #8B4513;border-radius:8px;padding:14px 22px;background:#2d2d2d;text-align:center;min-width:220px;font-family:Georgia,serif\"><div style=\"font-size:1.3rem;font-weight:900;color:#FFD700;letter-spacing:2px;text-transform:uppercase;text-shadow:1px 1px 3px #000\">Adventure Park</div><div style=\"width:80%;height:2px;background:#FFD700;margin:6px auto\"></div><div style=\"color:#fff;font-size:.85rem;font-weight:700;line-height:1.5\">Half-price tickets<br>for groups of 12 or more</div><div style=\"margin-top:6px;font-size:.75rem;color:#ccc;font-style:italic\">Ask at entrance</div></div>",
+    options: ["A. You get into the park by going this way.", "B. It is more expensive to go here alone.", "C. You will have fun if you come with friends."],
+    answer: 1
+  },
+  {
+    part: null,
+    passage: null,
+    passageTitle: null,
+    question: "2. What does the sign mean?<br><br><div style=\"display:inline-block;border:3px solid #1a6fc4;border-radius:12px;padding:14px 20px;background:#e8f4ff;text-align:center;min-width:200px;font-family:Arial,sans-serif\"><div style=\"font-size:1.15rem;font-weight:900;color:#1a2340;letter-spacing:1px\">DAN'S ICE CREAMS</div><div style=\"font-size:2rem;margin:4px 0\">🍦</div><div style=\"font-size:.95rem;font-weight:700;color:#1a2340;line-height:1.5\">Buy one, get one free!</div><div style=\"margin-top:6px;font-size:.78rem;color:#555;border:1px solid #aaa;border-radius:4px;padding:3px 8px;background:#fff\">Special offer 12 – 2 p.m. only</div></div>",
+    options: ["A. The ice cream shop is open for only 2 hours.", "B. Two ice creams will cost the same as one.", "C. You can get free ice creams all afternoon."],
+    answer: 1
+  },
+  {
+    part: null,
+    passage: null,
+    passageTitle: null,
+    question: "3. Tim sent Ben a message: \"I've booked concert tickets for both of us online. Can you give me the money this afternoon when I see you?\"\n\nWhy did Tim write this message?",
+    options: ["A. Tim thinks Ben should look on the concert website.", "B. Tim hopes Ben will be able to come with him.", "C. Tim wants Ben to pay him back today."],
+    answer: 2
+  },
+  {
+    part: null,
+    passage: null,
+    passageTitle: null,
+    question: "4. Sophie sent Anna a message: \"Sorry you missed today's class. Don't forget about the history project we're working on together — the teacher wants it by Friday. Call me!\"\n\nWhy did Sophie write this message?",
+    options: ["A. To check if Anna has completed her homework.", "B. To let Anna know what they did in class today.", "C. To ask Anna to contact her about the project."],
+    answer: 2
+  },
+
+  // ── PART 2: Reading – Young Blog Writers (Q5–9) ──
+  {
+    part: "Part 2 – Reading: Young Blog Writers",
+    passageTitle: "Young Blog Writers",
+    passage: "Tasha: Last year I wrote for my college magazine, which I found really difficult, but I don't think it's hard to write a good blog. Mine is about things from daily life that make me laugh. My older brother also has a blog, but we're writing about different subjects. I like giving advice to people who write in asking for it.\n\nDanni: I started writing my popular film blog because I love movies. I like it when readers send me articles by email about a film they've seen. I'm still at college, so I'm careful about spending too long on my blog. I don't think I'll write it for much longer.\n\nChrissie: I began writing on a school magazine. I stopped after a few years, but I missed it, so I started my own blog – I'm still writing it now! I get ideas from friends or my sister when I can't decide what to write about. At first, almost nobody visited my site, but now more do.",
+    question: "5. Who writes both a magazine and a blog?",
+    options: ["A. Tasha", "B. Danni", "C. Chrissie"],
+    answer: 0
+  },
+  {
+    part: null,
+    passage: null,
+    passageTitle: null,
+    question: "6. Who says that studying and writing a blog at the same time can be hard?",
+    options: ["A. Tasha", "B. Danni", "C. Chrissie"],
+    answer: 1
+  },
+  {
+    part: null,
+    passage: null,
+    passageTitle: null,
+    question: "7. Who plans to stop writing her blog soon?",
+    options: ["A. Tasha", "B. Danni", "C. Chrissie"],
+    answer: 1
+  },
+  {
+    part: null,
+    passage: null,
+    passageTitle: null,
+    question: "8. Who didn't have many people reading her blog in the beginning?",
+    options: ["A. Tasha", "B. Danni", "C. Chrissie"],
+    answer: 2
+  },
+  {
+    part: null,
+    passage: null,
+    passageTitle: null,
+    question: "9. Who asks a member of her family to help her write her blog?",
+    options: ["A. Tasha", "B. Danni", "C. Chrissie"],
+    answer: 2
+  },
+
+  // ── PART 3: Reading – A Family of Dancers (Q10–13) ──
+  {
+    part: "Part 3 – Reading: A Family of Dancers",
+    passageTitle: "A Family of Dancers",
+    passage: "The women in the Watson family are all crazy about ballet. These days, Alice Watson gives ballet lessons, but for many years she was a dancer with the National Ballet Company. Her mother, Hannah, also had a full-time job there, making costumes for the dancers.\n\nAlice's daughter Demi started learning ballet as soon as she could walk. 'I never taught her,' says Alice, 'because she never let me.' Now aged sixteen, Demi is a member of the ballet company where her mother was the star dancer.\n\nAlice's husband, Jack, is an electrician. They met while he was working at a theatre. 'When Demi started dancing, the house was too small for her and Alice to practise, so I made the garage into a dance studio,' he says.\n\nLast month, Demi was invited to dance in the ballet Swan Lake. Alice and Hannah were in the audience, and even Jack was there. Demi was wearing a dress that Hannah made for Alice many years before. 'Demi's way of dancing is very like Alice's. I know I'm her grandmother, but I think she has a great future!' says Hannah.",
+    question: "10. What is Alice Watson's job now?",
+    options: ["A. Dancer", "B. Teacher", "C. Dress-maker"],
+    answer: 1
+  },
+  {
+    part: null,
+    passage: null,
+    passageTitle: null,
+    question: "11. Demi had her first ballet lessons…",
+    options: ["A. at a very young age.", "B. at the National Ballet Company.", "C. from her mother."],
+    answer: 0
+  },
+  {
+    part: null,
+    passage: null,
+    passageTitle: null,
+    question: "12. Jack helped his wife and daughter by…",
+    options: ["A. moving to a larger house.", "B. letting them use the living room for dancing.", "C. making a place for them to practise in."],
+    answer: 2
+  },
+  {
+    part: null,
+    passage: null,
+    passageTitle: null,
+    question: "13. What was the best thing about the Swan Lake show for Demi?",
+    options: ["A. It was her first show with the company.", "B. All her family were there.", "C. She was wearing a new dress."],
+    answer: 1
+  },
+
+  // ── PART 4: Vocabulary – Gap Fill (Q14–17) ──
+  {
+    part: "Part 4 – Vocabulary: Gap Fill",
+    passageTitle: "William Perkin",
+    passage: "William Perkin was born in London in 1838. As a child he had many hobbies, but it was the (14)_______ of chemistry that really interested him. At the age of 15 he went to college to study it.\n\nWhile he was there, he was (15)_______ to make a medicine from coal. When he was working on the problem, he found a cheap (16)_______ to make the colour purple. At that (17)_______ it was very expensive to make clothes in different colours.",
+    question: "14. Choose the best word:\n\"It was the _______ of chemistry that really interested him.\"",
+    options: ["A. class", "B. subject", "C. course"],
+    answer: 1
+  },
+  {
+    part: null,
+    passage: null,
+    passageTitle: null,
+    question: "15. Choose the best word:\n\"He was _______ to make a medicine from coal.\"",
+    options: ["A. thinking", "B. trying", "C. deciding"],
+    answer: 1
+  },
+  {
+    part: null,
+    passage: null,
+    passageTitle: null,
+    question: "16. Choose the best word:\n\"He found a cheap _______ to make the colour purple.\"",
+    options: ["A. way", "B. path", "C. plan"],
+    answer: 0
+  },
+  {
+    part: null,
+    passage: null,
+    passageTitle: null,
+    question: "17. Choose the best word:\n\"At that _______ it was very expensive to make clothes in different colours.\"",
+    options: ["A. day", "B. time", "C. hour"],
+    answer: 1
+  },
+
+  // ── PART 5: Listening – Meet Luca (Q18–20) ──
+  {
+    part: "Part 5 – Listening: Meet Luca",
+    passage: "[LISTENING_WIDGET]",
+    passageTitle: "Listen carefully and answer the questions.",
+    question: "18. How old is Luca?",
+    options: ["A. 8 years old", "B. 9 years old", "C. 10 years old"],
+    answer: 2
+  },
+  {
+    part: null,
+    passage: null,
+    passageTitle: null,
+    question: "19. What is Luca's favourite subject?",
+    options: ["A. Maths", "B. Science", "C. English"],
+    answer: 1
+  },
+  {
+    part: null,
+    passage: null,
+    passageTitle: null,
+    question: "20. What is the name of Luca's dog?",
+    options: ["A. Biscuit", "B. Max", "C. Bruno"],
+    answer: 0
+  }
+];
+
+// ─── STATE ───
+const state = {
+  name: "", grade: "", code: "",
+  current: 0,
+  answers: new Array(QUESTIONS.length).fill(null),
+  secondsLeft: TOTAL_TIME,
+  timerId: null,
+  startTime: null,
+  submitted: false
+};
+
+// ─── START ───
+function startExam() {
+  const name = document.getElementById('inp-name').value.trim();
+  const err  = document.getElementById('cover-err');
+  if (!name) { err.textContent = "Please enter the student's full name."; return; }
+  state.name = name;
+  state.grade = document.getElementById('inp-grade').value.trim();
+  state.code = "—";
+  state.startTime = new Date();
+  showScreen('quiz');
+  document.getElementById('timer-bar').style.display = 'block';
+  document.getElementById('section-label').style.display = 'block';
+  state.timerId = setInterval(tick, 1000);
+  buildGrid();
+  renderQuestion();
+}
+
+// ─── TIMER ───
+function tick() {
+  state.secondsLeft--;
+  const bar = document.getElementById('timer-bar');
+  if (state.secondsLeft <= 300) bar.classList.add('warning');
+  if (state.secondsLeft <= 0) { clearInterval(state.timerId); submitExam(); return; }
+  const m = Math.floor(state.secondsLeft / 60);
+  const s = state.secondsLeft % 60;
+  bar.textContent = `⏱ ${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+}
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+// ─── RENDER QUESTION ───
+function renderQuestion() {
+  const q = QUESTIONS[state.current];
+
+  // Update section label
+  if (q.part) {
+    document.getElementById('section-label').textContent = q.part;
+  }
+
+  // Find active passage via backward lookup (for grouped sections)
+  let activePassage = null, activeTitle = null;
+  for (let i = state.current; i >= 0; i--) {
+    if (QUESTIONS[i].passage !== null) {
+      activePassage = QUESTIONS[i].passage;
+      activeTitle   = QUESTIONS[i].passageTitle;
+      break;
+    }
+  }
+
+  let html = "";
+
+  if (activePassage) {
+    let passageHtml = activePassage;
+    if (passageHtml.includes("[LISTENING_WIDGET]")) {
+      passageHtml = `<div id="listening-widget">
+        <p><strong>🎧 Listen to Luca's introduction (max. 2 plays)</strong></p>
+        <button id="play-btn" onclick="playSophie()">▶ Play Audio</button>
+        <div id="listen-status">Click to listen. You can play it twice.</div>
+      </div>`;
+    } else {
+      passageHtml = passageHtml.replace(/\n/g, "<br>");
+    }
+    html += `<div class="passage-box">`;
+    if (activeTitle) html += `<div class="passage-title">${activeTitle}</div>`;
+    html += passageHtml + `</div>`;
+  }
+
+  html += `<div class="q-card">
+    <div class="q-num">Question ${state.current + 1} of ${QUESTIONS.length}</div>
+    <div class="q-text">${q.question.replace(/\n/g,"<br>")}</div>
+    <div class="options" id="opts">`;
+  q.options.forEach((opt, i) => {
+    const sel = state.answers[state.current] === i ? " selected" : "";
+    html += `<label class="${sel}"><input type="radio" name="opt" value="${i}" ${state.answers[state.current]===i?'checked':''} onchange="selectOpt(${i})">${opt}</label>`;
+  });
+  html += `</div></div>`;
+
+  document.getElementById('quiz-area').innerHTML = html;
+  document.getElementById('btn-prev').style.display   = state.current === 0 ? 'none' : '';
+  const isLast = state.current === QUESTIONS.length - 1;
+  document.getElementById('btn-next').style.display   = isLast ? 'none' : '';
+  document.getElementById('btn-submit').style.display = isLast ? '' : 'none';
+  updateGrid();
+}
+
+function selectOpt(i) {
+  state.answers[state.current] = i;
+  document.querySelectorAll('#opts label').forEach((l, idx) => {
+    l.classList.toggle('selected', idx === i);
+  });
+  updateGrid();
+}
+
+function go(dir) {
+  const next = state.current + dir;
+  if (next < 0 || next >= QUESTIONS.length) return;
+  state.current = next;
+  renderQuestion();
+}
+
+function buildGrid() {
+  const g = document.getElementById('grid-cells');
+  g.innerHTML = '';
+  QUESTIONS.forEach((_, i) => {
+    const b = document.createElement('button');
+    b.className = 'jbtn';
+    b.textContent = i + 1;
+    b.onclick = () => { state.current = i; renderQuestion(); };
+    g.appendChild(b);
+  });
+}
+
+function updateGrid() {
+  document.querySelectorAll('.jbtn').forEach((b, i) => {
+    b.classList.toggle('answered', state.answers[i] !== null);
+    b.classList.toggle('current',  i === state.current);
+  });
+}
+
+function confirmSubmit() {
+  const blank = state.answers.filter(a => a === null).length;
+  const msg = blank > 0
+    ? `You have ${blank} unanswered question(s). Are you sure you want to submit?`
+    : 'Are you sure you want to submit the exam?';
+  if (confirm(msg)) submitExam();
+}
+
+// ─── SUBMIT ───
+function submitExam() {
+  if (state.submitted) return;
+  state.submitted = true;
+  clearInterval(state.timerId);
+
+  let correct = 0, wrong = 0, blank = 0;
+  QUESTIONS.forEach((q, i) => {
+    if (state.answers[i] === null) blank++;
+    else if (state.answers[i] === q.answer) correct++;
+    else wrong++;
+  });
+
+  const pct = Math.round((correct / QUESTIONS.length) * 100);
+  const elapsed = Math.round((new Date() - state.startTime) / 1000);
+  const mm = Math.floor(elapsed / 60), ss = elapsed % 60;
+  const timeStr = `${mm}m ${ss}s`;
+
+  document.getElementById('res-pct').textContent   = pct + '%';
+  document.getElementById('res-label').textContent = `${correct} of ${QUESTIONS.length} questions correct`;
+  document.getElementById('res-ok').textContent    = correct;
+  document.getElementById('res-wrong').textContent = wrong;
+  document.getElementById('res-blank').textContent = blank;
+  showScreen('results');
+
+  const now     = new Date().toLocaleString('es-CL');
+  const letters = ['A','B','C'];
+
+  let det1 = '', det2 = '';
+  QUESTIONS.forEach((q, i) => {
+    const given   = state.answers[i] !== null ? letters[state.answers[i]] : '—';
+    const correct_let = letters[q.answer];
+    const ok      = state.answers[i] === q.answer ? '✓' : '✗';
+    const line    = `P${i+1}: ${given} (correct: ${correct_let}) ${ok}\n`;
+    if (i < 10) det1 += line; else det2 += line;
+  });
+
+  const base = {
+    to_email: ADMIN_EMAIL,
+    student_name: state.name,
+    grade: state.grade,
+    access_code: state.code,
+    score: pct + '%',
+    correct,
+    wrong,
+    blank,
+    time_used: timeStr,
+    submitted_at: now
+  };
+
+  emailjs.send("service_kk0m83i", "template_ebdohpd", {
+    ...base,
+    details: `ENGLISH 5th Grade — PART 1 (Q1–Q10)\n${det1}`
+  }).then(() => {
+    setTimeout(() => {
+      emailjs.send("service_kk0m83i", "template_ebdohpd", {
+        ...base,
+        details: `ENGLISH 5th Grade — PART 2 (Q11–Q20)\n${det2}`
+      }).then(() => {
+        document.getElementById('status-msg').textContent = '✅ Results sent to ' + ADMIN_EMAIL;
+      }).catch(e => {
+        document.getElementById('status-msg').textContent = '⚠️ Error sending part 2: ' + (e.text||e);
+      });
+    }, 500);
+  }).catch(e => {
+    document.getElementById('status-msg').textContent = '⚠️ Error sending results: ' + (e.text||e);
+  });
+}
+</script>
+</body>
+</html>
